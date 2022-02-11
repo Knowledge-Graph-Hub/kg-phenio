@@ -2,7 +2,7 @@ import os
 
 from typing import Optional
 
-from project_name.transform_utils.transform import Transform
+from kg_ontoml.transform_utils.transform import Transform
 #from kgx import PandasTransformer, ObographJsonTransformer  # type: ignore
 from kgx.cli.cli_utils import transform
 

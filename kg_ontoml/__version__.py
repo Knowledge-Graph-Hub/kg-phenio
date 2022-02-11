@@ -1,2 +1,2 @@
-"""Current version of package project_name"""
-__version__ = "1.0.0"
+"""Current version of package kg_ontoml"""
+__version__ = "0.0.1"
