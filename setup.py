@@ -6,11 +6,6 @@ from setuptools import find_packages, setup
 
 here = os.path.abspath(os.path.dirname(__file__))
 
-# get the long description from the relevant file
-with copen(os.path.join(here, 'README.rst'), encoding='utf-8') as f:
-    long_description = f.read()
-
-
 def read(*parts):
     with copen(os.path.join(here, *parts), 'r') as fp:
         return fp.read()
@@ -24,7 +19,7 @@ def find_version(*file_paths):
     raise RuntimeError('Unable to find version string.')
 
 
-__version__ = find_version('project_name', '__version__.py')
+__version__ = find_version('kg_ontoml', '__version__.py')
 
 test_deps = [
     'pytest',
@@ -40,13 +35,12 @@ extras = {
 }
 
 setup(
-    name='project_name',
+    name='kg-ontoml',
     version=__version__,
-    description='KG hub for project_name',
-    long_description=long_description,
-    url='https://github.com/Knowledge-Graph-Hub/project_name',
-    author='Harshad Hegde',
-    author_email='hhegde@lbl.gov',
+    description='kg-ontoml',
+    url='https://github.com/Knowledge-Graph-Hub/kg-ontoml',
+    author='J. Harry Caufield',
+    author_email='jhc@lbl.gov',
     python_requires='>=3.7',
 
     # choose your license
@@ -73,27 +67,7 @@ setup(
         'parameterized',
         'validate_version_code',
         'pandas',
-        'networkx',
-        # Extra packages added
-        'six', # needed by rdflib
-        'ordered-set', #needed by kgx
-        'requests', # needed by kgx
-        'ShExJSG', # needed by linkml-runtime
-        'jsonasobj==1.2.1', #deprecated # needed by kgx
-        'prefixcommons', # needed by kgx
-        'packaging', #needed by deprecation
-        'cachetools', # needed by kgx
-        'jsonlines', # needed by kgx
-        'neo4jrestclient', # needed by kgx
-        'validators', # needed by kgx
-        'stringcase', # needed by kgx
-        'linkml_model', # needed by kgx
-        'isodate', # needed by rdflib
-        'deprecated', # needed by linkml-runtime
-        'hbreader', # needed by jsonasobj
-        'bmt', # needed by kgx
-        'jsonstreams', # needed by kgx
-        'ijson', # needed by kgx
+        'networkx'
     ],
     extras_require=extras,
 )
