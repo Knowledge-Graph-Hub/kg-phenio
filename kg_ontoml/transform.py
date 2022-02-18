@@ -3,12 +3,11 @@
 import logging
 from typing import List
 
-from kg_ontoml.transform_utils.ontology import OntologyTransform
-from kg_ontoml.transform_utils.ontology.ontology_transform import ONTOLOGIES
+from kg_ontoml.transform_utils.ontology.monarch_transform import MonarchTransform
 
 
 DATA_SOURCES = {
-    'MonarchTransform': OntologyTransform
+    'MonarchTransform': MonarchTransform
 }
 
 
@@ -33,7 +32,4 @@ def transform(input_dir: str, output_dir: str, sources: List[str] = None) -> Non
         if source in DATA_SOURCES:
             logging.info(f"Parsing {source}")
             t = DATA_SOURCES[source](input_dir, output_dir)
-            if source in ONTOLOGIES.keys():
-                t.run(ONTOLOGIES[source])
-            else:
-                t.run()
+            t.run()

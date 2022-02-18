@@ -1,5 +1,5 @@
-from .ontology_transform import OntologyTransform
+from .monarch_transform import MonarchTransform
 
 __all__ = [
-    "OntologyTransform"
+    "MonarchTransform"
 ]
