@@ -191,10 +191,9 @@ pipeline {
                                 // stats dir
                                 sh 'mkdir $BUILDSTARTDATE/stats/'
                                 sh 'cp -p *_stats.yaml $BUILDSTARTDATE/stats/'
-                                sh 'cp templates/README.build $BUILDSTARTDATE/README'
 				
-				// get indexer and make index for build
-				sh 'wget https://raw.githubusercontent.com/Knowledge-Graph-Hub/multi-indexer/main/multi_indexer.py'
+				                // get indexer and make index for build
+				                sh 'wget https://raw.githubusercontent.com/Knowledge-Graph-Hub/multi-indexer/main/multi_indexer.py'
                                 sh '. venv/bin/activate && python3.8 ./multi_indexer.py -v --inject ./directory-index-template.html --directory $BUILDSTARTDATE --prefix https://kg-hub.berkeleybop.io/$S3PROJECTDIR/$BUILDSTARTDATE -x -u'
 
                                 sh '. venv/bin/activate && s3cmd -c $S3CMD_CFG put -pr --acl-public --cf-invalidate $BUILDSTARTDATE s3://kg-hub-public-data/$S3PROJECTDIR/'
