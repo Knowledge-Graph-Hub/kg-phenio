@@ -67,7 +67,10 @@ setup(
         'parameterized',
         'validate_version_code',
         'pandas',
-        'networkx'
+        'networkx',
+        'pystache', # for multi-indexer
+        'boto3' # for multi-indexer
+
     ],
     extras_require=extras,
 )
