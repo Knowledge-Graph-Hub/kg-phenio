@@ -1,15 +1,11 @@
 import os
-
 from typing import Optional
-
 from kg_ontoml.transform_utils.transform import Transform
-from kgx.cli.cli_utils import transform
-
+from kgx.cli.cli_utils import transform # type: ignore
 
 ONTO_FILES = {
     'MonarchTransform': 'monarch-merged.owl',
 }
-
 
 class MonarchTransform(Transform):
     """
