@@ -1,7 +1,5 @@
-import os
-import tempfile
 from unittest import TestCase, mock
-from project_name.utils import download_from_yaml
+from kg_ontoml.utils import download_from_yaml
 
 
 class TestDownloadFromYaml(TestCase):

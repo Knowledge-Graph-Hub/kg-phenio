@@ -1,7 +1,7 @@
 import unittest
 from parameterized import parameterized
-from project_name.utils.transform_utils import guess_bl_category, collapse_uniprot_curie
-
+from kg_ontoml.utils.transform_utils import guess_bl_category, collapse_uniprot_curie
+from kg_ontoml.transform_utils.ontology import MonarchTransform
 
 class TestTransformUtils(unittest.TestCase):
     @parameterized.expand([

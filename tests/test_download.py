@@ -1,11 +1,11 @@
 import os
 import tempfile
 from unittest import TestCase, mock
-from project_name import download
+from kg_ontoml import download
 
 
 class TestDownload(TestCase):
-    """Tests kg_emerging_viruses.download
+    """Tests kg_ontoml.download
     """
     def setUp(self) -> None:
         pass
