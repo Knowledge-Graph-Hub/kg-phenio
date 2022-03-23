@@ -22,3 +22,12 @@
 -
   url: https://data-test.monarchinitiative.org/latest/owl/monarch-merged.owl
   local_name: monarch-merged.owl
+
+#
+# Current Upheno mappings.
+# These are for use as gold standards for mouse vs. human phenotype predictions.
+# They are transformed for processing but are not included in the merged graph.
+#
+-
+  url: https://bbop-ontologies.s3.amazonaws.com/upheno/current/upheno-release/all/upheno_mapping_all.csv
+  local_name: upheno_mapping_all.csv

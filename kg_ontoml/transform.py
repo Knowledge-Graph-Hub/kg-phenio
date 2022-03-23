@@ -4,10 +4,12 @@ import logging
 from typing import List
 
 from kg_ontoml.transform_utils.ontology.monarch_transform import MonarchTransform
+from kg_ontoml.transform_utils.upheno.upheno_map_transform import UphenoMapTransform
 
 
 DATA_SOURCES = {
-    'MonarchTransform': MonarchTransform
+    'MonarchTransform': MonarchTransform,
+    'UphenoMapTransform': UphenoMapTransform
 }
 
 

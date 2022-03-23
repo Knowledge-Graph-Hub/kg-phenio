@@ -1,0 +1,33 @@
+name: 'upheno_mapping_all'
+
+delimiter: ','
+
+files:
+  - './data/raw/upheno_mapping_all.csv'
+
+metadata: './kg_ontoml/transform_utils/upheno/metadata.yaml'
+
+header: 'infer'
+
+columns:
+  - 'p1'
+  - 'p2'
+  - 'label_x'
+  - 'label_y'
+  - 'cat'
+
+node_properties:
+  - 'id'
+  - 'iri'
+  - 'name'
+  - 'category'
+
+edge_properties:
+  - 'id'
+  - 'subject'
+  - 'predicate'
+  - 'object'
+  - 'category'
+  - 'relation'
+
+transform_mode: 'flat'
