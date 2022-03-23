@@ -12,6 +12,9 @@ source_name="upheno_mapping_all"
 
 row = koza_app.get_row(source_name)
 
+# We just want mouse (MP) and human (HP) phenotypes.
+desired_types = ["MP","HP"]
+
 # Entities
 
 p1 = PhenotypicFeature(id=(((row["p1"]).split("/"))[-1]).replace("_",":"),
@@ -22,7 +25,8 @@ p2 = PhenotypicFeature(id=(((row["p2"]).split("/"))[-1]).replace("_",":"),
                             name=row["label_y"])
 
 # Association
-association = Association(
+if p1.id[0:2] in desired_types and p2.id[0:2] in desired_types:
+    association = Association(
         id="uuid:" + str(uuid.uuid1()),
         subject=p1.id,
         predicate="Biolink:same_as",
@@ -30,4 +34,4 @@ association = Association(
         relation="skos:exactMatch"
     )
 
-koza_app.write(p1, association, p2)
+    koza_app.write(p1, association, p2)
