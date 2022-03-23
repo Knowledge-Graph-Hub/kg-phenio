@@ -29,7 +29,7 @@ if p1.id[0:2] in desired_types and p2.id[0:2] in desired_types:
     association = Association(
         id="uuid:" + str(uuid.uuid1()),
         subject=p1.id,
-        predicate="Biolink:same_as",
+        predicate="biolink:same_as",
         object=p2.id,
         relation="skos:exactMatch"
     )
