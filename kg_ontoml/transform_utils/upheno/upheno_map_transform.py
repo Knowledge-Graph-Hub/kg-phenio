@@ -26,7 +26,7 @@ TRANSLATION_TABLE = "./kg_ontoml/transform_utils/translation_table.yaml"
 
 class UphenoMapTransform(Transform):
     """This transform ingests the table of all Upheno mappings by species.
-	It is transformed to SSSOM mappings *and* KGX node/edgelist.
+	It is transformed to KGX nodes/edges.
         This could also handle other similar mappings, e.g., from
         https://github.com/mapping-commons/mh_mapping_initiative/tree/master/mappings
         though those are already in SSSOM format so they would
