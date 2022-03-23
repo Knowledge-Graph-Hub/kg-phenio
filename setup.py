@@ -68,8 +68,8 @@ setup(
         'validate_version_code',
         'pandas',
         'networkx',
-        'pystache', # for multi-indexer
-        'boto3' # for multi-indexer
+        'multi-indexer',
+        'koza'
 
     ],
     extras_require=extras,
