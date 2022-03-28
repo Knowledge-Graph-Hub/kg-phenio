@@ -69,8 +69,8 @@ setup(
         'pandas',
         'networkx',
         'multi-indexer',
-        'koza'
-
+        'koza',
+        'biolink_model_pydantic'
     ],
     extras_require=extras,
 )
