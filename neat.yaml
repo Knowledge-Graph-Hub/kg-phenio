@@ -1,24 +1,36 @@
 ---
 name: "kg-ontoml"
 description: "KG-OntoML"
-output_directory: output_data
+output_directory: graph_ml
 
 # Need to update s3_bucket_dir with 
 # specific build
-upload:
-  s3_bucket: kg-hub-public-data
-  s3_bucket_dir: kg-ontoml/
-  extra_args:
-    'ACL': 'public-read'
+#upload:
+#  s3_bucket: kg-hub-public-data
+#  s3_bucket_dir: kg-ontoml/
+#  extra_args:
+#    'ACL': 'public-read'
 
-# No graph files here - we already have
-# everything necessary to train
-# classifiers
+# We already have everything necessary to train
+# classifiers, but for now NEAT complains (KeyError)
+# if a graph_data block isn't present.
+graph_data:
+  graph:
+    directed: False
+    node_path: data/merged/merged-kg_nodes.tsv
+    edge_path: data/merged/merged-kg_edges.tsv
+    verbose: True
+    nodes_column: 'id'
+    node_list_node_types_column: 'category'
+    default_node_type: 'biolink:NamedThing'
+    sources_column: 'subject'
+    destinations_column: 'object'
+    default_edge_type: 'biolink:related_to'
 
 # These should already exist
 # i.e., upload them before running
 embeddings:
-  embedding_file_name: test_embeddings_test_yaml.tsv
+  embedding_file_name: KG-OntoML-SkipGram.csv
   embedding_history_file_name: embedding_history.json
   node_embedding_params:
       node_embedding_method_name: SkipGram
@@ -111,7 +123,7 @@ classifier:
           random_state: 42
     - type: Logistic Regression
       model:
-        outfile: "odel_lr_kg-ontoml.model"
+        outfile: "model_lr_kg-ontoml.model"
         type: sklearn.linear_model.LogisticRegression
         parameters:
           random_state: 42
