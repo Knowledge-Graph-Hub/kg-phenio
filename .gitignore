@@ -2,3 +2,5 @@
 data
 __pycache__/
 .DS_Store
+./notebooks/analyze_mp_hp_mappings/KG-OntoML.tar.gz
+./notebooks/analyze_mp_hp_mappings/merged-kg_*tsv
