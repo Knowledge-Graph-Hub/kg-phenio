@@ -13,7 +13,8 @@ output_directory: graph_ml
 
 # We already have everything necessary to train
 # classifiers, but for now NEAT complains (KeyError)
-# if a graph_data block isn't present.
+# if a graph_data block isn't present, along with
+# a full set of pos/neg graphs
 graph_data:
   graph:
     directed: False
@@ -26,11 +27,17 @@ graph_data:
     sources_column: 'subject'
     destinations_column: 'object'
     default_edge_type: 'biolink:related_to'
+  pos_validation:
+    edge_path: data/merged/merged-kg_edges_validate.tsv
+  neg_training:
+    edge_path: data/merged/negative_edges.tsv
+  neg_validation:
+    edge_path: data/merged/negative_valid_edges.tsv
 
 # These should already exist
 # i.e., upload them before running
 embeddings:
-  embedding_file_name: KG-OntoML-SkipGram.csv
+  embedding_file_name: KG-OntoML-SkipGram.tsv # this is, in fact, a csv
   embedding_history_file_name: embedding_history.json
   node_embedding_params:
       node_embedding_method_name: SkipGram

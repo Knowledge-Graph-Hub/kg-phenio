@@ -17,8 +17,9 @@ output_directory: graph_ml
 graph_data:
   graph:
     directed: False
-    node_path: data/merged/merged-kg_nodes.tsv
-    edge_path: data/merged/merged-kg_edges.tsv
+    graph_path: https://kg-hub.berkeleybop.io/kg-ontoml/20220304/KG-OntoML.tar.gz 
+    node_path: merged-kg_nodes.tsv
+    edge_path: merged-kg_edges.tsv
     verbose: True
     nodes_column: 'id'
     node_list_node_types_column: 'category'
@@ -30,7 +31,7 @@ graph_data:
 # These should already exist
 # i.e., upload them before running
 embeddings:
-  embedding_file_name: KG-OntoML-SkipGram.csv
+  embedding_file_name: https://kg-hub.berkeleybop.io/kg-ontoml/graphml/KG-OntoML-SkipGram-Mar_11_2022.tar.gz
   embedding_history_file_name: embedding_history.json
   node_embedding_params:
       node_embedding_method_name: SkipGram
