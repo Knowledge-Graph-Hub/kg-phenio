@@ -27,11 +27,17 @@ graph_data:
     sources_column: 'subject'
     destinations_column: 'object'
     default_edge_type: 'biolink:related_to'
+  pos_validation:
+    edge_path: merged-kg_edges.tsv
+  neg_training:
+    edge_path: merged-kg_edges.tsv
+  neg_validation:
+    edge_path: merged-kg_edges.tsv
 
 # These should already exist
 # i.e., upload them before running
 embeddings:
-  embedding_file_name: https://kg-hub.berkeleybop.io/kg-ontoml/graphml/KG-OntoML-SkipGram-Mar_11_2022.tar.gz
+  embedding_file_name: KG-OntoML-SkipGram.tsv
   embedding_history_file_name: embedding_history.json
   node_embedding_params:
       node_embedding_method_name: SkipGram
@@ -54,7 +60,7 @@ classifier:
         layers:
           - type: tensorflow.keras.layers.Input
             parameters:
-              shape: 868   # must match embedding_size up above
+              shape: 100   # must match embedding_size up above
           - type: tensorflow.keras.layers.Dense
             parameters:
               units: 128
