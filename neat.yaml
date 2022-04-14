@@ -3,13 +3,11 @@ name: "kg-ontoml"
 description: "KG-OntoML"
 output_directory: graph_ml
 
-# Need to update s3_bucket_dir with 
-# specific build
-#upload:
-#  s3_bucket: kg-hub-public-data
-#  s3_bucket_dir: kg-ontoml/
-#  extra_args:
-#    'ACL': 'public-read'
+upload:
+  s3_bucket: kg-hub-public-data
+  s3_bucket_dir: kg-ontoml/
+  extra_args:
+    'ACL': 'public-read'
 
 # We already have everything necessary to train
 # classifiers, but for now NEAT complains (KeyError)
@@ -17,7 +15,9 @@ output_directory: graph_ml
 graph_data:
   graph:
     directed: False
-    graph_path: https://kg-hub.berkeleybop.io/kg-ontoml/20220304/KG-OntoML.tar.gz 
+    # This file contains the graph edges/nodes AND the pos/neg train/valid graphs below 
+    # Original graph is at https://kg-hub.berkeleybop.io/kg-ontoml/20220304/KG-OntoML.tar.gz 
+    graph_path: https://kg-hub.berkeleybop.io/frozen_incoming_data/kg-ontoml-bundle.tar.gz
     node_path: merged-kg_nodes.tsv
     edge_path: merged-kg_edges.tsv
     verbose: True
@@ -28,11 +28,11 @@ graph_data:
     destinations_column: 'object'
     default_edge_type: 'biolink:related_to'
   pos_validation:
-    edge_path: merged-kg_edges.tsv
+    edge_path: upheno_mapping_all_edges.tsv
   neg_training:
-    edge_path: merged-kg_edges.tsv
+    edge_path: negative_edges.tsv
   neg_validation:
-    edge_path: merged-kg_edges.tsv
+    edge_path: negative_valid_edges.tsv
 
 # These should already exist
 # i.e., upload them before running
