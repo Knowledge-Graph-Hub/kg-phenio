@@ -15,7 +15,8 @@ upload:
 graph_data:
   graph:
     directed: False
-    # This file contains the graph edges/nodes AND the pos/neg train/valid graphs below 
+    # This file contains the graph edges/nodes AND the pos/neg train/valid graphs below
+    # as well as the graph embeddings
     # Original graph is at https://kg-hub.berkeleybop.io/kg-ontoml/20220304/KG-OntoML.tar.gz 
     graph_path: https://kg-hub.berkeleybop.io/frozen_incoming_data/kg-ontoml-bundle.tar.gz
     node_path: merged-kg_nodes.tsv
@@ -34,8 +35,6 @@ graph_data:
   neg_validation:
     edge_path: negative_valid_edges.tsv
 
-# These should already exist
-# i.e., upload them before running
 embeddings:
   embedding_file_name: KG-OntoML-SkipGram.tsv
   embedding_history_file_name: embedding_history.json
