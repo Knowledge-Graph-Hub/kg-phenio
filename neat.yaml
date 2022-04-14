@@ -3,6 +3,7 @@ name: "kg-ontoml"
 description: "KG-OntoML"
 output_directory: graph_ml
 
+
 upload:
   s3_bucket: kg-hub-public-data
   s3_bucket_dir: kg-ontoml/
@@ -34,7 +35,7 @@ graph_data:
     edge_path: negative_edges.tsv
   neg_validation:
     edge_path: negative_valid_edges.tsv
-
+    
 embeddings:
   embedding_file_name: KG-OntoML-SkipGram.tsv
   embedding_history_file_name: embedding_history.json
