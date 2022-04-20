@@ -70,6 +70,7 @@ pipeline {
                     sh '. venv/bin/activate'
                     sh './venv/bin/pip install .'
                     sh './venv/bin/pip install awscli boto3 s3cmd'
+                    sh './venv/bin/pip install git+https://github.com/Knowledge-Graph-Hub/NEAT.git'
                 }
             }
         }
@@ -173,9 +174,7 @@ pipeline {
 					            file(credentialsId: 'aws_kg_hub_push_json', variable: 'AWS_JSON'),
 					            string(credentialsId: 'aws_kg_hub_access_key', variable: 'AWS_ACCESS_KEY_ID'),
 					            string(credentialsId: 'aws_kg_hub_secret_key', variable: 'AWS_SECRET_ACCESS_KEY')]) {
-                                
-                                // TODO: Make this whole chunk of indexing/uploading code its own script
-                                
+                                                              
                                 //
                                 // make $BUILDSTARTDATE/ directory and sync to s3 bucket
                                 //
@@ -190,6 +189,8 @@ pipeline {
                                 sh 'cp Jenkinsfile $BUILDSTARTDATE/'
 
                                 // copy that NEAT config, too
+                                // but update its buildname internally first
+                                sh '. venv/bin/activate && neat updateyaml --input_path neat.yaml --keys upload:s3_bucket_dir --values $S3PROJECTDIR/$BUILDSTARTDATE/graph_ml/'
                                 sh 'cp neat.yaml $BUILDSTARTDATE/'
 
                                 // stats dir
