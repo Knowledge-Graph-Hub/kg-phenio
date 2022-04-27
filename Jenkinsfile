@@ -131,24 +131,6 @@ pipeline {
             }
         }
 
-        //stage('Make blazegraph journal'){
-            //steps {
-                //dir('./gitrepo/blazegraph') {
-                        //git(
-                                //url: 'https://github.com/balhoff/blazegraph-runner.git',
-                                //branch: 'master'
-                        //)
-                        //sh 'HOME=`pwd` && sbt stage' // set HOME here to prevent sbt from trying to make dir .cache in /
-                        //sh 'ls -lhd ../data/merged/${MERGEDKGNAME_BASE}.nt.gz'
-                        //sh 'pigz -f -d ../data/merged/${MERGEDKGNAME_BASE}.nt.gz'
-                        //sh 'export JAVA_OPTS=-Xmx128G && ./target/universal/stage/bin/blazegraph-runner load --informat=ntriples --journal=../data/merged/${MERGEDKGNAME_BASE}.jnl --use-ontology-graph=true ../data/merged/${MERGEDKGNAME_BASE}.nt'
-                        //sh 'pigz -f ../data/merged/${MERGEDKGNAME_BASE}.jnl'
-                        //sh 'pigz -f ../data/merged/${MERGEDKGNAME_BASE}.nt'
-                        //sh 'ls -lhd ../data/merged/${MERGEDKGNAME_BASE}.jnl.gz'                       
-                //}
-            //}
-        //}
-
         stage('Publish') {
             steps {
                 dir('./gitrepo') {
@@ -193,7 +175,7 @@ pipeline {
 
                                 // copy that NEAT config, too
                                 // but update its buildname internally first
-                                sh '. venv/bin/activate && neat updateyaml --input_path neat.yaml --keys upload:s3_bucket_dir --values $S3PROJECTDIR/$BUILDSTARTDATE/graph_ml/'
+                                sh 'sed -i '/s3_bucket_dir/ s/kg-ontoml/$S3PROJECTDIR\/$BUILDSTARTDATE\/graph_ml/' neat.yaml'
                                 sh 'cp neat.yaml $BUILDSTARTDATE/'
 
                                 // stats dir
