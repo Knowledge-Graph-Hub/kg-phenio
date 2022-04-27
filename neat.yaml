@@ -19,8 +19,8 @@ graph_data:
     # This file contains the graph edges/nodes AND the pos/neg train/valid graphs below
     # as well as the graph embeddings
     # Original graph is at https://kg-hub.berkeleybop.io/kg-ontoml/20220304/KG-OntoML.tar.gz 
-    graph_path: https://kg-hub.berkeleybop.io/frozen_incoming_data/kg-ontoml-bundle.tar.gz
-    node_path: merged-kg_nodes.tsv
+    graph_path: https://kg-hub.berkeleybop.io/frozen_incoming_data/kg-ontoml-bundle-prefixcats.tar.gz
+    node_path: merged-kg_nodes-prefixcats.tsv
     edge_path: merged-kg_edges.tsv
     verbose: True
     nodes_column: 'id'
