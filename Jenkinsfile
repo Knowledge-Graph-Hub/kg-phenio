@@ -70,7 +70,7 @@ pipeline {
                     sh '. venv/bin/activate'
                     sh './venv/bin/pip install .'
                     sh './venv/bin/pip install awscli boto3 s3cmd'
-                    sh './venv/bin/pip install git+https://github.com/Knowledge-Graph-Hub/NEAT.git@29f1881365af74e6db835caeda0ccf338da00265'
+                    sh './venv/bin/pip install git+https://github.com/Knowledge-Graph-Hub/NEAT.git@add_code_to_do_link_prediction'
                 }
             }
         }
@@ -124,27 +124,12 @@ pipeline {
                     sh '. venv/bin/activate && python3.8 run.py merge -y merge.yaml'
                     sh 'cp merged_graph_stats.yaml merged_graph_stats_$BUILDSTARTDATE.yaml'
                     sh 'tar -rvfz data/merged/merged-kg.tar.gz merged_graph_stats_$BUILDSTARTDATE.yaml'
+                    sh '. venv/bin/activate && python3.8 graph_prefixcats.py --input data/merged/merged-kg_nodes.tsv --output merged-kg_nodes-prefixcats.tsv'
+                    sh 'cp data/merged/merged-kg.tar.gz data/merged/merged-kg-prefixcats.tar.gz'
+                    sh 'tar -rvfz data/merged/merged-kg-prefixcats.tar.gz merged-kg_nodes-prefixcats.tsv'
                 }
             }
         }
-
-        //stage('Make blazegraph journal'){
-            //steps {
-                //dir('./gitrepo/blazegraph') {
-                        //git(
-                                //url: 'https://github.com/balhoff/blazegraph-runner.git',
-                                //branch: 'master'
-                        //)
-                        //sh 'HOME=`pwd` && sbt stage' // set HOME here to prevent sbt from trying to make dir .cache in /
-                        //sh 'ls -lhd ../data/merged/${MERGEDKGNAME_BASE}.nt.gz'
-                        //sh 'pigz -f -d ../data/merged/${MERGEDKGNAME_BASE}.nt.gz'
-                        //sh 'export JAVA_OPTS=-Xmx128G && ./target/universal/stage/bin/blazegraph-runner load --informat=ntriples --journal=../data/merged/${MERGEDKGNAME_BASE}.jnl --use-ontology-graph=true ../data/merged/${MERGEDKGNAME_BASE}.nt'
-                        //sh 'pigz -f ../data/merged/${MERGEDKGNAME_BASE}.jnl'
-                        //sh 'pigz -f ../data/merged/${MERGEDKGNAME_BASE}.nt'
-                        //sh 'ls -lhd ../data/merged/${MERGEDKGNAME_BASE}.jnl.gz'                       
-                //}
-            //}
-        //}
 
         stage('Publish') {
             steps {
@@ -190,7 +175,7 @@ pipeline {
 
                                 // copy that NEAT config, too
                                 // but update its buildname internally first
-                                sh '. venv/bin/activate && neat updateyaml --input_path neat.yaml --keys upload:s3_bucket_dir --values $S3PROJECTDIR/$BUILDSTARTDATE/graph_ml/'
+                                sh 'sed -i '/s3_bucket_dir/ s/kg-ontoml/$S3PROJECTDIR\/$BUILDSTARTDATE\/graph_ml/' neat.yaml'
                                 sh 'cp neat.yaml $BUILDSTARTDATE/'
 
                                 // stats dir
