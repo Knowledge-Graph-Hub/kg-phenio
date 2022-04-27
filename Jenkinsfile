@@ -175,7 +175,7 @@ pipeline {
 
                                 // copy that NEAT config, too
                                 // but update its buildname internally first
-                                sh 'sed -i '/s3_bucket_dir/ s/kg-ontoml/$S3PROJECTDIR\/$BUILDSTARTDATE\/graph_ml/' neat.yaml'
+                                sh ''' sed -i '/s3_bucket_dir/ s/kg-ontoml/$S3PROJECTDIR\/$BUILDSTARTDATE\/graph_ml/' neat.yaml '''
                                 sh 'cp neat.yaml $BUILDSTARTDATE/'
 
                                 // stats dir
