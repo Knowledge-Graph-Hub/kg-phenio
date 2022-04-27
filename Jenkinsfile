@@ -70,7 +70,7 @@ pipeline {
                     sh '. venv/bin/activate'
                     sh './venv/bin/pip install .'
                     sh './venv/bin/pip install awscli boto3 s3cmd'
-                    sh './venv/bin/pip install git+https://github.com/Knowledge-Graph-Hub/NEAT.git@29f1881365af74e6db835caeda0ccf338da00265'
+                    sh './venv/bin/pip install git+https://github.com/Knowledge-Graph-Hub/NEAT.git@add_code_to_do_link_prediction'
                 }
             }
         }
