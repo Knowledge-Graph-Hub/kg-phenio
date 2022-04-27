@@ -124,6 +124,9 @@ pipeline {
                     sh '. venv/bin/activate && python3.8 run.py merge -y merge.yaml'
                     sh 'cp merged_graph_stats.yaml merged_graph_stats_$BUILDSTARTDATE.yaml'
                     sh 'tar -rvfz data/merged/merged-kg.tar.gz merged_graph_stats_$BUILDSTARTDATE.yaml'
+                    sh '. venv/bin/activate && python3.8 graph_prefixcats.py --input data/merged/merged-kg_nodes.tsv --output merged-kg_nodes-prefixcats.tsv'
+                    sh 'cp data/merged/merged-kg.tar.gz data/merged/merged-kg-prefixcats.tar.gz'
+                    sh 'tar -rvfz data/merged/merged-kg-prefixcats.tar.gz merged-kg_nodes-prefixcats.tsv'
                 }
             }
         }
