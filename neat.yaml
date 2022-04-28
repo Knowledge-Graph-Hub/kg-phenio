@@ -35,7 +35,10 @@ graph_data:
     edge_path: negative_edges.tsv
   neg_validation:
     edge_path: negative_valid_edges.tsv
-    
+
+# For now, this embedding is static, and packaged with the file
+# in graph_path above.
+# In practice, each run will require generation of new embeddings.
 embeddings:
   embedding_file_name: KG-OntoML-SkipGram.tsv
   embedding_history_file_name: embedding_history.json
@@ -154,11 +157,11 @@ apply_trained_classifier:
   -
     classifier_model_id: dt_0
     cutoff: 0.9
-    outfile: lr_classifier_predictions_kgx.tsv
+    outfile: dt_classifier_predictions_kgx.tsv
   -
     classifier_model_id: rf_0
     cutoff: 0.9
-    outfile: lr_classifier_predictions_kgx.tsv
+    outfile: rf_classifier_predictions_kgx.tsv
   -
     classifier_model_id: lr_0
     cutoff: 0.9
