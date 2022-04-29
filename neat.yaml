@@ -154,15 +154,35 @@ apply_trained_classifier:
     classifier_model_id: mlp_0
     cutoff: 0.9
     outfile: mlp_classifier_predictions_kgx.tsv
+    link_node_types:
+      source:
+        - 'HP'
+      destination:
+        - 'MP'
   -
     classifier_model_id: dt_0
     cutoff: 0.9
     outfile: dt_classifier_predictions_kgx.tsv
+    link_node_types:
+      source:
+        - 'HP'
+      destination:
+        - 'MP'
   -
     classifier_model_id: rf_0
     cutoff: 0.9
     outfile: rf_classifier_predictions_kgx.tsv
+    link_node_types:
+      source:
+        - 'HP'
+      destination:
+        - 'MP'
   -
     classifier_model_id: lr_0
     cutoff: 0.9
     outfile: lr_classifier_predictions_kgx.tsv
+    link_node_types:
+      source:
+        - 'HP'
+      destination:
+        - 'MP'
