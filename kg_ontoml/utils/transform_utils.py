@@ -222,3 +222,38 @@ def collapse_uniprot_curie(uniprot_curie: str) -> str:
     if re.match(r'^uniprotkb:', uniprot_curie, re.IGNORECASE):
         uniprot_curie = re.sub(r'\-\d+$', '', uniprot_curie)
     return uniprot_curie
+
+def remove_obsoletes(nodepath: str, edgepath: str) -> None:
+    '''
+    Given a tuple of paths to a graph nodefile and edgefile,
+    both in KGX tsv, removes those nodes and their involved
+    edges where nodes are obsolete. Obsolete status is determined
+    by matching at least one of the following conditions:
+    1. 'name' field begins with the word 'obsolete'
+    2. First node participates in a 'IAO:0100001' edge ("term replaced by")
+
+    :param nodepath: str, path to the node file
+    :param edgepath: str, path to the edge file
+    '''
+
+    outnodepath = nodepath + ".tmp"
+    outedgepath = edgepath + ".tmp"
+
+    try:
+        with open(nodepath,'r') as innodefile, \
+            open(edgepath, 'r') as inedgefile:
+            with open(outnodepath,'w') as outnodefile, \
+                open(outedgepath, 'w') as outedgefile:
+                for line in innodefile:
+                    line_split = (line.rstrip()).split("\t")
+                    if line_split[2].startswith('obsolete'):
+                        continue
+                    else:
+                        outnodefile.write("\t".join(line_split) + "\n")
+                for line in inedgefile:
+                    line_split = (line.rstrip()).split("\t")
+                    outedgefile.write("\t".join(line_split) + "\n")
+        os.replace(nodepath,outnodepath)
+        os.replace(edgepath,outedgepath)
+    except (IOError, KeyError) as e:
+        print(f"Failed to remove obsoletes from {nodepath} and {edgepath}: {e}")
