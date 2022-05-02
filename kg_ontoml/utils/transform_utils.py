@@ -253,7 +253,7 @@ def remove_obsoletes(nodepath: str, edgepath: str) -> None:
                 for line in inedgefile:
                     line_split = (line.rstrip()).split("\t")
                     outedgefile.write("\t".join(line_split) + "\n")
-        os.replace(nodepath,outnodepath)
-        os.replace(edgepath,outedgepath)
+        os.replace(outnodepath,nodepath)
+        os.replace(outedgepath,edgepath)
     except (IOError, KeyError) as e:
         print(f"Failed to remove obsoletes from {nodepath} and {edgepath}: {e}")
