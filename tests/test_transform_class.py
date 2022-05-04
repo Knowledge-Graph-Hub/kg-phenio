@@ -2,8 +2,8 @@ import os
 from unittest import TestCase
 
 from parameterized import parameterized
-from kg_ontoml.transform import DATA_SOURCES
-from kg_ontoml.transform_utils.transform import Transform
+from kg_phenio.transform import DATA_SOURCES
+from kg_phenio.transform_utils.transform import Transform
 
 class TestTransform(TestCase):
 

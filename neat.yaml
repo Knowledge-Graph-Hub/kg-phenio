@@ -1,12 +1,12 @@
 ---
-name: "kg-ontoml"
-description: "KG-OntoML"
+name: "kg-phenio"
+description: "KG-PHENIO"
 output_directory: graph_ml
 
 
 upload:
   s3_bucket: kg-hub-public-data
-  s3_bucket_dir: kg-ontoml/
+  s3_bucket_dir: kg-phenio/
   extra_args:
     'ACL': 'public-read'
 
@@ -58,8 +58,8 @@ classifiers:
     type: neural network
     edge_method: Average
     model:
-      outfile: "model_mlp_kg-ontoml.model"
-      classifier_history_file_name: "model_mlp_kg-ontoml_history.json"
+      outfile: "model_mlp_kg-PHENIO.model"
+      classifier_history_file_name: "model_mlp_kg-PHENIO_history.json"
       type: tensorflow.keras.models.Sequential
       layers:
         - type: tensorflow.keras.layers.Input
@@ -121,7 +121,7 @@ classifiers:
     type: Decision Tree
     edge_method: Average
     model:
-      outfile: "model_decisiontree_kg-ontoml.model"
+      outfile: "model_decisiontree_kg-PHENIO.model"
       type: sklearn.tree.DecisionTreeClassifier
       parameters:
         max_depth: 30
@@ -131,7 +131,7 @@ classifiers:
     type: Random Forest
     edge_method: Average
     model:
-      outfile: "model_randomforest_kg-ontoml.model"
+      outfile: "model_randomforest_kg-PHENIO.model"
       type: sklearn.ensemble.RandomForestClassifier
       parameters:
         n_estimators: 500
@@ -143,7 +143,7 @@ classifiers:
     type: Logistic Regression
     edge_method: Average
     model:
-      outfile: "model_lr_kg-ontoml.model"
+      outfile: "model_lr_kg-PHENIO.model"
       type: sklearn.linear_model.LogisticRegression
       parameters:
         random_state: 42

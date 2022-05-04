@@ -2,9 +2,10 @@
 
 A graph for machine learning experiments on ontologies.
 
-[Please see the repo project for an overview.](https://github.com/Knowledge-Graph-Hub/kg-ontoml/projects/1)
+[Please see the repo project for an overview.](https://github.com/Knowledge-Graph-Hub/kg-phenio/projects/1)
 
-See also [OntoML](https://github.com/Knowledge-Graph-Hub/OntoML).
+See also [OntoML](https://github.com/Knowledge-Graph-Hub/OntoML)
+and [Monarch Ontology](https://github.com/monarch-initiative/monarch-ontology).
 
 ## Setup
 

@@ -3,11 +3,11 @@
 import os
 
 import click
-from kg_ontoml import download as kg_download
-from kg_ontoml import transform as kg_transform
-#from kg_ontoml.make_holdouts import make_holdouts
-from kg_ontoml.merge_utils.merge_kg import load_and_merge
-from kg_ontoml.transform import DATA_SOURCES
+from kg_phenio import download as kg_download
+from kg_phenio import transform as kg_transform
+#from kg_phenio.make_holdouts import make_holdouts
+from kg_phenio.merge_utils.merge_kg import load_and_merge
+from kg_phenio.transform import DATA_SOURCES
 
 
 @click.group()
@@ -46,7 +46,7 @@ def download(*args, **kwargs) -> None:
 @click.option("sources", "-s", default=None, multiple=True,
               type=click.Choice(DATA_SOURCES.keys()))
 def transform(*args, **kwargs) -> None:
-    """Calls scripts in kg_ontoml/transform/[source name]/ to transform each source
+    """Calls scripts in kg_phenio/transform/[source name]/ to transform each source
     into nodes and edges.
 
     Args:

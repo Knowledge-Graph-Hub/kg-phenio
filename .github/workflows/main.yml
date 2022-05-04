@@ -21,12 +21,12 @@ jobs:
       - name: run pytest
         run: |
           coverage erase
-          pytest --cov=kg_ontoml --cov-report xml:coverage.xml
+          pytest --cov=kg_phenio --cov-report xml:coverage.xml
           coverage combine --append || true
           coverage report
           coverage xml
       - name: run mypy
-        run: mypy --strict-optional kg_ontoml
+        run: mypy --strict-optional kg_phenio
       - name: run yamllint
         run: yamllint -d relaxed merge.yaml download.yaml
       - name: SonarCloud
