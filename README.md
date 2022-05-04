@@ -1,4 +1,4 @@
-# kg-ontoml
+# kg-phenio
 
 A graph for machine learning experiments on ontologies.
 
