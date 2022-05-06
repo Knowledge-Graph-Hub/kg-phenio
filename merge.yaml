@@ -48,4 +48,4 @@ merged_graph:
     merged-kg-nt:
       format: nt
       compression: gz
-      filename: KG-PHENIO.nt.gz
+      filename: kg-phenio.nt.gz
