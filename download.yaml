@@ -26,15 +26,22 @@
 # ALL PHENIO PARTS
 # as per the phenio ODK config yaml
 #
- #  products:
-#     - id: nbo
-#       use_base: TRUE
-#     - id: fao
-#       make_base: TRUE
-#     - id: oba
-#       use_base: TRUE
-#     - id: stato
-#     - id: bfo
+-
+  url: https://kg-hub.berkeleybop.io/kg-obo/nbo/2021-02-15/nbo_kgx_tsv.tar.gz
+  local_name: nbo_kgx_tsv.tar.gz
+-
+  url: https://kg-hub.berkeleybop.io/kg-obo/fao/2020-05-07/fao_kgx_tsv.tar.gz
+  local_name: fao_kgx_tsv.tar.gz
+-
+  url: https://kg-hub.berkeleybop.io/kg-obo/oba/2022-01-19/oba_kgx_tsv.tar.gz
+  local_name: oba_kgx_tsv.tar.gz
+-
+  url: https://kg-hub.berkeleybop.io/kg-obo/stato/RC1.4/stato_kgx_tsv.tar.gz
+  local_name: stato_kgx_tsv.tar.gz
+-
+  url: https://kg-hub.berkeleybop.io/kg-obo/bfo/2019-08-26/bfo_kgx_tsv.tar.gz
+  local_name: bfo_kgx_tsv.tar.gz
+
 #     - id: hsapdv
 #       make_base: TRUE
 #     - id: mpath
