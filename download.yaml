@@ -4,7 +4,7 @@
 # To add a new item to be download, add a block like this - must have 'url',
 # 'local_name' is optional, use to avoid name collisions
 
-# This download config retrieves individual PHENIO components, 
+# This download config retrieves individual PHENIO components,
 # in a process similar - but not completely identical - to that
 # used by the ODK pipeline.
 # See also the PHENIO repo:
@@ -24,7 +24,10 @@
 
 #
 # ALL PHENIO PARTS
-# as per the phenio ODK config yaml
+# as per the phenio ODK config yaml.
+# Note this does not include the bridge files as KGX doesn't
+# know what to do with those.
+# Same for mondo-equivalents.owl
 #
 -
   url: https://kg-hub.berkeleybop.io/kg-obo/nbo/2021-02-15/nbo_kgx_tsv.tar.gz
@@ -41,67 +44,57 @@
 -
   url: https://kg-hub.berkeleybop.io/kg-obo/bfo/2019-08-26/bfo_kgx_tsv.tar.gz
   local_name: bfo_kgx_tsv.tar.gz
+-
+  url: https://kg-hub.berkeleybop.io/kg-obo/hsapdv/2020-03-10/hsapdv_kgx_tsv.tar.gz
+  local_name: hsapdv_kgx_tsv.tar.gz
+-
+  url: https://kg-hub.berkeleybop.io/kg-obo/mpath/2020-05-19/mpath_kgx_tsv.tar.gz
+  local_name: mpath_kgx_tsv.tar.gz
+-
+  url: https://kg-hub.berkeleybop.io/kg-obo/caro/2022-02-18/caro_kgx_tsv.tar.gz
+  local_name: caro_kgx_tsv.tar.gz
+-
+  url: https://kg-hub.berkeleybop.io/kg-obo/uberon/2022-04-18/uberon_kgx_tsv.tar.gz
+  local_name: uberon_kgx_tsv.tar.gz
+-
+  url: https://kg-hub.berkeleybop.io/kg-obo/pato/2022-02-20/pato_kgx_tsv.tar.gz
+  local_name: pato_kgx_tsv.tar.gz
+-
+  url: https://kg-hub.berkeleybop.io/kg-obo/go/2022-03-22/go_kgx_tsv.tar.gz
+  local_name: go_kgx_tsv.tar.gz
+-
+  url: https://kg-hub.berkeleybop.io/kg-obo/upheno/no_version/upheno_kgx_tsv.tar.gz
+  local_name: upheno_kgx_tsv.tar.gz
+-
+  url: https://kg-hub.berkeleybop.io/kg-obo/mondo/2022-05-02/mondo_kgx_tsv.tar.gz
+  local_name: mondo_kgx_tsv.tar.gz
+-
+  url: https://kg-hub.berkeleybop.io/kg-obo/eco/2022-04-11/eco_kgx_tsv.tar.gz
+  local_name: eco_kgx_tsv.tar.gz
+-
+  url: https://kg-hub.berkeleybop.io/kg-obo/sepio/no_version/sepio_kgx_tsv.tar.gz
+  local_name: sepio_kgx_tsv.tar.gz
+-
+  url: https://kg-hub.berkeleybop.io/kg-obo/ro/2022-04-25/ro_kgx_tsv.tar.gz
+  local_name: ro_kgx_tsv.tar.gz
+-
+  url: https://kg-hub.berkeleybop.io/kg-obo/fbbt/2022-04-13/fbbt_kgx_tsv.tar.gz
+  local_name: fbbt_kgx_tsv.tar.gz
+-
+  url: https://kg-hub.berkeleybop.io/kg-obo/wbbt/2022-03-22/wbbt_kgx_tsv.tar.gz
+  local_name: wbbt_kgx_tsv.tar.gz
+-
+  url: https://kg-hub.berkeleybop.io/kg-obo/zfa/2022-03-15/zfa_kgx_tsv.tar.gz
+  local_name: zfa_kgx_tsv.tar.gz
+-
+  url: https://kg-hub.berkeleybop.io/kg-obo/chebi/210/chebi_kgx_tsv.tar.gz
+  local_name: chebi_kgx_tsv.tar.gz
 
-#     - id: hsapdv
-#       make_base: TRUE
-#     - id: mpath
-#       make_base: TRUE
-#     - id: ncbitaxon-taxslim
-#       mirror_from: http://purl.obolibrary.org/obo/ncbitaxon/subsets/taxslim.owl
-#     - id: caro
-#       make_base: TRUE
-#     - id: uberon
-#       use_base: TRUE
-#     - id: uberon-bridge-to-zfa
-#       mirror_from: http://purl.obolibrary.org/obo/uberon/bridge/uberon-bridge-to-zfa.owl
-#     - id: uberon-bridge-to-ma
-#       mirror_from: http://purl.obolibrary.org/obo/uberon/bridge/uberon-bridge-to-ma.owl
-#     - id: uberon-bridge-to-wbbt
-#       mirror_from: http://purl.obolibrary.org/obo/uberon/bridge/uberon-bridge-to-wbbt.owl
-#     - id: uberon-bridge-to-fbbt
-#       mirror_from: http://purl.obolibrary.org/obo/uberon/bridge/uberon-bridge-to-fbbt.owl
-#     - id: uberon-bridge-to-fma
-#       mirror_from: http://purl.obolibrary.org/obo/uberon/bridge/uberon-bridge-to-fma.owl
-#     - id: uberon-bridge-to-nifstd
-#       mirror_from: http://purl.obolibrary.org/obo/uberon/bridge/uberon-bridge-to-nifstd.owl
-#     - id: cl-bridge-to-ma
-#       mirror_from: http://purl.obolibrary.org/obo/uberon/bridge/cl-bridge-to-ma.owl
-#     - id: cl-bridge-to-fma
-#       mirror_from: http://purl.obolibrary.org/obo/uberon/bridge/cl-bridge-to-fma.owl
-#     - id: cl-bridge-to-wbbt
-#       mirror_from: http://purl.obolibrary.org/obo/uberon/bridge/cl-bridge-to-wbbt.owl
-#     - id: cl-bridge-to-fbbt
-#       mirror_from: http://purl.obolibrary.org/obo/uberon/bridge/cl-bridge-to-fbbt.owl
-#     - id: cl-bridge-to-zfa
-#       mirror_from: http://purl.obolibrary.org/obo/uberon/bridge/cl-bridge-to-zfa.owl
-# components:
-#   products:
-#     - filename: pato.owl
-#       source: http://purl.obolibrary.org/obo/pato/pato-base.owl
-#     - filename: go.owl
-#       source: http://purl.obolibrary.org/obo/go/go-base.owl
-#     - filename: upheno.owl
-#       source: https://raw.githubusercontent.com/obophenotype/upheno/master/metazoa.owl
-#     - filename: mondo-equivalents.owl
-#       source: http://purl.obolibrary.org/obo/mondo/imports/equivalencies.owl
-#     - filename: mondo.owl
-#       source: http://purl.obolibrary.org/obo/mondo/mondo-base.owl
-#     - filename: eco.owl
-#       source: http://purl.obolibrary.org/obo/eco/eco-base.owl
-#     - filename: sepio.owl
-#       source: http://purl.obolibrary.org/obo/sepio.owl
-#     - filename: ro.owl
-#       source: http://purl.obolibrary.org/obo/ro.owl
-#     - filename: uberon.owl
-#       source: http://purl.obolibrary.org/obo/uberon/uberon-base.owl
-#     - filename: fbbt.owl
-#       source: http://purl.obolibrary.org/obo/fbbt/fbbt-base.owl
-#     - filename: wbbt.owl
-#       source: http://purl.obolibrary.org/obo/wbbt/wbbt-base.owl
-#     - filename: zfa.owl
-#       source: http://purl.obolibrary.org/obo/zfa/zfa-base.owl
-#     - filename: chebi.owl
-#       mirror_from: http://purl.obolibrary.org/obo/chebi.owl.gz
+# NCBI Taxonomy slim
+# This isn't on KG-OBO, unlike the above ontologies
+-
+  url: http://purl.obolibrary.org/obo/ncbitaxon/subsets/taxslim.owl
+  local_name: taxslim.owl
 
 #
 # Current Upheno mappings.
