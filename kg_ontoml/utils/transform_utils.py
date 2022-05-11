@@ -230,7 +230,8 @@ def remove_obsoletes(nodepath: str, edgepath: str) -> None:
     edges where nodes are obsolete. Obsolete status is determined
     by matching at least one of the following conditions:
     1. 'name' field begins with the word 'obsolete'
-    2. First node participates in a 'IAO:0100001' edge ("term replaced by")
+    2. TODO: First node participates in a 'IAO:0100001' edge ("term replaced by")
+    3. TODO: First node participates in an edge with 'OIO:ObsoleteClass' as the object
 
     :param nodepath: str, path to the node file
     :param edgepath: str, path to the edge file
@@ -238,6 +239,8 @@ def remove_obsoletes(nodepath: str, edgepath: str) -> None:
 
     outnodepath = nodepath + ".tmp"
     outedgepath = edgepath + ".tmp"
+
+    obsolete_nodes = []
 
     try:
         with open(nodepath,'r') as innodefile, \
@@ -247,12 +250,18 @@ def remove_obsoletes(nodepath: str, edgepath: str) -> None:
                 for line in innodefile:
                     line_split = (line.rstrip()).split("\t")
                     if line_split[2].startswith('obsolete'):
+                        # collect the obsolete node ID so we 
+                        # can remove its edges too
+                        obsolete_nodes.append(line_split[0])
                         continue
                     else:
                         outnodefile.write("\t".join(line_split) + "\n")
                 for line in inedgefile:
                     line_split = (line.rstrip()).split("\t")
-                    outedgefile.write("\t".join(line_split) + "\n")
+                    if line_split[1] in obsolete_nodes or line_split[3] in obsolete_nodes:
+                        continue
+                    else:
+                        outedgefile.write("\t".join(line_split) + "\n")
         os.replace(outnodepath,nodepath)
         os.replace(outedgepath,edgepath)
     except (IOError, KeyError) as e:
