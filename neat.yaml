@@ -18,7 +18,7 @@ graph_data:
     directed: False
     # This file contains the graph edges/nodes AND the pos/neg train/valid graphs below
     # as well as the graph embeddings
-    # Original graph is at https://kg-hub.berkeleybop.io/kg-ontoml/20220304/KG-OntoML.tar.gz 
+    # Original graph is at https://kg-hub.berkeleybop.io/kg-phenio/20220304/kg-phenio.tar.gz 
     graph_path: https://kg-hub.berkeleybop.io/frozen_incoming_data/kg-ontoml-bundle-prefixcats.tar.gz
     node_path: merged-kg_nodes-prefixcats.tsv
     edge_path: merged-kg_edges.tsv
@@ -36,21 +36,23 @@ graph_data:
   neg_validation:
     edge_path: negative_valid_edges.tsv
 
-# For now, this embedding is static, and packaged with the file
-# in graph_path above.
-# In practice, each run will require generation of new embeddings.
+# Generate new embeddings
+# These stats are reduced from usual while I sort out some bugs
 embeddings:
-  embedding_file_name: KG-OntoML-SkipGram.tsv
+  embedding_file_name: kg-phenio-SkipGram-minimal.tsv
   embedding_history_file_name: embedding_history.json
   node_embedding_params:
       node_embedding_method_name: SkipGram
       use_mirrored_strategy: False
-      walk_length: 100
-      batch_size: 128
+      walk_length: 20 #100
+      batch_size: 64 #128
       window_size: 4
       return_weight: 1.0
       explore_weight: 1.0
-      iterations: 20 
+      iterations: 5 #20
+      
+  tsne:
+    tsne_file_name: tsne.png
 
 classifiers:
   - 
@@ -58,8 +60,8 @@ classifiers:
     type: neural network
     edge_method: Average
     model:
-      outfile: "model_mlp_kg-PHENIO.model"
-      classifier_history_file_name: "model_mlp_kg-PHENIO_history.json"
+      outfile: "model_mlp_kg-phenio.model"
+      classifier_history_file_name: "model_mlp_kg-phenio_history.json"
       type: tensorflow.keras.models.Sequential
       layers:
         - type: tensorflow.keras.layers.Input
@@ -121,7 +123,7 @@ classifiers:
     type: Decision Tree
     edge_method: Average
     model:
-      outfile: "model_decisiontree_kg-PHENIO.model"
+      outfile: "model_decisiontree_kg-phenio.model"
       type: sklearn.tree.DecisionTreeClassifier
       parameters:
         max_depth: 30
@@ -131,7 +133,7 @@ classifiers:
     type: Random Forest
     edge_method: Average
     model:
-      outfile: "model_randomforest_kg-PHENIO.model"
+      outfile: "model_randomforest_kg-phenio.model"
       type: sklearn.ensemble.RandomForestClassifier
       parameters:
         n_estimators: 500
@@ -143,7 +145,7 @@ classifiers:
     type: Logistic Regression
     edge_method: Average
     model:
-      outfile: "model_lr_kg-PHENIO.model"
+      outfile: "model_lr_kg-phenio.model"
       type: sklearn.linear_model.LogisticRegression
       parameters:
         random_state: 42
