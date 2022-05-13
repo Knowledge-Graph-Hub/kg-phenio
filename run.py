@@ -5,7 +5,6 @@ import os
 import click
 from kg_phenio import download as kg_download
 from kg_phenio import transform as kg_transform
-#from kg_phenio.make_holdouts import make_holdouts
 from kg_phenio.merge_utils.merge_kg import load_and_merge
 from kg_phenio.transform import DATA_SOURCES
 

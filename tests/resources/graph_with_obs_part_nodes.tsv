@@ -1,0 +1,10 @@
+id	category	name	description	xref	provided_by
+OBO:A	biolink:NamedThing	Cut the mustard			Graph																																																																																																														owl:Class
+OBO:B	biolink:NamedThing	Take the cake			Graph																																																																																																														owl:Class
+OBO:C	biolink:NamedThing	Accidentally on purpose			Graph																																																																																																														owl:Class
+OBO:D	biolink:NamedThing	Once in a blue moon			Graph																																																																																																														owl:Class
+OBO:E	biolink:NamedThing	Run out of steam			Graph																																																																																																														owl:Class
+OBO:F	biolink:NamedThing	As easy as pie			Graph																																																																																																														owl:Class
+OBO:G	biolink:NamedThing	Salad days			Graph																																																																																																														owl:Class
+OBO:H	biolink:NamedThing	Salad days for days			Graph
+OBO:I	biolink:NamedThing	The plot thickens			Graph
