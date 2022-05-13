@@ -19,7 +19,7 @@ def find_version(*file_paths):
     raise RuntimeError('Unable to find version string.')
 
 
-__version__ = find_version('kg_ontoml', '__version__.py')
+__version__ = find_version('kg_phenio', '__version__.py')
 
 test_deps = [
     'pytest',
@@ -35,10 +35,10 @@ extras = {
 }
 
 setup(
-    name='kg-ontoml',
+    name='kg-phenio',
     version=__version__,
-    description='kg-ontoml',
-    url='https://github.com/Knowledge-Graph-Hub/kg-ontoml',
+    description='kg-phenio',
+    url='https://github.com/Knowledge-Graph-Hub/kg-phenio',
     author='J. Harry Caufield',
     author_email='jhc@lbl.gov',
     python_requires='>=3.7',
