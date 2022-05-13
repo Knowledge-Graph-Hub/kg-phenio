@@ -3,11 +3,10 @@
 import os
 
 import click
-from kg_ontoml import download as kg_download
-from kg_ontoml import transform as kg_transform
-#from kg_ontoml.make_holdouts import make_holdouts
-from kg_ontoml.merge_utils.merge_kg import load_and_merge
-from kg_ontoml.transform import DATA_SOURCES
+from kg_phenio import download as kg_download
+from kg_phenio import transform as kg_transform
+from kg_phenio.merge_utils.merge_kg import load_and_merge
+from kg_phenio.transform import DATA_SOURCES
 
 
 @click.group()
