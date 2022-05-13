@@ -37,7 +37,6 @@ class MonarchTransform(Transform):
     def parse(self, name: str, data_file: str, source: str) -> None:
         """Processes the data_file.
         Once complete, also removes obsolete classes.
-
         Args:
             name: Name of the ontology
             data_file: data file to parse
@@ -54,3 +53,4 @@ class MonarchTransform(Transform):
 
         remove_obsoletes(os.path.join(self.output_dir, name + "_nodes.tsv"),
                         os.path.join(self.output_dir, name + "_edges.tsv"))
+

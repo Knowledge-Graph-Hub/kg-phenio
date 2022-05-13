@@ -10,13 +10,13 @@ pipeline {
     //}
     environment {
         BUILDSTARTDATE = sh(script: "echo `date +%Y%m%d`", returnStdout: true).trim()
-        S3PROJECTDIR = 'kg-ontoml' // no trailing slash
+        S3PROJECTDIR = 'kg-phenio' // no trailing slash
 
         // Distribution ID for the AWS CloudFront for this bucket
         // used solely for invalidations
         AWS_CLOUDFRONT_DISTRIBUTION_ID = 'EUVSWXZQBXCFP'
 
-        MERGEDKGNAME_BASE = "KG-OntoML"
+        MERGEDKGNAME_BASE = "kg-phenio"
         MERGEDKGNAME_GENERIC = "merged-kg"
     }
     options {
@@ -59,11 +59,11 @@ pipeline {
             }
         }
 
-        stage('Build kg_ontoml') {
+        stage('Build kg_phenio') {
             steps {
                 dir('./gitrepo') {
                     git(
-                            url: 'https://github.com/Knowledge-Graph-Hub/kg-ontoml',
+                            url: 'https://github.com/Knowledge-Graph-Hub/kg-phenio',
                             branch: env.BRANCH_NAME
                     )
                     sh '/usr/bin/python3.8 -m venv venv'
@@ -176,7 +176,7 @@ pipeline {
 
                                 // copy that NEAT config, too
                                 // but update its buildname internally first
-                                sh """ sed -i '/s3_bucket_dir/ s/kg-ontoml/$S3PROJECTDIR\\/$BUILDSTARTDATE\\/graph_ml/' neat.yaml """
+                                sh """ sed -i '/s3_bucket_dir/ s/kg-phenio/$S3PROJECTDIR\\/$BUILDSTARTDATE\\/graph_ml/' neat.yaml """
                                 sh 'cp neat.yaml $BUILDSTARTDATE/'
 
                                 // stats dir
@@ -199,7 +199,7 @@ pipeline {
                                 sh '. venv/bin/activate && AWS_CONFIG_FILE=./awscli_config.txt python3.8 ./venv/bin/aws cloudfront create-invalidation --distribution-id $AWS_CLOUDFRONT_DISTRIBUTION_ID --paths "/*"'
 
                                 // Should now appear at:
-                                // https://kg-hub.berkeleybop.io/kg-ontoml/
+                                // https://kg-hub.berkeleybop.io/kg-phenio/
                             }
 
                         }

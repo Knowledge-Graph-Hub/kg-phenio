@@ -45,7 +45,7 @@ def download(*args, **kwargs) -> None:
 @click.option("sources", "-s", default=None, multiple=True,
               type=click.Choice(DATA_SOURCES.keys()))
 def transform(*args, **kwargs) -> None:
-    """Calls scripts in kg_ontoml/transform/[source name]/ to transform each source
+    """Calls scripts in kg_phenio/transform/[source name]/ to transform each source
     into nodes and edges.
 
     Args:
