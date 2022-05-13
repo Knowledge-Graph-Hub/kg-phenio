@@ -238,8 +238,6 @@ def remove_obsoletes(nodepath: str, edgepath: str) -> None:
     :param edgepath: str, path to the edge file
     '''
 
-    # TODO: verify that this is working with the test
-
     outnodepath = nodepath + ".tmp"
     outedgepath = edgepath + ".tmp"
 
