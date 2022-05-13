@@ -232,6 +232,7 @@ def remove_obsoletes(nodepath: str, edgepath: str) -> None:
     1. 'name' field begins with the word 'obsolete'
     2. TODO: First node participates in a 'IAO:0100001' edge ("term replaced by")
     3. TODO: First node participates in an edge with 'OIO:ObsoleteClass' as the object
+    This makes some assumptions about which column contains the node name field.
 
     :param nodepath: str, path to the node file
     :param edgepath: str, path to the edge file
