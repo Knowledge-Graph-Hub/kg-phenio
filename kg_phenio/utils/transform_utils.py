@@ -252,7 +252,7 @@ def remove_obsoletes(nodepath: str, edgepath: str) -> None:
                 open(outedgepath, 'w') as outedgefile:
                 for line in innodefile:
                     line_split = (line.rstrip()).split("\t")
-                    if line_split[2].startswith('obsolete'):
+                    if (line_split[2].lower()).startswith('obsolete'):
                         # collect the obsolete node ID so we 
                         # can remove its edges too
                         obsolete_nodes.append(line_split[0])
