@@ -230,7 +230,7 @@ def remove_obsoletes(nodepath: str, edgepath: str) -> None:
     edges where nodes are obsolete. Obsolete status is determined
     by matching at least one of the following conditions:
     1. 'name' field begins with the word 'obsolete'
-    2. TODO: First node participates in a 'IAO:0100001' edge ("term replaced by")
+    2. First node participates in a 'IAO:0100001' edge ("term replaced by")
     3. TODO: First node participates in an edge with 'OIO:ObsoleteClass' as the object
     This makes some assumptions about which column contains the node name field.
 
@@ -255,14 +255,25 @@ def remove_obsoletes(nodepath: str, edgepath: str) -> None:
                         # can remove its edges too
                         obsolete_nodes.append(line_split[0])
                         continue
-                    else:
-                        outnodefile.write("\t".join(line_split) + "\n")
                 for line in inedgefile:
                     line_split = (line.rstrip()).split("\t")
-                    if line_split[1] in obsolete_nodes or line_split[3] in obsolete_nodes:
+                    if line_split[1] in obsolete_nodes \
+                        or line_split[3] in obsolete_nodes:
+                        continue
+                    elif line_split[5] == 'IAO:0100001':
+                        obsolete_nodes.append(line_split[1])
                         continue
                     else:
                         outedgefile.write("\t".join(line_split) + "\n")
+                # Iterate over the nodefile one more time,
+                # in case the edges told us anything new
+                innodefile.seek(0)
+                for line in innodefile:
+                    line_split = (line.rstrip()).split("\t")
+                    if line_split[0] in obsolete_nodes:
+                        continue
+                    else:
+                        outnodefile.write("\t".join(line_split) + "\n")
         os.replace(outnodepath,nodepath)
         os.replace(outedgepath,edgepath)
     except (IOError, KeyError) as e:
