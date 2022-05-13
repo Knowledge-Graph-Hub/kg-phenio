@@ -1,7 +1,7 @@
 import os
 from typing import Optional
-from kg_ontoml.transform_utils.transform import Transform
-from kg_ontoml.utils.transform_utils import remove_obsoletes
+from kg_phenio.transform_utils.transform import Transform
+from kg_phenio.utils.transform_utils import remove_obsoletes
 from kgx.cli.cli_utils import transform # type: ignore
 
 ONTO_FILES = {

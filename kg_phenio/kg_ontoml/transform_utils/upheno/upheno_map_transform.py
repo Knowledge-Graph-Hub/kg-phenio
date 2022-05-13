@@ -6,7 +6,7 @@ from typing import Optional
 import gzip
 import shutil
 
-from kg_ontoml.transform_utils.transform import Transform
+from kg_phenio.transform_utils.transform import Transform
 from koza.cli_runner import transform_source #type: ignore
 
 
@@ -22,7 +22,7 @@ UPHENO_CONFIGS = {
     'UPHENO_ALL': 'upheno_mapping_all.yaml',
 }
 
-TRANSLATION_TABLE = "./kg_ontoml/transform_utils/translation_table.yaml"
+TRANSLATION_TABLE = "./kg_phenio/transform_utils/translation_table.yaml"
 
 class UphenoMapTransform(Transform):
     """This transform ingests the table of all Upheno mappings by species.
@@ -57,7 +57,7 @@ class UphenoMapTransform(Transform):
         Transform Upheno file with Koza.
         """
         print(f"Parsing {data_file}")
-        config = os.path.join("kg_ontoml/transform_utils/upheno/", UPHENO_CONFIGS[source])
+        config = os.path.join("kg_phenio/transform_utils/upheno/", UPHENO_CONFIGS[source])
         output = self.output_dir
 
         # If source is unknown then we aren't going to guess
