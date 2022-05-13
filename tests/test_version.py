@@ -1,4 +1,4 @@
-from kg_ontoml.__version__ import __version__
+from kg_phenio.__version__ import __version__
 from validate_version_code import validate_version_code
 
 

@@ -1,11 +1,11 @@
 import os
 import tempfile
 from unittest import TestCase, mock
-from kg_ontoml import download
+from kg_phenio import download
 
 
 class TestDownload(TestCase):
-    """Tests kg_ontoml.download
+    """Tests kg_phenio.download
     """
     def setUp(self) -> None:
         pass

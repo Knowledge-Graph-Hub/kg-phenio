@@ -1,0 +1,9 @@
+id	category	name	description	xref	provided_by
+OBO:A	biolink:NamedThing	Cut the mustard			Graph																																																																																																														owl:Class																							
+OBO:B	biolink:NamedThing	Obsolete Cut the mustard			Graph																																																																																																														owl:Class																							
+OBO:C	biolink:NamedThing	Accidentally on purpose			Graph																																																																																																														owl:Class																							
+OBO:D	biolink:NamedThing	Obsolete Accidentally on purpose			Graph																																																																																																														owl:Class																							
+OBO:E	biolink:NamedThing	Run out of steam			Graph																																																																																																														owl:Class																							
+OBO:F	biolink:NamedThing	Obsolete Run out of steam			Graph																																																																																																														owl:Class																							
+OBO:G	biolink:NamedThing	Salad days			Graph																																																																																																														owl:Class																							
+OBO:H	biolink:NamedThing	Salad days again			Graph					
