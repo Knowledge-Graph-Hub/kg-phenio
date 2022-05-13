@@ -231,7 +231,7 @@ def remove_obsoletes(nodepath: str, edgepath: str) -> None:
     by matching at least one of the following conditions:
     1. 'name' field begins with the word 'obsolete'
     2. First node participates in a 'IAO:0100001' edge ("term replaced by")
-    3. TODO: First node participates in an edge with 'OIO:ObsoleteClass' as the object
+    3. First node participates in an edge with 'OIO:ObsoleteClass' as the object
     This makes some assumptions about which column contains the node name field.
 
     :param nodepath: str, path to the node file
@@ -260,7 +260,8 @@ def remove_obsoletes(nodepath: str, edgepath: str) -> None:
                     if line_split[1] in obsolete_nodes \
                         or line_split[3] in obsolete_nodes:
                         continue
-                    elif line_split[5] == 'IAO:0100001':
+                    elif line_split[5] == 'IAO:0100001' \
+                        or line_split[3] == 'OIO:ObsoleteClass':
                         obsolete_nodes.append(line_split[1])
                         continue
                     else:

@@ -6,3 +6,5 @@ OBO:D	biolink:NamedThing	Once in a blue moon			Graph																												
 OBO:E	biolink:NamedThing	Run out of steam			Graph																																																																																																														owl:Class
 OBO:F	biolink:NamedThing	As easy as pie			Graph																																																																																																														owl:Class
 OBO:G	biolink:NamedThing	Salad days			Graph																																																																																																														owl:Class
+OBO:H	biolink:NamedThing	Salad days for days			Graph
+OBO:I	biolink:NamedThing	The plot thickens			Graph
