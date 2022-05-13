@@ -9,3 +9,5 @@ class TestRemoveObsoletes(unittest.TestCase):
 
     def test_remove_obsolete_nodes_and_edges(self):
         remove_obsoletes(self.nodepath, self.edgepath)
+
+        # TODO: add assert that the files are actually shorter now
