@@ -1,6 +1,7 @@
 import os
 from typing import Optional
-from kg_ontoml.transform_utils.transform import Transform
+from kg_phenio.transform_utils.transform import Transform
+from kg_phenio.utils.transform_utils import remove_obsoletes
 from kgx.cli.cli_utils import transform # type: ignore
 
 ONTO_FILES = {
@@ -35,6 +36,7 @@ class MonarchTransform(Transform):
 
     def parse(self, name: str, data_file: str, source: str) -> None:
         """Processes the data_file.
+        Once complete, also removes obsolete classes.
         Args:
             name: Name of the ontology
             data_file: data file to parse
@@ -44,4 +46,11 @@ class MonarchTransform(Transform):
         """
         print(f"Parsing {data_file}")
         
-        transform(inputs=[data_file], input_format='owl', output= os.path.join(self.output_dir, name), output_format='tsv')
+        transform(inputs=[data_file], 
+                    input_format='owl', 
+                    output= os.path.join(self.output_dir, name), 
+                    output_format='tsv')
+
+        remove_obsoletes(os.path.join(self.output_dir, name + "_nodes.tsv"),
+                        os.path.join(self.output_dir, name + "_edges.tsv"))
+

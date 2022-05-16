@@ -3,8 +3,8 @@
 import logging
 from typing import List
 
-from kg_ontoml.transform_utils.ontology.monarch_transform import MonarchTransform
-from kg_ontoml.transform_utils.upheno.upheno_map_transform import UphenoMapTransform
+from kg_phenio.transform_utils.ontology.monarch_transform import MonarchTransform
+from kg_phenio.transform_utils.upheno.upheno_map_transform import UphenoMapTransform
 
 
 DATA_SOURCES = {
@@ -14,7 +14,7 @@ DATA_SOURCES = {
 
 
 def transform(input_dir: str, output_dir: str, sources: List[str] = None) -> None:
-    """Call scripts in kg_ontoml/transform/[source name]/ to transform each source into a graph format that
+    """Call scripts in kg_phenio/transform/[source name]/ to transform each source into a graph format that
     KGX can ingest directly
 
     Args:

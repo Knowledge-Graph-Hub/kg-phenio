@@ -21,7 +21,7 @@ configuration:
     textmining_transferred: 'xsd:float'
 
 merged_graph:
-  name: KG-OntoML
+  name: KG-PHENIO
   source:
     monarch-merged:
       name: "Monarch Ontologies - Merged"
@@ -33,7 +33,7 @@ merged_graph:
   operations:
     - name: kgx.graph_operations.summarize_graph.generate_graph_stats
       args:
-        graph_name: KG-OntoML
+        graph_name: KG-PHENIO
         filename: merged_graph_stats.yaml
         node_facet_properties:
           - provided_by
@@ -48,4 +48,4 @@ merged_graph:
     merged-kg-nt:
       format: nt
       compression: gz
-      filename: KG-OntoML.nt.gz
+      filename: kg-phenio.nt.gz

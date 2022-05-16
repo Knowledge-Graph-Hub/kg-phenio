@@ -1,0 +1,7 @@
+id	subject	predicate	object	category	relation	knowledge_source
+OBO:C-biolink:subclass_of-OBO:A	OBO:C	biolink:subclass_of	OBO:A		rdfs:subClassOf	Graph
+OBO:B-biolink:subclass_of-OBO:A	OBO:B	biolink:subclass_of	OBO:A		rdfs:subClassOf	Graph
+OBO:D-biolink:subclass_of-OBO:C	OBO:D	biolink:subclass_of	OBO:C		rdfs:subClassOf	Graph
+OBO:E-biolink:subclass_of-OBO:C	OBO:E	biolink:subclass_of	OBO:C		rdfs:subClassOf	Graph
+OBO:F-biolink:subclass_of-OBO:C	OBO:F	biolink:subclass_of	OBO:C		rdfs:subClassOf	Graph
+OBO:H-biolink:subclass_of-OBO:G	OBO:H	biolink:subclass_of	OBO:H		rdfs:subClassOf	Graph
