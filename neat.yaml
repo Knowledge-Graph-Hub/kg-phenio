@@ -1,14 +1,15 @@
 ---
-name: "kg-ontoml"
-description: "KG-OntoML"
+name: "kg-phenio"
+description: "kg-phenio"
 output_directory: graph_ml
 
+#upload:
+#  s3_bucket: kg-hub-public-data
+#  s3_bucket_dir: kg-ontoml/
+#  extra_args:
+#    'ACL': 'public-read'
 
-upload:
-  s3_bucket: kg-hub-public-data
-  s3_bucket_dir: kg-ontoml/
-  extra_args:
-    'ACL': 'public-read'
+graph_path: https://kg-hub.berkeleybop.io/frozen_incoming_data/kg-ontoml-bundle-prefixcats.tar.gz
 
 # We already have everything necessary to train
 # classifiers, but for now NEAT complains (KeyError)
@@ -16,10 +17,6 @@ upload:
 graph_data:
   graph:
     directed: False
-    # This file contains the graph edges/nodes AND the pos/neg train/valid graphs below
-    # as well as the graph embeddings
-    # Original graph is at https://kg-hub.berkeleybop.io/kg-ontoml/20220304/KG-OntoML.tar.gz 
-    graph_path: https://kg-hub.berkeleybop.io/frozen_incoming_data/kg-ontoml-bundle-prefixcats.tar.gz
     node_path: merged-kg_nodes-prefixcats.tsv
     edge_path: merged-kg_edges.tsv
     verbose: True
@@ -31,14 +28,7 @@ graph_data:
     default_edge_type: 'biolink:related_to'
   pos_validation:
     edge_path: upheno_mapping_all_edges.tsv
-  neg_training:
-    edge_path: negative_edges.tsv
-  neg_validation:
-    edge_path: negative_valid_edges.tsv
 
-# For now, this embedding is static, and packaged with the file
-# in graph_path above.
-# In practice, each run will require generation of new embeddings.
 embeddings:
   embedding_file_name: KG-OntoML-SkipGram.tsv
   embedding_history_file_name: embedding_history.json
@@ -73,8 +63,6 @@ classifiers:
           parameters:
             units: 32
             activation: relu
-            # TODO: fix this:
-            # activity_regularizer: tensorflow.keras.regularizers.l1_l2(l1=1e-5, l2=1e-4)
         - type: tensorflow.keras.layers.Dropout
           parameters:
             rate: 0.5
@@ -116,16 +104,16 @@ classifiers:
               patience: 5
               min_delta: 0.001  # min improvement to be considered progress
           - type: tensorflow.keras.callbacks.ReduceLROnPlateau
-  - 
-    classifier_id: dt_0
-    type: Decision Tree
-    edge_method: Average
-    model:
-      outfile: "model_decisiontree_kg-ontoml.model"
-      type: sklearn.tree.DecisionTreeClassifier
-      parameters:
-        max_depth: 30
-        random_state: 42
+  # - 
+  #   classifier_id: dt_0
+  #   type: Decision Tree
+  #   edge_method: Average
+  #   model:
+  #     outfile: "model_decisiontree_kg-ontoml.model"
+  #     type: sklearn.tree.DecisionTreeClassifier
+  #     parameters:
+  #       max_depth: 30
+  #       random_state: 42
   - 
     classifier_id: rf_0
     type: Random Forest
@@ -159,15 +147,15 @@ apply_trained_classifier:
         - 'HP'
       destination:
         - 'MP'
-  -
-    classifier_model_id: dt_0
-    cutoff: 0.9
-    outfile: dt_classifier_predictions_kgx.tsv
-    link_node_types:
-      source:
-        - 'HP'
-      destination:
-        - 'MP'
+  # -
+  #   classifier_model_id: dt_0
+  #   cutoff: 0.9
+  #   outfile: dt_classifier_predictions_kgx.tsv
+  #   link_node_types:
+  #     source:
+  #       - 'HP'
+  #     destination:
+  #       - 'MP'
   -
     classifier_model_id: rf_0
     cutoff: 0.9
