@@ -11,8 +11,7 @@ upload:
   extra_args:
     'ACL': 'public-read'
 
-# We already have everything necessary to train
-# classifiers, but for now NEAT complains (KeyError)
+# For now NEAT complains (KeyError)
 # if a graph_data block isn't present.
 graph_data:
   graph:
@@ -28,6 +27,10 @@ graph_data:
     default_edge_type: 'biolink:related_to'
   pos_validation:
     edge_path: upheno_mapping_all_edges.tsv
+  neg_training:
+    edge_path: neg_train_edges.tsv
+  neg_validation:
+    edge_path: neg_valid_edges.tsv
 
 # Generate new embeddings
 # These stats are reduced from usual while I sort out some bugs
