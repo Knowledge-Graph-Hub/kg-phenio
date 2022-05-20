@@ -71,7 +71,7 @@ setup(
         'multi-indexer',
         'koza',
         'biolink_model_pydantic',
-        'ensmallen'
+        'ensmallen==0.7.0.dev19'
     ],
     extras_require=extras,
 )
