@@ -26,7 +26,7 @@ graph_data:
     destinations_column: 'object'
     default_edge_type: 'biolink:related_to'
   pos_validation:
-    edge_path: upheno_mapping_all_edges.tsv
+    edge_path: pos_valid_edges.tsv
   neg_training:
     edge_path: neg_train_edges.tsv
   neg_validation:

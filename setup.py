@@ -70,7 +70,8 @@ setup(
         'networkx',
         'multi-indexer',
         'koza',
-        'biolink_model_pydantic'
+        'biolink_model_pydantic',
+        'ensmallen'
     ],
     extras_require=extras,
 )

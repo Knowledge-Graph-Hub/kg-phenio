@@ -120,6 +120,7 @@ pipeline {
 
         stage('Merge') {
             // Also produce the prefixcats version and add it to the merged tar.gz
+            // and then produce negative sets and add them too
             steps {
                 dir('./gitrepo') {
                     sh '. venv/bin/activate && python3.8 run.py merge -y merge.yaml'
@@ -128,6 +129,9 @@ pipeline {
                     sh 'tar -xvzf data/merged/merged-kg.tar.gz'   
                     sh '. venv/bin/activate && python3.8 graph_prefixcats.py --input merged-kg_nodes.tsv --output merged-kg_nodes-prefixcats.tsv'
                     sh 'tar -rvfz data/merged/merged-kg.tar.gz merged-kg_nodes-prefixcats.tsv'
+
+                    sh '. venv/bin/activate && python3.8 generate_subgraphs.py --nodes merged-kg_nodes.tsv --edges merged-kg_edges.tsv'
+                    sh 'tar -rvfz data/merged/merged-kg.tar.gz pos_valid_edges.tsv neg_train_edges.tsv neg_valid_edges.tsv'
                 }
             }
         }
