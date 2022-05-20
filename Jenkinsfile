@@ -119,6 +119,8 @@ pipeline {
         }
 
         stage('Merge') {
+            // Also produce the prefixcats version and add it to the merged tar.gz
+            // and then produce negative sets and add them too
             steps {
                 dir('./gitrepo') {
                     sh '. venv/bin/activate && python3.8 run.py merge -y merge.yaml'
@@ -126,8 +128,10 @@ pipeline {
                     sh 'tar -rvfz data/merged/merged-kg.tar.gz merged_graph_stats_$BUILDSTARTDATE.yaml'
                     sh 'tar -xvzf data/merged/merged-kg.tar.gz'   
                     sh '. venv/bin/activate && python3.8 graph_prefixcats.py --input merged-kg_nodes.tsv --output merged-kg_nodes-prefixcats.tsv'
-                    sh 'cp data/merged/merged-kg.tar.gz data/merged/merged-kg-prefixcats.tar.gz'
-                    sh 'tar -rvfz data/merged/merged-kg-prefixcats.tar.gz merged-kg_nodes-prefixcats.tsv'
+                    sh 'tar -rvfz data/merged/merged-kg.tar.gz merged-kg_nodes-prefixcats.tsv'
+
+                    sh '. venv/bin/activate && python3.8 generate_subgraphs.py --nodes merged-kg_nodes.tsv --edges merged-kg_edges.tsv'
+                    sh 'tar -rvfz data/merged/merged-kg.tar.gz pos_valid_edges.tsv neg_train_edges.tsv neg_valid_edges.tsv'
                 }
             }
         }
@@ -176,6 +180,7 @@ pipeline {
 
                                 // copy that NEAT config, too
                                 // but update its buildname internally first
+                                sh """ sed -i '/graph_path/ s/BUILDNAME/$BUILDSTARTDATE/' neat.yaml """
                                 sh """ sed -i '/s3_bucket_dir/ s/kg-phenio/$S3PROJECTDIR\\/$BUILDSTARTDATE\\/graph_ml/' neat.yaml """
                                 sh 'cp neat.yaml $BUILDSTARTDATE/'
 
