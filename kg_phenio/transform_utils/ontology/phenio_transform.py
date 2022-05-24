@@ -4,11 +4,14 @@ from typing import Optional
 from kg_phenio.transform_utils.transform import Transform
 from kg_phenio.utils.transform_utils import remove_obsoletes
 from kg_phenio.utils.robot_utils import initialize_robot, relax_ontology, robot_convert
+from kg_phenio.query import run_query, parse_query_rq
 from kgx.cli.cli_utils import transform # type: ignore
 
 ONTO_FILES = {
     'PhenioTransform': 'phenio-base.owl.tar.gz',
 }
+
+QUERY_PATH = 'kg_phenio/transform_utils/ontology/subq_construct.rq'
 
 class PhenioTransform(Transform):
     """
@@ -72,6 +75,8 @@ class PhenioTransform(Transform):
             print(f"Encountered error during robot relax of {source}.")
 
         # SPARQL for subq's
+        query = parse_query_rq(QUERY_PATH)
+        run_query(query=query['query'], endpoint=relaxed_outpath) # Just a placeholder for now...
 
         pregraph_outpath = os.path.join(self.output_dir,outname+"_with-subqs.json")
         if not robot_convert(self.robot_path, 
