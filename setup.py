@@ -4,6 +4,8 @@ import re
 from codecs import open as copen  # to use a consistent encoding
 from setuptools import find_packages, setup
 
+from post_setup.post_setup import robot_setup
+
 here = os.path.abspath(os.path.dirname(__file__))
 
 def read(*parts):
@@ -75,3 +77,5 @@ setup(
     ],
     extras_require=extras,
 )
+
+robot_setup()
