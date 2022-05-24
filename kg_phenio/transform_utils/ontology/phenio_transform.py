@@ -5,15 +5,15 @@ from kg_phenio.utils.transform_utils import remove_obsoletes
 from kgx.cli.cli_utils import transform # type: ignore
 
 ONTO_FILES = {
-    'MonarchTransform': 'monarch-merged.owl',
+    'PhenioTransform': 'phenio-base.owl.tar.gz',
 }
 
-class MonarchTransform(Transform):
+class PhenioTransform(Transform):
     """
-    MonarchTransform parses the merged monarch.owl into nodes and edges.
+    PhenioTransform parses the phenio OWL into nodes and edges.
     """
     def __init__(self, input_dir: str = None, output_dir: str = None):
-        source_name = "monarch-merged"
+        source_name = "phenio"
         super().__init__(source_name, input_dir, output_dir)
 
     def run(self, data_file: Optional[str] = None) -> None:
@@ -47,7 +47,8 @@ class MonarchTransform(Transform):
         print(f"Parsing {data_file}")
         
         transform(inputs=[data_file], 
-                    input_format='owl', 
+                    input_format='owl',
+                    input_compression='tar.gz',
                     output= os.path.join(self.output_dir, name), 
                     output_format='tsv')
 
