@@ -60,7 +60,7 @@ def relax_ontology(robot_path: str, input_path: str, output_path: str, robot_env
         robot_command('relax',
             '--input', input_path, 
             '--output', output_path,
-            '--vvv',
+            '-vvv',
             _env=robot_env,
             _timeout=10800 
         )
@@ -92,7 +92,7 @@ def robot_convert(robot_path: str, input_path: str, output_path: str, robot_env:
         robot_command('convert',
             '--input', input_path,
             '--output', output_path,
-            '--vvv',
+            '-vvv',
             _env=robot_env
         )
         print("Complete.")
