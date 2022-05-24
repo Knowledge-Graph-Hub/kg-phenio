@@ -17,11 +17,11 @@
   local_name: robot
 
 #
-# monarch-merged.owl
+# phenio-base.owl
 #
 -
-  url: https://data-test.monarchinitiative.org/latest/owl/monarch-merged.owl
-  local_name: monarch-merged.owl
+  url: https://kg-hub.berkeleybop.io/frozen_incoming_data/phenio-base.owl.tar.gz
+  local_name: phenio-base.owl.tar.gz
 
 #
 # Current Upheno mappings.
