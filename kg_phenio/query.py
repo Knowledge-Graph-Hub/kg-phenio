@@ -1,10 +1,10 @@
 import logging
 import re
 
-from SPARQLWrapper import SPARQLWrapper, JSON, XML, TURTLE, N3, RDF, RDFXML, CSV, TSV  # type: ignore
+from SPARQLWrapper import SPARQLWrapper, JSON # type: ignore
 
 
-def run_query(query: str, endpoint: str, return_format=JSON) -> dict:
+def run_remote_query(query: str, endpoint: str, return_format=JSON) -> dict:
     sparql = SPARQLWrapper(endpoint)
     sparql.setQuery(query)
     sparql.setReturnFormat(return_format)

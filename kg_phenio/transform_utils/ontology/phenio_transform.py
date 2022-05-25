@@ -4,7 +4,7 @@ from typing import Optional
 from kg_phenio.transform_utils.transform import Transform
 from kg_phenio.utils.transform_utils import remove_obsoletes
 from kg_phenio.utils.robot_utils import initialize_robot, relax_ontology, robot_convert
-from kg_phenio.query import run_query, parse_query_rq
+from kg_phenio.query import run_remote_query, parse_query_rq
 from kgx.cli.cli_utils import transform # type: ignore
 
 ONTO_FILES = {
@@ -57,26 +57,33 @@ class PhenioTransform(Transform):
              None.
         """
 
-        print(f"Decompressing {data_file}")
-
-        with tarfile.open(data_file) as compfile:
-            outname = (compfile.getnames())[0]
-            outname_path = os.path.join(self.output_dir, outname)
-            compfile.extractall(self.output_dir)
+        outname = os.path.basename(data_file[:-7])
+        outname_path = os.path.join(self.output_dir, outname)
+        if not os.path.exists(outname_path):
+            print(f"Decompressing {data_file}")
+            with tarfile.open(data_file) as compfile:
+                compfile.extractall(self.output_dir)
+        else:
+            print(f"Found decompressed ontology at {outname_path}")
 
         print(f"Parsing {outname}")
-        print(f"ROBOT: relax {outname_path}")
-        
+
         relaxed_outpath = os.path.join(self.output_dir,outname+"_relaxed.owl")
-        if not relax_ontology(self.robot_path, 
+        if not os.path.exists(relaxed_outpath):
+            print(f"ROBOT: relax {outname_path}")
+            if not relax_ontology(self.robot_path, 
                                 outname_path,
                                 relaxed_outpath,
                                 self.robot_env):
-            print(f"Encountered error during robot relax of {source}.")
+                print(f"Encountered error during robot relax of {source}.")
+        else:
+            print(f"Found relaxed ontology at {relaxed_outpath}")
 
         # SPARQL for subq's
         query = parse_query_rq(QUERY_PATH)
-        run_query(query=query['query'], endpoint=relaxed_outpath) # Just a placeholder for now...
+        print(query)
+        import sys
+        sys.exit("testing")
 
         pregraph_outpath = os.path.join(self.output_dir,outname+"_with-subqs.json")
         if not robot_convert(self.robot_path, 
