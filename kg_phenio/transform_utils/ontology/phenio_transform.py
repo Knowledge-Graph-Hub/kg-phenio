@@ -82,8 +82,15 @@ class PhenioTransform(Transform):
         # SPARQL for subq's
         query = parse_query_rq(QUERY_PATH)
         print(f"Running query defined in {QUERY_PATH}...")
-        results = run_local_query(query, relaxed_outpath)
+        results = run_local_query(query['query'], relaxed_outpath)
         print(results[0:10])
+
+        subq_outpath = os.path.join(self.output_dir,outname+"_with-subqs.owl")
+        # Write results to new file
+        with open(subq_outpath, 'w') as subq_file:
+            for line in results:
+                subq_file.write(line)
+
         import sys
         sys.exit("testing")
 
