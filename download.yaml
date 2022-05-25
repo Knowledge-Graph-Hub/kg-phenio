@@ -4,6 +4,12 @@
 # To add a new item to be download, add a block like this - must have 'url',
 # 'local_name' is optional, use to avoid name collisions
 
+# This download config retrieves individual PHENIO components,
+# in a process similar - but not completely identical - to that
+# used by the ODK pipeline.
+# See also the PHENIO repo:
+# https://github.com/monarch-initiative/phenio
+
 ---
 
 #
@@ -17,11 +23,78 @@
   local_name: robot
 
 #
-# monarch-merged.owl
+# ALL PHENIO PARTS
+# as per the phenio ODK config yaml.
+# Note this does not include the bridge files as KGX doesn't
+# know what to do with those.
+# Same for mondo-equivalents.owl
 #
 -
-  url: https://data-test.monarchinitiative.org/latest/owl/monarch-merged.owl
-  local_name: monarch-merged.owl
+  url: https://kg-hub.berkeleybop.io/kg-obo/nbo/2021-02-15/nbo_kgx_tsv.tar.gz
+  local_name: nbo_kgx_tsv.tar.gz
+-
+  url: https://kg-hub.berkeleybop.io/kg-obo/fao/2020-05-07/fao_kgx_tsv.tar.gz
+  local_name: fao_kgx_tsv.tar.gz
+-
+  url: https://kg-hub.berkeleybop.io/kg-obo/oba/2022-01-19/oba_kgx_tsv.tar.gz
+  local_name: oba_kgx_tsv.tar.gz
+-
+  url: https://kg-hub.berkeleybop.io/kg-obo/stato/RC1.4/stato_kgx_tsv.tar.gz
+  local_name: stato_kgx_tsv.tar.gz
+-
+  url: https://kg-hub.berkeleybop.io/kg-obo/bfo/2019-08-26/bfo_kgx_tsv.tar.gz
+  local_name: bfo_kgx_tsv.tar.gz
+-
+  url: https://kg-hub.berkeleybop.io/kg-obo/hsapdv/2020-03-10/hsapdv_kgx_tsv.tar.gz
+  local_name: hsapdv_kgx_tsv.tar.gz
+-
+  url: https://kg-hub.berkeleybop.io/kg-obo/mpath/2020-05-19/mpath_kgx_tsv.tar.gz
+  local_name: mpath_kgx_tsv.tar.gz
+-
+  url: https://kg-hub.berkeleybop.io/kg-obo/caro/2022-02-18/caro_kgx_tsv.tar.gz
+  local_name: caro_kgx_tsv.tar.gz
+-
+  url: https://kg-hub.berkeleybop.io/kg-obo/uberon/2022-04-18/uberon_kgx_tsv.tar.gz
+  local_name: uberon_kgx_tsv.tar.gz
+-
+  url: https://kg-hub.berkeleybop.io/kg-obo/pato/2022-02-20/pato_kgx_tsv.tar.gz
+  local_name: pato_kgx_tsv.tar.gz
+-
+  url: https://kg-hub.berkeleybop.io/kg-obo/go/2022-03-22/go_kgx_tsv.tar.gz
+  local_name: go_kgx_tsv.tar.gz
+-
+  url: https://kg-hub.berkeleybop.io/kg-obo/upheno/no_version/upheno_kgx_tsv.tar.gz
+  local_name: upheno_kgx_tsv.tar.gz
+-
+  url: https://kg-hub.berkeleybop.io/kg-obo/mondo/2022-05-02/mondo_kgx_tsv.tar.gz
+  local_name: mondo_kgx_tsv.tar.gz
+-
+  url: https://kg-hub.berkeleybop.io/kg-obo/eco/2022-04-11/eco_kgx_tsv.tar.gz
+  local_name: eco_kgx_tsv.tar.gz
+-
+  url: https://kg-hub.berkeleybop.io/kg-obo/sepio/no_version/sepio_kgx_tsv.tar.gz
+  local_name: sepio_kgx_tsv.tar.gz
+-
+  url: https://kg-hub.berkeleybop.io/kg-obo/ro/2022-04-25/ro_kgx_tsv.tar.gz
+  local_name: ro_kgx_tsv.tar.gz
+-
+  url: https://kg-hub.berkeleybop.io/kg-obo/fbbt/2022-04-13/fbbt_kgx_tsv.tar.gz
+  local_name: fbbt_kgx_tsv.tar.gz
+-
+  url: https://kg-hub.berkeleybop.io/kg-obo/wbbt/2022-03-22/wbbt_kgx_tsv.tar.gz
+  local_name: wbbt_kgx_tsv.tar.gz
+-
+  url: https://kg-hub.berkeleybop.io/kg-obo/zfa/2022-03-15/zfa_kgx_tsv.tar.gz
+  local_name: zfa_kgx_tsv.tar.gz
+-
+  url: https://kg-hub.berkeleybop.io/kg-obo/chebi/210/chebi_kgx_tsv.tar.gz
+  local_name: chebi_kgx_tsv.tar.gz
+
+# NCBI Taxonomy slim
+# This isn't on KG-OBO, unlike the above ontologies
+-
+  url: http://purl.obolibrary.org/obo/ncbitaxon/subsets/taxslim.owl
+  local_name: taxslim.owl
 
 #
 # Current Upheno mappings.
