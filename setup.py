@@ -74,7 +74,8 @@ setup(
         'koza',
         'biolink_model_pydantic',
         'ensmallen==0.7.0.dev19',
-        'sh'
+        'sh',
+        'rdflib>=6.0.0'
     ],
     extras_require=extras,
 )
