@@ -4,7 +4,7 @@ from typing import Optional
 from kg_phenio.transform_utils.transform import Transform
 from kg_phenio.utils.transform_utils import remove_obsoletes
 from kg_phenio.utils.robot_utils import initialize_robot, relax_ontology, robot_convert
-from kg_phenio.query import run_remote_query, parse_query_rq
+from kg_phenio.query import run_local_query, parse_query_rq
 from kgx.cli.cli_utils import transform # type: ignore
 
 ONTO_FILES = {
@@ -81,7 +81,9 @@ class PhenioTransform(Transform):
 
         # SPARQL for subq's
         query = parse_query_rq(QUERY_PATH)
-        print(query)
+        print(f"Running query defined in {QUERY_PATH}...")
+        results = run_local_query(query, relaxed_outpath)
+        print(results[0:10])
         import sys
         sys.exit("testing")
 

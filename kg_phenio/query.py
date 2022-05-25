@@ -2,7 +2,8 @@ import logging
 import re
 
 from SPARQLWrapper import SPARQLWrapper, JSON # type: ignore
-
+import rdflib
+from rdflib import Graph
 
 def run_remote_query(query: str, endpoint: str, return_format=JSON) -> dict:
     sparql = SPARQLWrapper(endpoint)
@@ -12,6 +13,11 @@ def run_remote_query(query: str, endpoint: str, return_format=JSON) -> dict:
 
     return results # type: ignore
 
+def run_local_query(query: str, local_endpoint: str) -> dict:
+    g = Graph()
+    g.parse(local_endpoint)
+    results = g.query(query)
+    return results # type: ignore
 
 def parse_query_rq(rq_file) -> dict:
     """
