@@ -1,6 +1,3 @@
-#+ summary: subq relations for phenotype ontologies
-#+ description: subq relations for phenotype ontologies
-
 CONSTRUCT { ?a rdfs:subClassOf [a owl:Restriction; owl:onProperty ?p2 ; owl:someValuesFrom ?b ] }
 WHERE {
   ?a <http://www.w3.org/2000/01/rdf-schema#subClassOf> ?bN1 .

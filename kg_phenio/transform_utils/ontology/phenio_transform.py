@@ -1,6 +1,9 @@
 import os
 import tarfile
 from typing import Optional
+
+import rdflib
+
 from kg_phenio.transform_utils.transform import Transform
 from kg_phenio.utils.transform_utils import remove_obsoletes
 from kg_phenio.utils.robot_utils import initialize_robot, relax_ontology, robot_convert
@@ -83,14 +86,11 @@ class PhenioTransform(Transform):
         query = parse_query_rq(QUERY_PATH)
         print(f"Running query defined in {QUERY_PATH}...")
         results = run_local_query(query['query'], relaxed_outpath)
-        print(results[0:10])
 
-        subq_outpath = os.path.join(self.output_dir,outname+"_with-subqs.owl")
         # Write results to new file
-        with open(subq_outpath, 'w') as subq_file:
-            for line in results:
-                subq_file.write(line)
-
+        subq_outpath = os.path.join(self.output_dir,outname+"_with-subqs.owl")
+        results.serialize(destination=subq_outpath, format='pretty-xml')
+        
         import sys
         sys.exit("testing")
 
