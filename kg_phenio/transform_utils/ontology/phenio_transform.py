@@ -89,7 +89,7 @@ class PhenioTransform(Transform):
 
         # Write results to new file
         subq_outpath = os.path.join(self.output_dir,outname+"_with-subqs.owl")
-        results.serialize(destination=subq_outpath, format='pretty-xml')
+        results.serialize(destination=subq_outpath)
         
         import sys
         sys.exit("testing")
