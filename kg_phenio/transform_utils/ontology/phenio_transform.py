@@ -14,7 +14,8 @@ ONTO_FILES = {
     'PhenioTransform': 'phenio-base.owl.tar.gz',
 }
 
-QUERY_PATH = 'kg_phenio/transform_utils/ontology/subq_construct.rq'
+#QUERY_PATH = 'kg_phenio/transform_utils/ontology/subq_construct.rq'
+QUERY_PATH = 'kg_phenio/transform_utils/ontology/subq_select.rq'
 
 class PhenioTransform(Transform):
     """
@@ -71,7 +72,7 @@ class PhenioTransform(Transform):
 
         print(f"Parsing {outname}")
 
-        relaxed_outpath = os.path.join(self.output_dir,outname+"_relaxed.owl")
+        relaxed_outpath = os.path.join(self.output_dir,outname[:-4]+"_relaxed.owl")
         if not os.path.exists(relaxed_outpath):
             print(f"ROBOT: relax {outname_path}")
             if not relax_ontology(self.robot_path, 
@@ -88,15 +89,15 @@ class PhenioTransform(Transform):
         results = run_local_query(query['query'], relaxed_outpath)
 
         # Write results to new file
-        subq_outpath = os.path.join(self.output_dir,outname+"_with-subqs.owl")
+        subq_outpath = os.path.join(self.output_dir,outname[:-4]+"_subqs.owl")
         results.serialize(destination=subq_outpath)
         
         import sys
         sys.exit("testing")
 
-        pregraph_outpath = os.path.join(self.output_dir,outname+"_with-subqs.json")
+        pregraph_outpath = os.path.join(self.output_dir,outname[:-4]+".json")
         if not robot_convert(self.robot_path, 
-                                relaxed_outpath,
+                                subq_outpath,
                                 pregraph_outpath,
                                 self.robot_env):
             print(f"Encountered error during robot convert of {source}.")

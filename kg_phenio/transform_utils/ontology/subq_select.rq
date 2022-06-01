@@ -1,6 +1,5 @@
-SELECT ?a ?bN1 ?bN2 ?p1 ?p2 ?b WHERE {
-  ?a <http://www.w3.org/2000/01/rdf-schema#subClassOf> ?bN1 .
-  ?bN2 <http://www.w3.org/2002/07/owl#onProperty> ?p1 .
-  ?bN2 <http://www.w3.org/2002/07/owl#someValuesFrom> ?bN2 .
-  ?bN2 <http://www.w3.org/2002/07/owl#onProperty> ?p2 .
-  ?bN2 <http://www.w3.org/2002/07/owl#someValuesFrom> ?b}
+SELECT ?a ?bN1 ?p1 ?b 
+WHERE {
+  ?a rdfs:subClassOf ?bN1 .
+  ?bN1 owl:onProperty ?p1 .
+  ?bN1 owl:someValuesFrom ?b}
