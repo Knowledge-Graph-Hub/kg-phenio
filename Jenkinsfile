@@ -123,14 +123,10 @@ pipeline {
             steps {
                 dir('./gitrepo') {
                     sh '. venv/bin/activate && python3.8 run.py merge -y merge.yaml'
-                    sh 'cp merged_graph_stats.yaml merged_graph_stats_$BUILDSTARTDATE.yaml'
-                    sh 'tar -rvfz data/merged/merged-kg.tar.gz merged_graph_stats_$BUILDSTARTDATE.yaml'
-                    sh 'tar -xvzf data/merged/merged-kg.tar.gz'   
-                    sh '. venv/bin/activate && python3.8 graph_prefixcats.py --input merged-kg_nodes.tsv --output merged-kg_nodes-prefixcats.tsv'
-                    sh 'tar -rvfz data/merged/merged-kg.tar.gz merged-kg_nodes-prefixcats.tsv'
-
+                    sh '. venv/bin/activate && python3.8 graph_prefixcats.py --input data/merged/merged-kg_nodes.tsv --output merged-kg_nodes-prefixcats.tsv'
                     sh '. venv/bin/activate && python3.8 generate_subgraphs.py --nodes merged-kg_nodes.tsv --edges merged-kg_edges.tsv'
-                    sh 'tar -rvfz data/merged/merged-kg.tar.gz pos_valid_edges.tsv neg_train_edges.tsv neg_valid_edges.tsv'
+		    sh 'cp merged_graph_stats.yaml merged_graph_stats_$BUILDSTARTDATE.yaml'
+                    sh 'tar -czvf merged-kg.tar.gz data/merged/merged-kg_nodes.tsv data/merged/merged-kg_edges.tsv merged_graph_stats_$BUILDSTARTDATE.yaml merged-kg_nodes-prefixcats.tsv pos_valid_edges.tsv neg_train_edges.tsv neg_valid_edges.tsv'
                 }
             }
         }
@@ -169,7 +165,7 @@ pipeline {
                                 //
                                 sh 'mkdir $BUILDSTARTDATE/'
                                 sh 'cp -p data/merged/${MERGEDKGNAME_BASE}.nt.gz $BUILDSTARTDATE/${MERGEDKGNAME_BASE}.nt.gz'
-                                sh 'cp -p data/merged/merged-kg.tar.gz $BUILDSTARTDATE/${MERGEDKGNAME_BASE}.tar.gz'
+                                sh 'cp -p merged-kg.tar.gz $BUILDSTARTDATE/${MERGEDKGNAME_BASE}.tar.gz'
 
                                 // transformed data
                                 sh 'rm -fr data/transformed/.gitkeep'
