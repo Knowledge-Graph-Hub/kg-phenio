@@ -4,6 +4,7 @@ import re
 from SPARQLWrapper import SPARQLWrapper, JSON # type: ignore
 import rdflib
 from rdflib import Graph
+from rdflib.plugins.sparql.processor import SPARQLResult
 
 def run_remote_query(query: str, endpoint: str, return_format=JSON) -> dict:
     sparql = SPARQLWrapper(endpoint)
@@ -13,7 +14,7 @@ def run_remote_query(query: str, endpoint: str, return_format=JSON) -> dict:
 
     return results # type: ignore
 
-def run_local_query(query: str, local_endpoint: str) -> dict:
+def run_local_query(query: str, local_endpoint: str) -> SPARQLResult:
     g = Graph()
     g.parse(local_endpoint)
     results = g.query(query)
