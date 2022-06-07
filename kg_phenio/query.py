@@ -14,15 +14,37 @@ def run_remote_query(query: str, endpoint: str, return_format=JSON) -> dict:
 
     return results # type: ignore
 
-def run_local_query(query: str, local_endpoint: str) -> SPARQLResult:
+def run_local_query(query: str, local_endpoint: str) -> tuple:
     g = Graph()
     g.parse(local_endpoint)
+    print(f"Parsed {len(g)} triples from {local_endpoint}.")
     results = g.query(query)
-    return results # type: ignore
+    print(f"Query yielded {len(results)} results.")
+    return (g, results) # type: ignore
 
-def update_graph(graph: Graph, addition: SPARQLResult) -> Graph:
-    g = graph
-    g.update(""" """) # This needs to be the parsed content of the addition
+def add_result_to_graph(graph: Graph, addition: SPARQLResult) -> Graph:
+    """
+    Given an RDF Graph and a query result, combines them and returns the
+    new graph.
+    """
+    print(f"Before update: {len(graph)} triples found.")
+    for result in addition:
+        # This may need to be more specific, either in the method call
+        # or as an INSERT query
+        graph.add(result)  
+    print(f"After update: {len(graph)} triples found.")
+    return graph
+
+def update_graph(graph: Graph, addition: Graph) -> Graph:
+    """
+    Given two RDF Graphs, combines them and returns the
+    new graph.
+    """
+    g = Graph()
+    g.parse(graph)
+    print(f"Before update: {len(g)} triples found.")
+    g.parse(addition)
+    print(f"After update: {len(g)} triples found.")
     return g # type: ignore
 
 def parse_query_rq(rq_file) -> dict:

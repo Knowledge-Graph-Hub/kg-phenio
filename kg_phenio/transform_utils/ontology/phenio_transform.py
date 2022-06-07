@@ -2,12 +2,10 @@ import os
 import tarfile
 from typing import Optional
 
-import rdflib
-
 from kg_phenio.transform_utils.transform import Transform
 from kg_phenio.utils.transform_utils import remove_obsoletes
 from kg_phenio.utils.robot_utils import initialize_robot, relax_ontology, robot_convert
-from kg_phenio.query import run_local_query, parse_query_rq
+from kg_phenio.query import run_local_query, parse_query_rq, add_result_to_graph
 from kgx.cli.cli_utils import transform # type: ignore
 
 ONTO_FILES = {
@@ -83,23 +81,29 @@ class PhenioTransform(Transform):
             print(f"Found relaxed ontology at {relaxed_outpath}")
 
         # SPARQL for subq's
-        query = parse_query_rq(QUERY_PATH)
-        print(f"Running query defined in {QUERY_PATH}...")
-        results = run_local_query(query['query'], relaxed_outpath)
-
-        # Write results to new file
         subq_outpath = relaxed_outpath[:-4]+"_subqs.owl"
-        results.serialize(destination=subq_outpath)
-        
-        pregraph_outpath = subq_outpath[:-4]+".json"
-        if not robot_convert(self.robot_path, 
-                                subq_outpath,
-                                pregraph_outpath,
-                                self.robot_env):
-            print(f"Encountered error during robot convert of {source}.")
+        if not os.path.exists(subq_outpath):
+            query = parse_query_rq(QUERY_PATH)
+            print(f"Running query defined in {QUERY_PATH}...")
+            (parsed_graph, results) = run_local_query(query['query'], relaxed_outpath)
+            print("Updating data with query results...")
+            updated_graph = add_result_to_graph(parsed_graph, results)
 
-        transform(inputs=[pregraph_outpath], 
-                    input_format='json',
+            # Write results to new file
+            print(f"Saving to {subq_outpath}...")
+            updated_graph.serialize(destination=subq_outpath)
+        else:
+            print(f"Found relaxed ontology with subqs relations at {subq_outpath}")
+        
+        #pregraph_outpath = subq_outpath[:-4]+".json"
+        #if not robot_convert(self.robot_path, 
+        #                        subq_outpath,
+        #                        pregraph_outpath,
+        #                        self.robot_env):
+        #    print(f"Encountered error during robot convert of {source}.")
+
+        transform(inputs=[subq_outpath], 
+                    input_format='owl',
                     output= os.path.join(self.output_dir, name), 
                     output_format='tsv',
                     stream=True)
