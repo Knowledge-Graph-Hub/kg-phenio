@@ -125,8 +125,10 @@ pipeline {
                     sh '. venv/bin/activate && python3.8 run.py merge -y merge.yaml'
                     sh '. venv/bin/activate && python3.8 graph_prefixcats.py --input data/merged/merged-kg_nodes.tsv --output merged-kg_nodes-prefixcats.tsv'
                     sh '. venv/bin/activate && python3.8 generate_subgraphs.py --nodes data/merged/merged-kg_nodes.tsv --edges data/merged/merged-kg_edges.tsv'
-		    sh 'cp merged_graph_stats.yaml merged_graph_stats_$BUILDSTARTDATE.yaml'
-                    sh 'tar -czvf merged-kg.tar.gz data/merged/merged-kg_nodes.tsv data/merged/merged-kg_edges.tsv merged_graph_stats_$BUILDSTARTDATE.yaml merged-kg_nodes-prefixcats.tsv pos_valid_edges.tsv neg_train_edges.tsv neg_valid_edges.tsv'
+		            sh 'cp merged_graph_stats.yaml merged_graph_stats_$BUILDSTARTDATE.yaml'
+                    sh 'mv data/merged/merged-kg_nodes.tsv .'
+                    sh 'mv data/merged/merged-kg_edges.tsv .'
+                    sh 'tar -czvf merged-kg.tar.gz merged-kg_nodes.tsv merged-kg_edges.tsv merged_graph_stats_$BUILDSTARTDATE.yaml merged-kg_nodes-prefixcats.tsv pos_valid_edges.tsv neg_train_edges.tsv neg_valid_edges.tsv'
                 }
             }
         }
