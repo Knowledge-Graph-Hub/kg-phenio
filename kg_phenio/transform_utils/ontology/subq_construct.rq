@@ -1,7 +1,8 @@
 CONSTRUCT { ?a rdfs:subClassOf [a owl:Restriction; owl:onProperty ?p2 ; owl:someValuesFrom ?b ] }
 WHERE {
   ?a rdfs:subClassOf ?bN1 .
-  ?bN2 owl:onProperty ?p1 .
-  ?bN2 owl:someValuesFrom ?bN2 .
+  ?bN1 owl:onProperty ?p1 .
+  ?bN1 owl:someValuesFrom ?bN2 .
   ?bN2 owl:onProperty ?p2 .
-  ?bN2 owl:someValuesFrom ?b}
+  ?bN2 owl:someValuesFrom ?b .
+  FILTER isIRI(?a)}

@@ -20,6 +20,11 @@ def run_local_query(query: str, local_endpoint: str) -> SPARQLResult:
     results = g.query(query)
     return results # type: ignore
 
+def update_graph(graph: Graph, addition: SPARQLResult) -> Graph:
+    g = graph
+    g.update(""" """) # This needs to be the parsed content of the addition
+    return g # type: ignore
+
 def parse_query_rq(rq_file) -> dict:
     """
 

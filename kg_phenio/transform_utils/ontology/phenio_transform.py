@@ -14,8 +14,7 @@ ONTO_FILES = {
     'PhenioTransform': 'phenio-base.owl.tar.gz',
 }
 
-#QUERY_PATH = 'kg_phenio/transform_utils/ontology/subq_construct.rq'
-QUERY_PATH = 'kg_phenio/transform_utils/ontology/subq_select.rq'
+QUERY_PATH = 'kg_phenio/transform_utils/ontology/subq_construct.rq'
 
 class PhenioTransform(Transform):
     """
@@ -89,13 +88,10 @@ class PhenioTransform(Transform):
         results = run_local_query(query['query'], relaxed_outpath)
 
         # Write results to new file
-        subq_outpath = os.path.join(self.output_dir,outname[:-4]+"_subqs.owl")
+        subq_outpath = relaxed_outpath[:-4]+"_subqs.owl"
         results.serialize(destination=subq_outpath)
         
-        import sys
-        sys.exit("testing")
-
-        pregraph_outpath = os.path.join(self.output_dir,outname[:-4]+".json")
+        pregraph_outpath = subq_outpath[:-4]+".json"
         if not robot_convert(self.robot_path, 
                                 subq_outpath,
                                 pregraph_outpath,
@@ -103,7 +99,7 @@ class PhenioTransform(Transform):
             print(f"Encountered error during robot convert of {source}.")
 
         transform(inputs=[pregraph_outpath], 
-                    input_format='owl',
+                    input_format='json',
                     output= os.path.join(self.output_dir, name), 
                     output_format='tsv',
                     stream=True)
