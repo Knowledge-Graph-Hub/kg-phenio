@@ -157,19 +157,19 @@ ApplyTrainedModelsContainer:
   #       - 'HP'
   #     destination:
   #       - 'MP'
-  - model_id: rf_0
-    cutoff: 0.9
-    outfile: rf_classifier_predictions_kgx.tsv
-    node_types:
-      source:
-        - "HP"
-      destination:
-        - "MP"
-  - model_id: lr_0
-    cutoff: 0.9
-    outfile: lr_classifier_predictions_kgx.tsv
-    node_types:
-      source:
-        - "HP"
-      destination:
-        - "MP"
+    - model_id: rf_0
+      cutoff: 0.9
+      outfile: rf_classifier_predictions_kgx.tsv
+      node_types:
+        source:
+          - "HP"
+        destination:
+          - "MP"
+    - model_id: lr_0
+      cutoff: 0.9
+      outfile: lr_classifier_predictions_kgx.tsv
+      node_types:
+        source:
+          - "HP"
+        destination:
+          - "MP"
