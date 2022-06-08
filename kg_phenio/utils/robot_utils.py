@@ -276,3 +276,45 @@ def robot_measure(robot_path: str, input_path: str, output_path: str,
         success = False
 
     return success
+
+def robot_query_construct(robot_path: str, input_path: str,
+                        query_path: str, 
+                        output_path: str, 
+                        robot_env: dict) -> bool:
+    """
+    This method runs the ROBOT query command on a single ontology,
+    assuming that the query is a CONSTRUCT.
+    This means the output will be RDF.
+
+    :param robot_path: Path to ROBOT files
+    :param input_path: Ontology file for input
+    :param query_path: Path to file containing SPARQL CONSTRUCT query
+    :param output_path: Path to create output file.
+                        The format will be identical to that of the input.
+    :param robot_env: dict of environment variables, including ROBOT_JAVA_ARGS
+    :return: True if completed without errors, False if errors
+    """
+    success = False
+
+    print(f"Running CONSTRUCT query from {query_path} on {input_path}...")
+
+    robot_command = sh.Command(robot_path)
+
+    format_name = input_path.split(".")[-1]
+
+    try:
+        robot_command('query',
+            '-vvv',
+            '--input', input_path,
+            '--output', output_path,
+            '--format', format_name,
+            '--query', query_path,
+            _env=robot_env,
+        )
+        print(f"Complete. See {output_path}")
+        success = True
+    except sh.ErrorReturnCode_1 as e: # If ROBOT runs but returns an error
+        print(f"ROBOT encountered an error: {e}")
+        success = False
+
+    return success
