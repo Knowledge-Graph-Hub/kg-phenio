@@ -277,7 +277,8 @@ def robot_measure(robot_path: str, input_path: str, output_path: str,
 
     return success
 
-def robot_query_construct(robot_path: str, input_path: str,
+def robot_query_construct(robot_path: str, 
+                        input_path: str,
                         query_path: str, 
                         output_path: str, 
                         robot_env: dict) -> bool:
@@ -306,9 +307,9 @@ def robot_query_construct(robot_path: str, input_path: str,
         robot_command('query',
             '-vvv',
             '--input', input_path,
-            '--output', output_path,
             '--format', format_name,
             '--query', query_path,
+            output_path,
             _env=robot_env,
         )
         print(f"Complete. See {output_path}")

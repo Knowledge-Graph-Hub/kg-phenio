@@ -1,18 +1,19 @@
 import os
+import sys
 import tarfile
 from typing import Optional
 
 from kg_phenio.transform_utils.transform import Transform
 from kg_phenio.utils.transform_utils import remove_obsoletes
-from kg_phenio.utils.robot_utils import initialize_robot, relax_ontology, robot_convert
-from kg_phenio.query import run_local_query, parse_query_rq, add_result_to_graph
+from kg_phenio.utils.robot_utils import initialize_robot, relax_ontology, robot_query_construct
+from kg_phenio.query import parse_query_rq
 from kgx.cli.cli_utils import transform # type: ignore
 
 ONTO_FILES = {
     'PhenioTransform': 'phenio-base.owl.tar.gz',
 }
 
-QUERY_PATH = 'kg_phenio/transform_utils/ontology/subq_construct.rq'
+QUERY_PATH = 'kg_phenio/transform_utils/ontology/subq_construct.sparql'
 
 class PhenioTransform(Transform):
     """
@@ -82,19 +83,27 @@ class PhenioTransform(Transform):
 
         # SPARQL for subq's
         subq_outpath = relaxed_outpath[:-4]+"_subqs.owl"
+        query_result_path = relaxed_outpath[:-4]+"_subqs_queryresult.owl"
         if not os.path.exists(subq_outpath):
-            query = parse_query_rq(QUERY_PATH)
             print(f"Running query defined in {QUERY_PATH}...")
-            (parsed_graph, results) = run_local_query(query['query'], relaxed_outpath)
-            print("Updating data with query results...")
-            updated_graph = add_result_to_graph(parsed_graph, results)
+            if not robot_query_construct(self.robot_path,
+                                        relaxed_outpath,
+                                        QUERY_PATH,
+                                        query_result_path,
+                                        self.robot_env):
+                print(f"Encountered error during robot query construct of {source}.")
+            else:
+                print("Updating data with query results...")
+                # Need to run a robot update here to get subq_outpath
 
-            # Write results to new file
-            print(f"Saving to {subq_outpath}...")
-            updated_graph.serialize(destination=subq_outpath)
+                # Write results to new file
+                #print(f"Saving to {subq_outpath}...")
+                #updated_graph.serialize(destination=subq_outpath, format='pretty-xml')
         else:
             print(f"Found relaxed ontology with subqs relations at {subq_outpath}")
         
+        sys.exit("Just testing!")
+
         #pregraph_outpath = subq_outpath[:-4]+".json"
         #if not robot_convert(self.robot_path, 
         #                        subq_outpath,
