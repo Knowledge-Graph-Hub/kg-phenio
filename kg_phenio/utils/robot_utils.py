@@ -321,7 +321,8 @@ def robot_query_construct(robot_path: str,
 def robot_query_update(robot_path: str, 
                         input_path: str,
                         query_path: str, 
-                        output_path: str, 
+                        output_path: str,
+                        use_temp_file: bool,
                         robot_env: dict) -> bool:
     """
     This method runs the ROBOT query command on a single ontology,
@@ -331,6 +332,8 @@ def robot_query_update(robot_path: str,
     :param input_path: Ontology file for input (i.e., to be updated)
     :param query_path: Path to file containing SPARQL Update query
     :param output_path: Path to create output file.
+    :param use_temp_file: bool, if True, save intermediate results to a temporary file
+    to save memory
     :param robot_env: dict of environment variables, including ROBOT_JAVA_ARGS
     :return: True if completed without errors, False if errors
     """
@@ -340,12 +343,18 @@ def robot_query_update(robot_path: str,
 
     robot_command = sh.Command(robot_path)
 
+    if use_temp_file:
+        temp_file_param = 'true'
+    else:
+        temp_file_param = 'false'
+
     try:
         robot_command('query',
             '-vvv',
             '--input', input_path,
             '--format', 'owl',
             '--update', query_path,
+            '--temporary-file', temp_file_param,
             '--output', output_path,
             _env=robot_env,
         )

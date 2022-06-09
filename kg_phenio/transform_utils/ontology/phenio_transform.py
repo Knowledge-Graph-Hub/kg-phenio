@@ -113,6 +113,7 @@ class PhenioTransform(Transform):
                                         relaxed_outpath,
                                         query_result_as_insert,
                                         subq_outpath,
+                                        True,
                                         self.robot_env):
                     print(f"Encountered error during robot query update of {source}.")
                     sys.exit("Cannot continue. Exiting...")
