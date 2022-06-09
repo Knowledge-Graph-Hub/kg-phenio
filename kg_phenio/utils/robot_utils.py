@@ -301,13 +301,11 @@ def robot_query_construct(robot_path: str,
 
     robot_command = sh.Command(robot_path)
 
-    format_name = input_path.split(".")[-1]
-
     try:
         robot_command('query',
             '-vvv',
             '--input', input_path,
-            '--format', format_name,
+            '--format', 'owl',
             '--query', query_path,
             output_path,
             _env=robot_env,
