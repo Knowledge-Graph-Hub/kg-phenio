@@ -78,6 +78,7 @@ class PhenioTransform(Transform):
                                 relaxed_outpath,
                                 self.robot_env):
                 print(f"Encountered error during robot relax of {source}.")
+                sys.exit("Cannot continue. Exiting...")
         else:
             print(f"Found relaxed ontology at {relaxed_outpath}")
 
@@ -92,6 +93,7 @@ class PhenioTransform(Transform):
                                         query_result_path,
                                         self.robot_env):
                 print(f"Encountered error during robot query construct of {source}.")
+                sys.exit("Cannot continue. Exiting...")
             else:
                 print("Updating data with query results...")
                 # Need to run a robot update here to get subq_outpath
