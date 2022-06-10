@@ -9,7 +9,7 @@ from kg_phenio.utils.robot_utils import initialize_robot, relax_ontology, robot_
 from kgx.cli.cli_utils import transform # type: ignore
 
 ONTO_FILES = {
-    'PhenioTransform': 'phenio-base.owl.tar.gz',
+    'PhenioTransform': 'phenio.owl',
 }
 
 QUERY_PATH = 'kg_phenio/transform_utils/ontology/subq_construct.sparql'
@@ -58,18 +58,18 @@ class PhenioTransform(Transform):
              None.
         """
 
-        outname = os.path.basename(data_file[:-7])
-        outname_path = os.path.join(self.output_dir, outname)
+        outname_path = os.path.join(self.output_dir, data_file)
         if not os.path.exists(outname_path):
-            print(f"Decompressing {data_file}")
-            with tarfile.open(data_file) as compfile:
-                compfile.extractall(self.output_dir)
+            if os.path.exists(os.path.join(self.output_dir, data_file+".tar.gz")):
+                print(f"Decompressing {data_file}")
+                with tarfile.open(data_file) as compfile:
+                    compfile.extractall(self.output_dir)
         else:
-            print(f"Found decompressed ontology at {outname_path}")
+            print(f"Found ontology at {outname_path}")
 
-        print(f"Parsing {outname}")
+        print(f"Parsing {data_file}")
 
-        relaxed_outpath = os.path.join(self.output_dir,outname[:-4]+"_relaxed.owl")
+        relaxed_outpath = os.path.join(self.output_dir,data_file[:-4]+"_relaxed.owl")
         if not os.path.exists(relaxed_outpath):
             print(f"ROBOT: relax {outname_path}")
             if not relax_ontology(self.robot_path, 
