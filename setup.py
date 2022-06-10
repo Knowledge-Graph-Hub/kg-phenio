@@ -4,6 +4,8 @@ import re
 from codecs import open as copen  # to use a consistent encoding
 from setuptools import find_packages, setup
 
+from post_setup.post_setup import robot_setup
+
 here = os.path.abspath(os.path.dirname(__file__))
 
 def read(*parts):
@@ -71,7 +73,11 @@ setup(
         'multi-indexer',
         'koza',
         'biolink_model_pydantic',
-        'ensmallen==0.7.0.dev19'
+        'ensmallen==0.7.0.dev19',
+        'sh',
+        'rdflib>=6.0.0'
     ],
     extras_require=extras,
 )
+
+robot_setup()

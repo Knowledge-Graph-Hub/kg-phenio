@@ -7,21 +7,11 @@
 ---
 
 #
-# **** ROBOT ****
+# phenio-base.owl
 #
 -
-  url: https://github.com/ontodev/robot/releases/download/v1.8.3/robot.jar
-  local_name: robot.jar
--
-  url: https://raw.githubusercontent.com/ontodev/robot/master/bin/robot
-  local_name: robot
-
-#
-# monarch-merged.owl
-#
--
-  url: https://data-test.monarchinitiative.org/latest/owl/monarch-merged.owl
-  local_name: monarch-merged.owl
+  url: https://github.com/monarch-initiative/phenio/releases/download/2022-05-27/phenio.owl
+  local_name: phenio.owl
 
 #
 # Current Upheno mappings.

@@ -1,7 +1,7 @@
 import unittest
 from parameterized import parameterized
 from kg_phenio.utils.transform_utils import guess_bl_category, collapse_uniprot_curie
-from kg_phenio.transform_utils.ontology import MonarchTransform
+from kg_phenio.transform_utils.ontology import PhenioTransform
 
 class TestTransformUtils(unittest.TestCase):
     @parameterized.expand([
