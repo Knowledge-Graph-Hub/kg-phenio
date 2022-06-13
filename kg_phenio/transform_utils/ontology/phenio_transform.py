@@ -58,22 +58,23 @@ class PhenioTransform(Transform):
              None.
         """
 
-        outname_path = os.path.join(self.output_dir, data_file)
-        if not os.path.exists(outname_path):
-            if os.path.exists(os.path.join(self.output_dir, data_file+".tar.gz")):
+        if not os.path.exists(data_file):
+            if os.path.exists(data_file+".tar.gz"):
                 print(f"Decompressing {data_file}")
                 with tarfile.open(data_file) as compfile:
-                    compfile.extractall(self.output_dir)
+                    compfile.extractall(self.input_base_dir)
         else:
-            print(f"Found ontology at {outname_path}")
+            print(f"Found ontology at {data_file}")
 
         print(f"Parsing {data_file}")
 
-        relaxed_outpath = os.path.join(self.output_dir,data_file[:-4]+"_relaxed.owl")
+        data_filename = os.path.basename(data_file)
+
+        relaxed_outpath = os.path.join(self.output_dir,data_filename[:-4]+"_relaxed.owl")
         if not os.path.exists(relaxed_outpath):
-            print(f"ROBOT: relax {outname_path}")
+            print(f"ROBOT: relax {data_file}")
             if not relax_ontology(self.robot_path, 
-                                outname_path,
+                                data_file,
                                 relaxed_outpath,
                                 self.robot_env):
                 print(f"Encountered error during robot relax of {source}.")
