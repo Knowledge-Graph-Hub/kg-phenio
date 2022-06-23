@@ -3,8 +3,6 @@
 
 import os
 from typing import Optional
-import gzip
-import shutil
 
 from kg_phenio.transform_utils.transform import Transform
 from koza.cli_runner import transform_source #type: ignore

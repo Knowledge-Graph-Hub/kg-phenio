@@ -2,23 +2,6 @@
 configuration:
   output_directory: data/merged
   checkpoint: false
-  property_types:
-    # define the type for non-canonical node/edge properties
-    combined_score: 'xsd:float'
-    confidence_score: 'xsd:float'
-    neighborhood: 'xsd:float'
-    neighborhood_transferred: 'xsd:float'
-    fusion: 'xsd:float'
-    cooccurence: 'xsd:float'
-    homology: 'xsd:float'
-    coexpression: 'xsd:float'
-    coexpression_transferred: 'xsd:float'
-    experiments: 'xsd:float'
-    experiments_transferred: 'xsd:float'
-    database: 'xsd:float'
-    database_transferred: 'xsd:float'
-    textmining: 'xsd:float'
-    textmining_transferred: 'xsd:float'
 
 merged_graph:
   name: KG-PHENIO
@@ -28,8 +11,8 @@ merged_graph:
       input:
         format: tsv
         filename:
-          - data/transformed/monarch-merged/MonarchTransform_nodes.tsv
-          - data/transformed/monarch-merged/MonarchTransform_edges.tsv
+          - data/transformed/phenio/PhenioTransform_nodes.tsv
+          - data/transformed/phenio/PhenioTransform_edges.tsv
   operations:
     - name: kgx.graph_operations.summarize_graph.generate_graph_stats
       args:

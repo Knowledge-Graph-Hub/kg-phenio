@@ -3,7 +3,7 @@
 import logging
 from typing import List
 
-from kg_phenio.transform_utils.ontology.phenio_transform import PhenioTransform
+from kg_phenio.transform_utils.phenio.phenio_transform import PhenioTransform
 from kg_phenio.transform_utils.upheno.upheno_map_transform import UphenoMapTransform
 
 

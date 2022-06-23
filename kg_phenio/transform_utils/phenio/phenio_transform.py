@@ -12,7 +12,7 @@ ONTO_FILES = {
     'PhenioTransform': 'phenio.owl',
 }
 
-QUERY_PATH = 'kg_phenio/transform_utils/ontology/subq_construct.sparql'
+QUERY_PATH = 'kg_phenio/transform_utils/phenio/subq_construct.sparql'
 
 class PhenioTransform(Transform):
     """
