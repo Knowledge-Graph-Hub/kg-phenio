@@ -6,8 +6,8 @@ configuration:
 merged_graph:
   name: KG-PHENIO
   source:
-    monarch-merged:
-      name: "Monarch Ontologies - Merged"
+    phenio-merged:
+      name: "PHENIO"
       input:
         format: tsv
         filename:
