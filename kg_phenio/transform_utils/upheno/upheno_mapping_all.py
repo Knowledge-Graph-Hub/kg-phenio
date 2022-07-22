@@ -6,11 +6,11 @@ from biolink_model_pydantic.model import ( #type: ignore
     Predicate
 )
 
-from koza.cli_runner import koza_app #type: ignore
+from koza.cli_runner import get_koza_app #type: ignore
 
 source_name="upheno_mapping_all"
-
-row = koza_app.get_row(source_name)
+koza_app = get_koza_app(source_name)
+row = koza_app.get_row()
 
 # We just want mouse (MP) and human (HP) phenotypes.
 desired_types = ["MP","HP"]
