@@ -129,6 +129,6 @@ class PhenioTransform(Transform):
                     output_format='tsv',
                     stream=True)
 
-        remove_obsoletes(os.path.join(self.output_dir, name + "_nodes.tsv"),
-                        os.path.join(self.output_dir, name + "_edges.tsv"))
+        # remove_obsoletes(os.path.join(self.output_dir, name + "_nodes.tsv"),
+        #                os.path.join(self.output_dir, name + "_edges.tsv"))
 
