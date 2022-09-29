@@ -1,9 +1,10 @@
 import os
+import sys
 import tarfile
 from typing import Optional
 
 from kg_phenio.transform_utils.transform import Transform
-from kg_phenio.utils.robot_utils import initialize_robot
+from kg_phenio.utils.robot_utils import initialize_robot, merge_and_convert_ontology
 from kgx.cli.cli_utils import transform  # type: ignore
 
 ONTO_FILES = {
@@ -67,10 +68,18 @@ class PhenioTransform(Transform):
         else:
             print(f"Found ontology at {data_file}")
 
-        print(f"Parsing {data_file}")
+        data_file_json = os.path.splitext(data_file)[0] + ".json"
+        print(f"Converting {data_file} to {data_file_json}...")
 
-        transform(inputs=[data_file],
-                  input_format='owl',
+        if not merge_and_convert_ontology(robot_path=self.robot_path,
+                                          input_path=data_file,
+                                          output_path=data_file_json,
+                                          robot_env=self.robot_env
+        ):
+            sys.exit(f"Failed to convert {data_file}!")
+
+        transform(inputs=[data_file_json],
+                  input_format='obojson',
                   output=os.path.join(self.output_dir, name),
                   output_format='tsv',
                   stream=True)
