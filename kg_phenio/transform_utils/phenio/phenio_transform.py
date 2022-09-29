@@ -1,11 +1,10 @@
 import os
-import sys
 import tarfile
 from typing import Optional
 
 from kg_phenio.transform_utils.transform import Transform
-from kg_phenio.utils.robot_utils import initialize_robot, relax_ontology, robot_query_construct, robot_query_update
-from kgx.cli.cli_utils import transform # type: ignore
+from kg_phenio.utils.robot_utils import initialize_robot
+from kgx.cli.cli_utils import transform  # type: ignore
 
 ONTO_FILES = {
     'PhenioTransform': 'phenio.owl',
@@ -13,20 +12,23 @@ ONTO_FILES = {
 
 QUERY_PATH = 'kg_phenio/transform_utils/phenio/subq_construct.sparql'
 
+
 class PhenioTransform(Transform):
     """
     PhenioTransform parses the phenio OWL into nodes and edges.
     """
+
     def __init__(self, input_dir: str = None, output_dir: str = None):
         source_name = "phenio"
         super().__init__(source_name, input_dir, output_dir)
 
         print("Setting up ROBOT...")
-        self.robot_path = os.path.join(os.getcwd(),"robot")
+        self.robot_path = os.path.join(os.getcwd(), "robot")
         self.robot_params = initialize_robot(self.robot_path)
         print(f"ROBOT path: {self.robot_path}")
         self.robot_env = self.robot_params[1]
-        print(f"ROBOT evironment variables: {self.robot_env['ROBOT_JAVA_ARGS']}")
+        print(
+            f"ROBOT evironment variables: {self.robot_env['ROBOT_JAVA_ARGS']}")
 
     def run(self, data_file: Optional[str] = None) -> None:
         """Method is called and performs needed transformations to process
@@ -68,10 +70,9 @@ class PhenioTransform(Transform):
         print(f"Parsing {data_file}")
 
         data_filename = os.path.basename(data_file)
-        
-        transform(inputs=[data_filename], 
-                    input_format='owl',
-                    output= os.path.join(self.output_dir, name), 
-                    output_format='tsv',
-                    stream=True)
 
+        transform(inputs=[data_filename],
+                  input_format='owl',
+                  output=os.path.join(self.output_dir, name),
+                  output_format='tsv',
+                  stream=True)
