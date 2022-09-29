@@ -69,7 +69,6 @@ class PhenioTransform(Transform):
             print(f"Found ontology at {data_file}")
 
         data_file_json = os.path.splitext(data_file)[0] + ".json"
-        print(f"Converting {data_file} to {data_file_json}...")
 
         if not merge_and_convert_ontology(robot_path=self.robot_path,
                                           input_path=data_file,
