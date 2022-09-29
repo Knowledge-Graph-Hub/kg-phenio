@@ -1,6 +1,8 @@
 # kg-phenio
 
-A graph for machine learning experiments on ontologies.
+A graph for accessing and comparing knowledge concerning phenotypes across species and genetic backgrounds.
+
+Also great for ontology-based graph machine learning experiments.
 
 [Please see the repo project for an overview.](https://github.com/Knowledge-Graph-Hub/kg-phenio/projects/1)
 
