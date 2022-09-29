@@ -69,9 +69,7 @@ class PhenioTransform(Transform):
 
         print(f"Parsing {data_file}")
 
-        data_filename = os.path.basename(data_file)
-
-        transform(inputs=[data_filename],
+        transform(inputs=[data_file],
                   input_format='owl',
                   output=os.path.join(self.output_dir, name),
                   output_format='tsv',
