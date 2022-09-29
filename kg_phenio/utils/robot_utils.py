@@ -125,7 +125,7 @@ def merge_and_convert_ontology(robot_path: str, input_path: str, output_path: st
             '--input', input_path,
             'convert', 
             '--output', output_path,
-            '--vvv',
+            '-vvv',
             _env=robot_env,
             _timeout=10800 
         )
