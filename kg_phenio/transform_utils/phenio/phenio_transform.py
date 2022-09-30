@@ -68,15 +68,44 @@ class PhenioTransform(Transform):
         else:
             print(f"Found ontology at {data_file}")
 
+        # Check validity of owl before transforming.
+        # Repair errors if the repair doesn't remove
+        # information (i.e., no node or edge loss).
+        # This is necessary for PHENIO because it's large
+        # and may contain errors impacting transform to
+        # nodes/edges.
+        # For now, this means removing empty synonyms, xrefs, and comments.
+        print("Checking for errors...")
+        offending_lines = ['<oboInOwl:hasNarrowSynonym></oboInOwl:hasNarrowSynonym>',
+                           '<oboInOwl:hasBroadSynonym></oboInOwl:hasBroadSynonym>',
+                           '<oboInOwl:hasExactSynonym></oboInOwl:hasExactSynonym>',
+                           '<oboInOwl:hasRelatedSynonym></oboInOwl:hasRelatedSynonym>',
+                           '<oboInOwl:hasDbXref></oboInOwl:hasDbXref>',
+                           '<rdfs:comment></rdfs:comment>']
+        data_file_tmp = data_file + ".tmp"
+        with open(data_file, "r") as infile:
+            with open(data_file_tmp, "w") as outfile:
+                linenum = 0
+                for line in infile:
+                    linenum = linenum + 1
+                    if line.strip() not in offending_lines:
+                        outfile.write(line)
+                    else:
+                        print(
+                            f"Found error at line {linenum}: {line.strip()}.")
+        os.replace(data_file_tmp, data_file)
+
+        # Convert to obojson.
         data_file_json = os.path.splitext(data_file)[0] + ".json"
 
         if not robot_convert(robot_path=self.robot_path,
-                                          input_path=data_file,
-                                          output_path=data_file_json,
-                                          robot_env=self.robot_env
-        ):
+                             input_path=data_file,
+                             output_path=data_file_json,
+                             robot_env=self.robot_env
+                             ):
             sys.exit(f"Failed to convert {data_file}!")
 
+        # Now do that transform.
         transform(inputs=[data_file_json],
                   input_format='obojson',
                   output=os.path.join(self.output_dir, name),
