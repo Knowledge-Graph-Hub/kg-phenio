@@ -3,10 +3,12 @@
 import os
 
 import click
+from cv2 import normalize
 from kg_phenio import download as kg_download
 from kg_phenio import transform as kg_transform
 from kg_phenio.merge_utils.merge_kg import load_and_merge
 from kg_phenio.transform import DATA_SOURCES
+from kg_phenio.normalize import normalize
 
 
 @click.group()
@@ -80,6 +82,7 @@ def merge(yaml: str, processes: int) -> None:
     """
 
     load_and_merge(yaml, processes)
+    normalize()
 
 if __name__ == "__main__":
     cli()

@@ -31,4 +31,5 @@ def load_and_merge(yaml_file: str, processes: int = 1) -> nx.MultiDiGraph:
 
     """
     merged_graph = merge(yaml_file, processes=processes)
+
     return merged_graph
