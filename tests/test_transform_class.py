@@ -88,6 +88,7 @@ class TestTransform(TestCase):
 
 class TransformChildClass(Transform):
     """A test child version of the Transform class."""
+    
     def __init__(self):
         """Initialize a Transform class instance."""
         super().__init__(source_name="test_transform")

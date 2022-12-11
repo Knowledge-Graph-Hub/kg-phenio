@@ -68,7 +68,7 @@ def get_header_items(table_data: Any) -> List:
     return header_items
 
 
-def write_node_edge_item(fh: Any, header: List, data: List, sep: str = r"\t"):
+def write_node_edge_item(fh: Any, header: List, data: List, sep: str = r"""\t"""):
     """Write out a single line for a node or an edge in *.tsv.
 
     :param fh: file handle of node or edge file
@@ -99,7 +99,8 @@ def get_item_by_priority(items_dict: dict, keys_by_priority: list) -> str:
             value = items_dict[key]
             break
     if value is None:
-        raise ItemInDictNotFoundError("Can't find item in items_dict {}".format(items_dict))
+        raise ItemInDictNotFoundError("Can't find item in items_dict {}"\
+            .format(items_dict))
     return value
 
 
