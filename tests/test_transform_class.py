@@ -9,6 +9,8 @@ from kg_phenio.transform_utils.transform import Transform
 
 
 class TestTransform(TestCase):
+    """Test class for transformations."""
+
     def setUp(self) -> None:
         self.transform_instance = TransformChildClass()
 
@@ -43,6 +45,7 @@ class TestTransform(TestCase):
         ]
     )
     def test_attributes(self, attr, default):
+        """Test attributes of transformation instance."""
         self.transform_instance
         self.assertTrue(hasattr(self.transform_instance, attr))
         self.assertEqual(getattr(self.transform_instance, attr), default)
@@ -58,11 +61,12 @@ class TestTransform(TestCase):
     )
     def test_transform_child_classes(self, src_name):
         """
-        Make sure Transform child classes:
+        Make sure Transform child classes are as expected.
+
+        They should:
         - properly set default input_dir and output_dir
         - properly pass and set input_dir and output from constructor
         - implement run()
-
         :param src_name:
         :return: None
         """

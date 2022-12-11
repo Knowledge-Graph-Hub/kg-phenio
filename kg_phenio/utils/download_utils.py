@@ -12,17 +12,16 @@ from tqdm.auto import tqdm  # type: ignore
 def download_from_yaml(
     yaml_file: str, output_dir: str, ignore_cache: bool = False
 ) -> None:
-    """Given an download info from an download.yaml file, download all files
+    """Download all files specified in the yaml file.
 
     Args:
-        yaml_file: A string pointing to the download.yaml file, to be parsed for things to download.
+        yaml_file: A string pointing to the download.yaml file.
         output_dir: A string pointing to where to write out downloaded files.
         ignore_cache: Ignore cache and download files even if they exist [false]
 
     Returns:
         None.
     """
-
     os.makedirs(output_dir, exist_ok=True)
     with open(yaml_file) as f:
         data = yaml.load(f, Loader=yaml.FullLoader)
@@ -47,7 +46,7 @@ def download_from_yaml(
                     continue
 
             req = Request(item["url"], headers={"User-Agent": "Mozilla/5.0"})
-            with urlopen(req) as response, open(outfile, "wb") as out_file:  # type: ignore
+            with urlopen(req) as response, open(outfile, "wb") as out_file:
                 data = response.read()  # a `bytes` object
                 out_file.write(data)
 

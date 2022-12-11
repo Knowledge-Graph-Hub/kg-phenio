@@ -1,4 +1,4 @@
-"""Run transforms defined by transform_utils"""
+"""Run transforms defined by transform_utils."""
 import logging
 from typing import List
 
@@ -12,8 +12,7 @@ DATA_SOURCES = {
 
 
 def transform(input_dir: str, output_dir: str, sources: List[str] = None) -> None:
-    """Call scripts in kg_phenio/transform/[source name]/ to transform each source into a graph format that
-    KGX can ingest directly
+    """Call scripts in kg_phenio/transform/[source name]/ to transform each source.
 
     Args:
         input_dir: A string pointing to the directory to import data from.

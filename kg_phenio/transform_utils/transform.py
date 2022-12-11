@@ -4,7 +4,7 @@ from typing import Optional
 
 
 class Transform:
-    """Parent class for transforms, that sets up a lot of default file info"""
+    """Parent class for transforms, that sets up a lot of default file info."""
 
     DEFAULT_INPUT_DIR = os.path.join("data", "raw")
     DEFAULT_OUTPUT_DIR = os.path.join("data", "transformed")
@@ -16,7 +16,7 @@ class Transform:
         output_dir: str = None,
         nlp: bool = False,
     ):
-        # default columns, can be appended to or overwritten as necessary
+        """Write defaults; can be appended to or overwritten as necessary."""
         self.source_name = source_name
         self.node_header = ["id", "name", "category"]
         self.edge_header = [
@@ -41,4 +41,5 @@ class Transform:
         os.makedirs(self.output_dir, exist_ok=True)
 
     def run(self, data_file: Optional[str] = None):
+        """Run that transform."""
         pass

@@ -16,8 +16,8 @@ def parse_load_config(yaml_file: str) -> Dict:
         Dict: The config as a dictionary.
 
     """
-    with open(yaml_file) as YML:
-        config = yaml.load(YML, Loader=yaml.FullLoader)
+    with open(yaml_file) as yml:
+        config = yaml.load(yml, Loader=yaml.FullLoader)
     return config
 
 

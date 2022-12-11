@@ -5,8 +5,7 @@ from kg_phenio.__version__ import __version__
 
 
 def test_version():
-    """Tests the package version."""
-
+    """Test the package version."""
     assert validate_version_code(__version__)
 
     return None

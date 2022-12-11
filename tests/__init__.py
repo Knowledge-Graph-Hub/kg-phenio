@@ -1,1 +1,1 @@
-'''Init tests.'''
+"""Init tests."""

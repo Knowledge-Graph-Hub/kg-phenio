@@ -7,7 +7,6 @@ from koza.cli_runner import transform_source  # type: ignore
 
 from kg_phenio.transform_utils.transform import Transform
 
-
 UPHENO_SOURCES = {
     "UPHENO_ALL": "upheno_mapping_all.csv",
 }
@@ -20,7 +19,8 @@ TRANSLATION_TABLE = "./kg_phenio/transform_utils/translation_table.yaml"
 
 
 class UphenoMapTransform(Transform):
-    """This transform ingests the table of all Upheno mappings by species.
+    """Ingest the table of all Upheno mappings by species.
+
     It is transformed to KGX nodes/edges.
     This could also handle other similar mappings, e.g., from
     https://github.com/mapping-commons/mh_mapping_initiative/tree/master/mappings
@@ -29,13 +29,12 @@ class UphenoMapTransform(Transform):
     """
 
     def __init__(self, input_dir: str = None, output_dir: str = None) -> None:
+        """Initialize the default source name."""
         source_name = "upheno_mapping"
         super().__init__(source_name, input_dir, output_dir)
 
     def run(self, upheno_file: Optional[str] = None) -> None:  # type: ignore
-        """
-        Set up the Upheno mapping for Koza and call the parse function.
-        """
+        """Set up the Upheno mapping for Koza and call the parse function."""
         if upheno_file:
             for source in [upheno_file]:
                 k = source.split(".")[0]
@@ -48,9 +47,7 @@ class UphenoMapTransform(Transform):
                 self.parse(name, data_file, k)
 
     def parse(self, name: str, data_file: str, source: str) -> None:
-        """
-        Transform Upheno file with Koza.
-        """
+        """Transform Upheno file with Koza."""
         print(f"Parsing {data_file}")
         config = os.path.join(
             "kg_phenio/transform_utils/upheno/", UPHENO_CONFIGS[source]
