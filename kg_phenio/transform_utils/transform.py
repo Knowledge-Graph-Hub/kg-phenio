@@ -12,9 +12,8 @@ class Transform:
     def __init__(
         self,
         source_name,
-        input_dir: str = None,
-        output_dir: str = None,
-        nlp: bool = False,
+        input_dir: str = "",
+        output_dir: str = "",
     ):
         """Write defaults; can be appended to or overwritten as necessary."""
         self.source_name = source_name

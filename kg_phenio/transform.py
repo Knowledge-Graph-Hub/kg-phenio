@@ -12,7 +12,7 @@ DATA_SOURCES = {
 }
 
 
-def transform(input_dir: str, output_dir: str, sources: List[str] = None) -> None:
+def transform(input_dir: str, output_dir: str, sources: List[str] = [""]) -> None:
     """Call scripts in kg_phenio/transform/[source name]/ to transform each source.
 
     Args:

@@ -19,7 +19,7 @@ QUERY_PATH = "kg_phenio/transform_utils/phenio/subq_construct.sparql"
 class PhenioTransform(Transform):
     """Parse the PHENIO OWL into nodes and edges."""
 
-    def __init__(self, input_dir: str = None, output_dir: str = None):
+    def __init__(self, input_dir: str = "", output_dir: str = ""):
         """Set defaults for PHENIO and set up ROBOT."""
         source_name = "phenio"
         super().__init__(source_name, input_dir, output_dir)
