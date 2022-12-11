@@ -1,14 +1,15 @@
-#!/usr/bin/env python
-# -*- coding: utf-8 -*-
+"""Utilities for working with ROBOT."""
 
 import os
-import sh # type: ignore
-from sh import chmod # type: ignore
+
+import sh  # type: ignore
+from sh import chmod  # type: ignore
 
 from post_setup.post_setup import robot_setup
 
 # Note that sh module can take environment variables, see
 # https://amoffat.github.io/sh/sections/special_arguments.html#env
+
 
 def initialize_robot(robot_path: str) -> list:
     """
@@ -23,23 +24,25 @@ def initialize_robot(robot_path: str) -> list:
     # We may have made it this far without installing ROBOT, so do that now if needed
     if not os.path.exists(robot_path):
         robot_setup()
-    
+
     # Make sure it's executable
-    chmod("+x","robot")
+    chmod("+x", "robot")
 
     # Declare environment variables
     env = os.environ.copy()
-    env['ROBOT_JAVA_ARGS'] = '-Xmx12g -XX:+UseG1GC'  # For JDK 10 and over
+    env["ROBOT_JAVA_ARGS"] = "-Xmx12g -XX:+UseG1GC"  # For JDK 10 and over
 
     try:
         robot_command = sh.Command(robot_path)
-    except sh.CommandNotFound: # If for whatever reason ROBOT isn't available
+    except sh.CommandNotFound:  # If for whatever reason ROBOT isn't available
         robot_command = None
 
     return [robot_command, env]
 
 
-def relax_ontology(robot_path: str, input_path: str, output_path: str, robot_env: dict) -> bool:
+def relax_ontology(
+    robot_path: str, input_path: str, output_path: str, robot_env: dict
+) -> bool:
     """
     This method runs the ROBOT relax command on a single ontology.
     Has a three-hour timeout limit - process is killed if it takes this long.
@@ -57,22 +60,28 @@ def relax_ontology(robot_path: str, input_path: str, output_path: str, robot_env
     robot_command = sh.Command(robot_path)
 
     try:
-        robot_command('relax',
-            '--input', input_path, 
-            '--output', output_path,
-            '-vvv',
+        robot_command(
+            "relax",
+            "--input",
+            input_path,
+            "--output",
+            output_path,
+            "-vvv",
             _env=robot_env,
-            _timeout=10800 
+            _timeout=10800,
         )
         print("Complete.")
         success = True
-    except sh.ErrorReturnCode_1 as e: # If ROBOT runs but returns an error
+    except sh.ErrorReturnCode_1 as e:  # If ROBOT runs but returns an error
         print(f"ROBOT encountered an error: {e}")
         success = False
 
     return success
 
-def robot_convert(robot_path: str, input_path: str, output_path: str, robot_env: dict) -> bool:
+
+def robot_convert(
+    robot_path: str, input_path: str, output_path: str, robot_env: dict
+) -> bool:
     """
     This method runs a ROBOT convert command on a single ontology.
     :param robot_path: Path to ROBOT files
@@ -89,21 +98,27 @@ def robot_convert(robot_path: str, input_path: str, output_path: str, robot_env:
     robot_command = sh.Command(robot_path)
 
     try:
-        robot_command('convert',
-            '--input', input_path,
-            '--output', output_path,
-            '-vvv',
-            _env=robot_env
+        robot_command(
+            "convert",
+            "--input",
+            input_path,
+            "--output",
+            output_path,
+            "-vvv",
+            _env=robot_env,
         )
         print("Complete.")
         success = True
-    except sh.ErrorReturnCode_1 as e: # If ROBOT runs but returns an error
+    except sh.ErrorReturnCode_1 as e:  # If ROBOT runs but returns an error
         print(f"ROBOT encountered an error: {e}")
         success = False
 
     return success
 
-def merge_and_convert_ontology(robot_path: str, input_path: str, output_path: str, robot_env: dict) -> bool:
+
+def merge_and_convert_ontology(
+    robot_path: str, input_path: str, output_path: str, robot_env: dict
+) -> bool:
     """
     This method runs a merge and convert ROBOT command on a single ontology.
     Has a three-hour timeout limit - process is killed if it takes this long.
@@ -121,23 +136,29 @@ def merge_and_convert_ontology(robot_path: str, input_path: str, output_path: st
     robot_command = sh.Command(robot_path)
 
     try:
-        robot_command('merge',
-            '--input', input_path,
-            'convert', 
-            '--output', output_path,
-            '-vvv',
+        robot_command(
+            "merge",
+            "--input",
+            input_path,
+            "convert",
+            "--output",
+            output_path,
+            "-vvv",
             _env=robot_env,
-            _timeout=10800 
+            _timeout=10800,
         )
         print("Complete.")
         success = True
-    except sh.ErrorReturnCode_1 as e: # If ROBOT runs but returns an error
+    except sh.ErrorReturnCode_1 as e:  # If ROBOT runs but returns an error
         print(f"ROBOT encountered an error: {e}")
         success = False
 
     return success
 
-def measure_ontology(robot_path: str, input_path: str, output_log: str, robot_env: dict) -> bool:
+
+def measure_ontology(
+    robot_path: str, input_path: str, output_log: str, robot_env: dict
+) -> bool:
     """
     This method runs the ROBOT measure command on a single ontology.
     Yields all metrics as string and as a log file.
@@ -154,26 +175,33 @@ def measure_ontology(robot_path: str, input_path: str, output_log: str, robot_en
 
     robot_command = sh.Command(robot_path)
 
-    profile = 'Full'
+    profile = "Full"
 
     try:
-        robot_command('measure',
-            '--input', input_path,
-            '--format', 'tsv',
-            '--metrics', 'all',
-            '--output', output_log,
+        robot_command(
+            "measure",
+            "--input",
+            input_path,
+            "--format",
+            "tsv",
+            "--metrics",
+            "all",
+            "--output",
+            output_log,
             _env=robot_env,
         )
         print(f"Complete. See log in {output_log}")
         success = True
-    except sh.ErrorReturnCode_1 as e: # If ROBOT runs but returns an error
+    except sh.ErrorReturnCode_1 as e:  # If ROBOT runs but returns an error
         print(f"ROBOT encountered an error: {e}")
         success = False
 
     return success
 
-def robot_remove(robot_path: str, input_path: str, output_path: str, 
-                term: str, robot_env: dict) -> bool:
+
+def robot_remove(
+    robot_path: str, input_path: str, output_path: str, term: str, robot_env: dict
+) -> bool:
     """
     This method runs the ROBOT remove command on a single ontology.
 
@@ -190,26 +218,32 @@ def robot_remove(robot_path: str, input_path: str, output_path: str,
 
     robot_command = sh.Command(robot_path)
 
-    profile = 'Full'
+    profile = "Full"
 
     try:
-        robot_command('remove',
-            '-vvv',
-            '--input', input_path,
-            '--term', term,
-            '--output', output_path,
+        robot_command(
+            "remove",
+            "-vvv",
+            "--input",
+            input_path,
+            "--term",
+            term,
+            "--output",
+            output_path,
             _env=robot_env,
         )
         print(f"Complete. See {output_path}")
         success = True
-    except sh.ErrorReturnCode_1 as e: # If ROBOT runs but returns an error
+    except sh.ErrorReturnCode_1 as e:  # If ROBOT runs but returns an error
         print(f"ROBOT encountered an error: {e}")
         success = False
 
     return success
 
-def robot_report(robot_path: str, input_path: str, output_path: str, 
-                 robot_env: dict) -> bool:
+
+def robot_report(
+    robot_path: str, input_path: str, output_path: str, robot_env: dict
+) -> bool:
     """
     This method runs the ROBOT report command on a single ontology.
 
@@ -226,15 +260,19 @@ def robot_report(robot_path: str, input_path: str, output_path: str,
     robot_command = sh.Command(robot_path)
 
     try:
-        robot_command('report',
-            '--input', input_path,
-            '--output', output_path,
-            '--format', 'tsv',
+        robot_command(
+            "report",
+            "--input",
+            input_path,
+            "--output",
+            output_path,
+            "--format",
+            "tsv",
             _env=robot_env,
         )
         print(f"No errors here! See {output_path}")
         success = True
-    except sh.ErrorReturnCode_1 as e: # If ROBOT runs but returns an error
+    except sh.ErrorReturnCode_1 as e:  # If ROBOT runs but returns an error
         # For report, this is expected, as the error may be
         # in the target ontology.
         print(f"ROBOT report results: {e}\nSee {output_path}")
@@ -242,8 +280,10 @@ def robot_report(robot_path: str, input_path: str, output_path: str,
 
     return success
 
-def robot_measure(robot_path: str, input_path: str, output_path: str, 
-                robot_env: dict) -> bool:
+
+def robot_measure(
+    robot_path: str, input_path: str, output_path: str, robot_env: dict
+) -> bool:
     """
     This method runs the ROBOT measure command on a single ontology,
     returning all metrics.
@@ -261,27 +301,31 @@ def robot_measure(robot_path: str, input_path: str, output_path: str,
     robot_command = sh.Command(robot_path)
 
     try:
-        robot_command('measure',
-            '-vvv',
-            '--input', input_path,
-            '--output', output_path,
-            '--format', 'tsv',
-            '--metrics', 'all',
+        robot_command(
+            "measure",
+            "-vvv",
+            "--input",
+            input_path,
+            "--output",
+            output_path,
+            "--format",
+            "tsv",
+            "--metrics",
+            "all",
             _env=robot_env,
         )
         print(f"Complete. See {output_path}")
         success = True
-    except sh.ErrorReturnCode_1 as e: # If ROBOT runs but returns an error
+    except sh.ErrorReturnCode_1 as e:  # If ROBOT runs but returns an error
         print(f"ROBOT encountered an error: {e}")
         success = False
 
     return success
 
-def robot_query_construct(robot_path: str, 
-                        input_path: str,
-                        query_path: str, 
-                        output_path: str, 
-                        robot_env: dict) -> bool:
+
+def robot_query_construct(
+    robot_path: str, input_path: str, query_path: str, output_path: str, robot_env: dict
+) -> bool:
     """
     This method runs the ROBOT query command on a single ontology,
     assuming that the query is a CONSTRUCT.
@@ -302,28 +346,35 @@ def robot_query_construct(robot_path: str,
     robot_command = sh.Command(robot_path)
 
     try:
-        robot_command('query',
-            '-vvv',
-            '--input', input_path,
-            '--format', 'owl',
-            '--query', query_path,
+        robot_command(
+            "query",
+            "-vvv",
+            "--input",
+            input_path,
+            "--format",
+            "owl",
+            "--query",
+            query_path,
             output_path,
             _env=robot_env,
         )
         print(f"Complete. See {output_path}")
         success = True
-    except sh.ErrorReturnCode_1 as e: # If ROBOT runs but returns an error
+    except sh.ErrorReturnCode_1 as e:  # If ROBOT runs but returns an error
         print(f"ROBOT encountered an error: {e}")
         success = False
 
     return success
 
-def robot_query_update(robot_path: str, 
-                        input_path: str,
-                        query_path: str, 
-                        output_path: str,
-                        use_temp_file: bool,
-                        robot_env: dict) -> bool:
+
+def robot_query_update(
+    robot_path: str,
+    input_path: str,
+    query_path: str,
+    output_path: str,
+    use_temp_file: bool,
+    robot_env: dict,
+) -> bool:
     """
     This method runs the ROBOT query command on a single ontology,
     assuming that the query is an Update.
@@ -344,23 +395,29 @@ def robot_query_update(robot_path: str,
     robot_command = sh.Command(robot_path)
 
     if use_temp_file:
-        temp_file_param = 'true'
+        temp_file_param = "true"
     else:
-        temp_file_param = 'false'
+        temp_file_param = "false"
 
     try:
-        robot_command('query',
-            '-vvv',
-            '--input', input_path,
-            '--format', 'owl',
-            '--update', query_path,
-            '--temporary-file', temp_file_param,
-            '--output', output_path,
+        robot_command(
+            "query",
+            "-vvv",
+            "--input",
+            input_path,
+            "--format",
+            "owl",
+            "--update",
+            query_path,
+            "--temporary-file",
+            temp_file_param,
+            "--output",
+            output_path,
             _env=robot_env,
         )
         print(f"Complete. See {output_path}")
         success = True
-    except sh.ErrorReturnCode_1 as e: # If ROBOT runs but returns an error
+    except sh.ErrorReturnCode_1 as e:  # If ROBOT runs but returns an error
         print(f"ROBOT encountered an error: {e}")
         success = False
 

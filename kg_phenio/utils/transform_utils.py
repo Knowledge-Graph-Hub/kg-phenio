@@ -1,11 +1,9 @@
-#!/usr/bin/env python
-# -*- coding: utf-8 -*-
+"""Provide utilities for aiding transformations."""
 import gzip
 import logging
 import os
 import re
 import shutil
-import tempfile
 import zipfile
 from typing import Any, Dict, List, Union
 from tqdm import tqdm  # type: ignore
