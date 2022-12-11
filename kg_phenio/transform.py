@@ -1,15 +1,13 @@
-#!/usr/bin/env python
-# -*- coding: utf-8 -*-
+"""Run transforms defined by transform_utils"""
 import logging
 from typing import List
 
 from kg_phenio.transform_utils.phenio.phenio_transform import PhenioTransform
 from kg_phenio.transform_utils.upheno.upheno_map_transform import UphenoMapTransform
 
-
 DATA_SOURCES = {
-    'PhenioTransform': PhenioTransform,
-    'UphenoMapTransform': UphenoMapTransform
+    "PhenioTransform": PhenioTransform,
+    "UphenoMapTransform": UphenoMapTransform,
 }
 
 

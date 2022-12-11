@@ -1,3 +1,4 @@
+"""Call universalizer to normalize graph components."""
 from universalizer.norm import clean_and_normalize_graph
 
 def normalize() -> None:
@@ -18,5 +19,3 @@ def normalize() -> None:
                               update_categories=True,
                               oak_lookup=False)
     print("Complete.")
-    
-

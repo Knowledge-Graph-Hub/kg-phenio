@@ -1,6 +1,4 @@
-#!/usr/bin/env python
-# -*- coding: utf-8 -*-
-
+"""Download from given URLs."""
 
 from .utils import download_from_yaml
 
@@ -17,7 +15,8 @@ def download(yaml_file: str, output_dir: str, ignore_cache: bool = False) -> Non
         None.
     """
 
-    download_from_yaml(yaml_file=yaml_file, output_dir=output_dir,
-                       ignore_cache=ignore_cache)
+    download_from_yaml(
+        yaml_file=yaml_file, output_dir=output_dir, ignore_cache=ignore_cache
+    )
 
     return None
