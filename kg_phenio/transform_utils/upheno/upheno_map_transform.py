@@ -28,7 +28,7 @@ class UphenoMapTransform(Transform):
     require less processing.
     """
 
-    def __init__(self, input_dir: str = None, output_dir: str = None) -> None:
+    def __init__(self, input_dir: str = "", output_dir: str = "") -> None:
         """Initialize the default source name."""
         source_name = "upheno_mapping"
         super().__init__(source_name, input_dir, output_dir)
