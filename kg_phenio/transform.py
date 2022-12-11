@@ -3,7 +3,8 @@ import logging
 from typing import List
 
 from kg_phenio.transform_utils.phenio.phenio_transform import PhenioTransform
-from kg_phenio.transform_utils.upheno.upheno_map_transform import UphenoMapTransform
+from kg_phenio.transform_utils.upheno.upheno_map_transform import \
+    UphenoMapTransform
 
 DATA_SOURCES = {
     "PhenioTransform": PhenioTransform,

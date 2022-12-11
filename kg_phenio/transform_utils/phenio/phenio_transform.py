@@ -51,7 +51,7 @@ class PhenioTransform(Transform):
 
     def parse(self, name: str, data_file: str, source: str) -> None:
         """Process the data_file.
-        Once complete, also removes obsolete classes.
+
         Args:
             name: Name of the ontology
             data_file: data file to parse

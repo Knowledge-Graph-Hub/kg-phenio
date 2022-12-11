@@ -14,7 +14,6 @@ def download(yaml_file: str, output_dir: str, ignore_cache: bool = False) -> Non
     Returns:
         None.
     """
-
     download_from_yaml(
         yaml_file=yaml_file, output_dir=output_dir, ignore_cache=ignore_cache
     )

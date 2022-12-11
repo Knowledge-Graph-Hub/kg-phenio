@@ -7,7 +7,9 @@ from kg_phenio.utils.transform_utils import remove_obsoletes
 
 class TestRemoveObsoletes(unittest.TestCase):
     """Test class for removing obsoletes tests."""
+
     def setUp(self) -> None:
+        """Set up obsolete removal tests."""
         self.nodepath = "tests/resources/graph_with_obs_nodes.tsv"
         self.edgepath = "tests/resources/graph_with_obs_edges.tsv"
         self.partnodepath = "tests/resources/graph_with_obs_part_nodes.tsv"
@@ -28,7 +30,7 @@ class TestRemoveObsoletes(unittest.TestCase):
 
     def test_remove_obsolete_participant_nodes_and_edges(self):
         """Test removing obsolete participant nodes and edges.
-        
+
         These are instances where the participant nodes
         may be in edges but not in the nodelist.
         """

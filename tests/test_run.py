@@ -10,6 +10,7 @@ class TestRun(TestCase):
     """Test the run.py script."""
 
     def setUp(self) -> None:
+        """Set up the run script tests."""
         self.runner = CliRunner()
 
     def test_transform(self):
@@ -19,7 +20,7 @@ class TestRun(TestCase):
 
     def test_merge_missing_file_error(self):
         """Test the merge command, as when a file is missing."""
-        with self.assertRaises(FileNotFoundError) as context:
+        with self.assertRaises(FileNotFoundError):
             result = self.runner.invoke(
                 catch_exceptions=False,
                 cli=merge,

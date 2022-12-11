@@ -12,9 +12,11 @@ class TestTransform(TestCase):
     """Test class for transformations."""
 
     def setUp(self) -> None:
+        """Set up tests."""
         self.transform_instance = TransformChildClass()
 
     def test_reality(self):
+        """Test the nature of reality."""
         self.assertEqual(1, 1)
 
     @parameterized.expand(
@@ -54,6 +56,7 @@ class TestTransform(TestCase):
         [("DEFAULT_INPUT_DIR", "data/raw"), ("DEFAULT_OUTPUT_DIR", "data/transformed")]
     )
     def test_default_dir(self, dir_var_name, dir_var_value):
+        """Test the default data directory."""
         self.assertEqual(getattr(Transform, dir_var_name), dir_var_value)
 
     @parameterized.expand(
@@ -84,5 +87,7 @@ class TestTransform(TestCase):
 
 
 class TransformChildClass(Transform):
+    """A test child version of the Transform class."""
     def __init__(self):
+        """Initialize a Transform class instance."""
         super().__init__(source_name="test_transform")

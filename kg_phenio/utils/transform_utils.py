@@ -16,7 +16,7 @@ class TransformError(Exception):
     pass
 
 
-class ItemInDictNotFound(TransformError):
+class ItemInDictNotFoundError(TransformError):
     """Raised when the input value is too small."""
 
     pass
@@ -68,7 +68,7 @@ def get_header_items(table_data: Any) -> List:
     return header_items
 
 
-def write_node_edge_item(fh: Any, header: List, data: List, sep: str = "\t"):
+def write_node_edge_item(fh: Any, header: List, data: List, sep: str = r"\t"):
     """Write out a single line for a node or an edge in *.tsv.
 
     :param fh: file handle of node or edge file
@@ -86,7 +86,7 @@ def write_node_edge_item(fh: Any, header: List, data: List, sep: str = "\t"):
 
 def get_item_by_priority(items_dict: dict, keys_by_priority: list) -> str:
     """Retrieve item from a dict using a list of keys.
-    
+
     In descending order of priority.
     :param items_dict:
     :param keys_by_priority: list of keys to use to find values
@@ -99,7 +99,7 @@ def get_item_by_priority(items_dict: dict, keys_by_priority: list) -> str:
             value = items_dict[key]
             break
     if value is None:
-        raise ItemInDictNotFound("Can't find item in items_dict {}".format(items_dict))
+        raise ItemInDictNotFoundError("Can't find item in items_dict {}".format(items_dict))
     return value
 
 
@@ -114,12 +114,12 @@ def data_to_dict(these_keys, these_values) -> dict:
 
 
 def uniprot_make_name_to_id_mapping(dat_gz_file: str) -> dict:
-    """Make dict with name to id mapping from Uniprot dat.gz file. 
-    
+    """Make dict with name to id mapping from Uniprot dat.gz file.
+
     Example:
     ftp://ftp.uniprot.org/pub/databases/uniprot/current_release/
     knowledgebase/idmapping/by_organism/HUMAN_9606_idmapping.dat.gz
-    :param dat_gz_file: 
+    :param dat_gz_file:
     :return: dict with mapping
     """
     name_to_id_map = dict()
@@ -213,8 +213,8 @@ def guess_bl_category(identifier: str) -> str:
 
 
 def collapse_uniprot_curie(uniprot_curie: str) -> str:
-    """Collapse protein entry to parent protein from a UniProtKB curie. 
-    
+    """Collapse protein entry to parent protein from a UniProtKB curie.
+
     For an isoform such as UniprotKB:P63151-1
     or UniprotKB:P63151-2, collapse to parent protein
     (UniprotKB:P63151 / UniprotKB:P63151).

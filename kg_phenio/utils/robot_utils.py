@@ -18,7 +18,8 @@ def initialize_robot(robot_path: str) -> list:
     and the path variable used here is only necessary if it varies from
     the project location.
     :param path: Path to ROBOT files.
-    :return: A list consisting an instance of Command and dict of all environment variables.
+    :return: A list consisting an instance of Command and dict
+    of all environment variables.
     """
     # We may have made it this far without installing ROBOT, so do that now if needed
     if not os.path.exists(robot_path):
@@ -215,8 +216,6 @@ def robot_remove(
 
     robot_command = sh.Command(robot_path)
 
-    profile = "Full"
-
     try:
         robot_command(
             "remove",
@@ -283,7 +282,7 @@ def robot_measure(
 ) -> bool:
     """
     Run the ROBOT measure command on a single ontology.
-    
+
     Return all metrics.
     :param robot_path: Path to ROBOT files
     :param input_path: Ontology file for input

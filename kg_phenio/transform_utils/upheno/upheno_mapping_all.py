@@ -1,7 +1,8 @@
 """Koza ingest for Upheno phenotype maps."""
 import uuid
 
-from biolink_model_pydantic.model import Association, PhenotypicFeature  # type: ignore
+from biolink_model_pydantic.model import (Association,  # type: ignore
+                                          PhenotypicFeature)
 from koza.cli_runner import get_koza_app  # type: ignore
 
 source_name = "upheno_mapping_all"
