@@ -1,9 +1,11 @@
-import unittest
+"""Test functions for removing obsolete nodes/edges."""
 import os
+import unittest
+
 from kg_phenio.utils.transform_utils import remove_obsoletes
 
-class TestRemoveObsoletes(unittest.TestCase):
 
+class TestRemoveObsoletes(unittest.TestCase):
     def setUp(self) -> None:
         self.nodepath = "tests/resources/graph_with_obs_nodes.tsv"
         self.edgepath = "tests/resources/graph_with_obs_edges.tsv"
