@@ -1,7 +1,9 @@
-from typing import Dict, List
+"""Utilities for loading the config YAML for merging."""
+from typing import Dict
+
+import networkx as nx  # type: ignore
 import yaml
-import networkx as nx # type: ignore
-from kgx.cli.cli_utils import merge # type: ignore
+from kgx.cli.cli_utils import merge  # type: ignore
 
 
 def parse_load_config(yaml_file: str) -> Dict:
@@ -14,8 +16,8 @@ def parse_load_config(yaml_file: str) -> Dict:
         Dict: The config as a dictionary.
 
     """
-    with open(yaml_file) as YML:
-        config = yaml.load(YML, Loader=yaml.FullLoader)
+    with open(yaml_file) as yml:
+        config = yaml.load(yml, Loader=yaml.FullLoader)
     return config
 
 
@@ -31,4 +33,5 @@ def load_and_merge(yaml_file: str, processes: int = 1) -> nx.MultiDiGraph:
 
     """
     merged_graph = merge(yaml_file, processes=processes)
+
     return merged_graph

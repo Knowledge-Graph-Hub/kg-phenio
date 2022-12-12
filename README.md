@@ -11,7 +11,7 @@ and [Phenio](https://github.com/monarch-initiative/phenio).
 
 ## Setup
 
-Clone the repository, then install with `pip install .`
+Clone the repository, then install with `poetry install`.
 
 ## Operation
 
