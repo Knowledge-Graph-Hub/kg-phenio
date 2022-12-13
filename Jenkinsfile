@@ -46,7 +46,7 @@ pipeline {
                     sh "echo $BUILDSTARTDATE"
                     sh "echo $MERGEDKGNAME_BASE"
                     sh "echo $MERGEDKGNAME_GENERIC"
-                    sh "python3.8 --version"
+                    sh "python3.9 --version"
                     sh "id"
                     sh "whoami" // this should be jenkinsuser
                     // if the above fails, then the docker host didn't start the docker
@@ -66,7 +66,7 @@ pipeline {
                             url: 'https://github.com/Knowledge-Graph-Hub/kg-phenio',
                             branch: env.BRANCH_NAME
                     )
-                    sh '/usr/bin/python3.8 -m venv venv'
+                    sh '/usr/bin/python3.9 -m venv venv'
                     sh '. venv/bin/activate'
                     sh './venv/bin/pip install .'
                     sh './venv/bin/pip install awscli boto3 s3cmd'
@@ -86,7 +86,7 @@ pipeline {
                         }
 
                         def run_py_dl = sh(
-                            script: '. venv/bin/activate && python3.8 run.py download', returnStatus: true
+                            script: '. venv/bin/activate && python3.9 run.py download', returnStatus: true
                         )
                         if (run_py_dl == 0) {
                             if (env.BRANCH_NAME != 'master') { // upload raw to s3 if we're on correct branch
@@ -112,7 +112,7 @@ pipeline {
         stage('Transform') {
             steps {
                 dir('./gitrepo') {
-		            sh '. venv/bin/activate && env && python3.8 run.py transform'
+		            sh '. venv/bin/activate && env && python3.9 run.py transform'
                 }
             }
         }
@@ -120,7 +120,7 @@ pipeline {
         stage('Merge') {
             steps {
                 dir('./gitrepo') {
-                    sh '. venv/bin/activate && python3.8 run.py merge -y merge.yaml'
+                    sh '. venv/bin/activate && python3.9 run.py merge -y merge.yaml'
 		            sh 'cp merged_graph_stats.yaml merged_graph_stats_$BUILDSTARTDATE.yaml'
                     sh 'mv data/merged/merged-kg_nodes.tsv .'
                     sh 'mv data/merged/merged-kg_edges.tsv .'
@@ -194,7 +194,7 @@ pipeline {
 
                                 // Invalidate the CDN now that the new files are up.
                                 sh 'echo "[preview]" > ./awscli_config.txt && echo "cloudfront=true" >> ./awscli_config.txt'
-                                sh '. venv/bin/activate && AWS_CONFIG_FILE=./awscli_config.txt python3.8 ./venv/bin/aws cloudfront create-invalidation --distribution-id $AWS_CLOUDFRONT_DISTRIBUTION_ID --paths "/*"'
+                                sh '. venv/bin/activate && AWS_CONFIG_FILE=./awscli_config.txt python3.9 ./venv/bin/aws cloudfront create-invalidation --distribution-id $AWS_CLOUDFRONT_DISTRIBUTION_ID --paths "/*"'
 
                                 // Should now appear at:
                                 // https://kg-hub.berkeleybop.io/kg-phenio/
