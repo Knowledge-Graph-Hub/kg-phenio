@@ -2,7 +2,7 @@ pipeline {
     agent {
         docker {
             reuseNode false
-            image 'justaddcoffee/ubuntu20-python-3-8-5-dev:6'
+            image 'caufieldjh/kg-idg:4'
         }
     }
     //triggers{
