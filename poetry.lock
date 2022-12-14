@@ -193,14 +193,14 @@ tox = "*"
 
 [[package]]
 name = "boto3"
-version = "1.26.29"
+version = "1.26.30"
 description = "The AWS SDK for Python"
 category = "main"
 optional = false
 python-versions = ">= 3.7"
 
 [package.dependencies]
-botocore = ">=1.29.29,<1.30.0"
+botocore = ">=1.29.30,<1.30.0"
 jmespath = ">=0.7.1,<2.0.0"
 s3transfer = ">=0.6.0,<0.7.0"
 
@@ -209,7 +209,7 @@ crt = ["botocore[crt] (>=1.21.0,<2.0a0)"]
 
 [[package]]
 name = "botocore"
-version = "1.29.29"
+version = "1.29.30"
 description = "Low-level, data-driven core of boto 3."
 category = "main"
 optional = false
@@ -2420,7 +2420,7 @@ python-versions = ">=3.7"
 
 [[package]]
 name = "universalizer"
-version = "0.0.3"
+version = "0.0.4"
 description = "Provides functions for knowledge graph cleanup and identifier normalization."
 category = "main"
 optional = false
@@ -2564,7 +2564,7 @@ testing = ["flake8 (<5)", "func-timeout", "jaraco.functools", "jaraco.itertools"
 [metadata]
 lock-version = "1.1"
 python-versions = ">=3.9,<3.12"
-content-hash = "6f83c1359f55d44c7d97f3da078395ef9719f113433126d6ef1041ec4a889d32"
+content-hash = "b80ea438ffef8c3a599d73a0e68aa00e785fe1badee6fd446a9d580fa15e763f"
 
 [metadata.files]
 aiohttp = [
@@ -2708,12 +2708,12 @@ bmt = [
     {file = "bmt-0.8.12.tar.gz", hash = "sha256:b1f14e87b4f45181ffbb882ebc8bc7400298a7ce8e94cc8b80ba2a319010c47d"},
 ]
 boto3 = [
-    {file = "boto3-1.26.29-py3-none-any.whl", hash = "sha256:2e5e80daae3873185b046d1fabc13676aea519e891faf4f27ca71d287bc26039"},
-    {file = "boto3-1.26.29.tar.gz", hash = "sha256:4fb4a0ce2679e5dc1719441192b45687654201d5de76224f2c376b689c9ed4aa"},
+    {file = "boto3-1.26.30-py3-none-any.whl", hash = "sha256:e222714a6a841f318d3b6557d915dcc3729ff286e9aa3d03b5d26d6bfce3a3bd"},
+    {file = "boto3-1.26.30.tar.gz", hash = "sha256:13ba1d98ab5e2591be2dd19c779d67aa4210f126a827c9a376532ace435d8df9"},
 ]
 botocore = [
-    {file = "botocore-1.29.29-py3-none-any.whl", hash = "sha256:dca2daf108aae6c847d8ec99b7e918b46ae81713bf70b2199ab94627faf935a1"},
-    {file = "botocore-1.29.29.tar.gz", hash = "sha256:97a6d059e688ff9caa7c0a4e30cc58fa27be8bf3347578ce7c62fb808380fb55"},
+    {file = "botocore-1.29.30-py3-none-any.whl", hash = "sha256:6bfe917c022b92c093da448aae71b18f7dcbbbc69403f57ee39ca4775b2888e6"},
+    {file = "botocore-1.29.30.tar.gz", hash = "sha256:9364417f53842167f8bcf72b9ab3c78457c7df613051101952b2470d9de7ea31"},
 ]
 cachetools = [
     {file = "cachetools-5.2.0-py3-none-any.whl", hash = "sha256:f9f17d2aec496a9aa6b76f53e3b614c965223c061982d434d160f930c698a9db"},
@@ -4094,8 +4094,8 @@ typing-extensions = [
     {file = "typing_extensions-4.4.0.tar.gz", hash = "sha256:1511434bb92bf8dd198c12b1cc812e800d4181cfcb867674e0f8279cc93087aa"},
 ]
 universalizer = [
-    {file = "universalizer-0.0.3-py3-none-any.whl", hash = "sha256:cc1ee9dd2984681a989606b88db5431e76aa4d47268ce78eb01a0015137c43ca"},
-    {file = "universalizer-0.0.3.tar.gz", hash = "sha256:ac4ee00c18f7daae5c55f9bfe25f0e2b00abbd5a8b5ead8663a070d5eb683737"},
+    {file = "universalizer-0.0.4-py3-none-any.whl", hash = "sha256:03ece01e4ab9d24fa440f1095c04bf9b5d75e9ce4f7c9a93bff65bb6cd2e13c1"},
+    {file = "universalizer-0.0.4.tar.gz", hash = "sha256:b5e4e3092208dfbb061e71d077f9b8c875f814520e02dfe96a6010a559a09ab0"},
 ]
 uri-template = [
     {file = "uri_template-1.2.0-py3-none-any.whl", hash = "sha256:f1699c77b73b925cf4937eae31ab282a86dc885c333f2e942513f08f691fc7db"},
