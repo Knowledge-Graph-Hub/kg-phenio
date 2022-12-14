@@ -13,9 +13,11 @@ def normalize() -> None:
 
     """
     print("Normalizing nodes and categories...")
-    clean_and_normalize_graph(input_path="data/merged/",
+    clean_and_normalize_graph(filepath="data/merged/",
                               compressed=False,
                               maps=[],
                               update_categories=True,
+                              contexts=["obo", "bioregistry.upper"],
+                              namespace_cat_map="",
                               oak_lookup=False)
     print("Complete.")
