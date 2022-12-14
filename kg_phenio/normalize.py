@@ -17,7 +17,7 @@ def normalize() -> None:
                               compressed=False,
                               maps=[],
                               update_categories=True,
-                              contexts=[],
+                              contexts=["obo", "bioregistry.upper"],
                               namespace_cat_map="",
                               oak_lookup=False)
     print("Complete.")
