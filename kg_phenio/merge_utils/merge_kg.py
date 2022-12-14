@@ -1,9 +1,9 @@
 """Utilities for loading the config YAML for merging."""
 from typing import Dict
 
-import networkx as nx  # type: ignore
+import networkx as nx
 import yaml
-from kgx.cli.cli_utils import merge  # type: ignore
+from kgx.cli.cli_utils import merge
 
 
 def parse_load_config(yaml_file: str) -> Dict:
