@@ -5,6 +5,7 @@ import tarfile
 from typing import Optional
 
 from kgx.cli.cli_utils import transform  # type: ignore
+from koza.cli_runner import transform_source
 
 from kg_phenio.transform_utils.transform import Transform
 from kg_phenio.utils.robot_utils import initialize_robot, robot_convert
@@ -12,6 +13,10 @@ from kg_phenio.utils.robot_utils import initialize_robot, robot_convert
 ONTO_FILES = {
     "PhenioTransform": "phenio.owl",
 }
+
+KOZA_CONFIG = "phenio_sources.yaml"
+
+TRANSLATION_TABLE = "./kg_phenio/transform_utils/translation_table.yaml"
 
 
 class PhenioTransform(Transform):
@@ -116,3 +121,11 @@ class PhenioTransform(Transform):
         # Final step in translation:
         # Use Koza to apply additional properties,
         # based on each source
+        print(f"Adding sources using {KOZA_CONFIG}")
+        transform_source(
+            source=KOZA_CONFIG,
+            output_dir=self.output_dir,
+            output_format="tsv",
+            global_table=TRANSLATION_TABLE,
+            local_table=None,
+        )
