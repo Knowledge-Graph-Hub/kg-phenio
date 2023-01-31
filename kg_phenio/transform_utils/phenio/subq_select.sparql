@@ -1,7 +1,0 @@
-SELECT ?a ?bN1 ?bN2 ?p1 ?p2 ?b 
-WHERE {
-  ?a rdfs:subClassOf ?bN1 .
-  ?bN1 owl:onProperty ?p1 .
-  ?bN1 owl:someValuesFrom ?bN2 .
-  ?bN2 owl:onProperty ?p2 .
-  ?bN2 owl:someValuesFrom ?b}

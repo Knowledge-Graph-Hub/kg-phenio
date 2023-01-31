@@ -13,8 +13,6 @@ ONTO_FILES = {
     "PhenioTransform": "phenio.owl",
 }
 
-QUERY_PATH = "kg_phenio/transform_utils/phenio/subq_construct.sparql"
-
 
 class PhenioTransform(Transform):
     """Parse the PHENIO OWL into nodes and edges."""
@@ -106,11 +104,15 @@ class PhenioTransform(Transform):
         ):
             sys.exit(f"Failed to convert {data_file}!")
 
-        # Now do that transform.
+        # Now do that transform to TSV.
         transform(
             inputs=[data_file_json],
             input_format="obojson",
             output=os.path.join(self.output_dir, name),
             output_format="tsv",
-            stream=True,
+            stream=True
         )
+
+        # Final step in translation:
+        # Use Koza to apply additional properties,
+        # based on each source
