@@ -110,6 +110,7 @@ class PhenioTransform(Transform):
             sys.exit(f"Failed to convert {data_file}!")
 
         # Now do that transform to TSV.
+        print("Transforming to KGX TSV...")
         transform(
             inputs=[data_file_json],
             input_format="obojson",

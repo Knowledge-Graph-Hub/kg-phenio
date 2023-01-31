@@ -1,4 +1,4 @@
-import uuid
+"""Koza transform for adding knowledge sources to PHENIO."""
 
 from biolink.model import Association  # type: ignore
 from koza.cli_runner import get_koza_app  # type: ignore
