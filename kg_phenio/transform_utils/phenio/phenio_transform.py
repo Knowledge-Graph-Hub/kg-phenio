@@ -14,7 +14,7 @@ ONTO_FILES = {
     "PhenioTransform": "phenio.owl",
 }
 
-KOZA_CONFIG = "phenio_sources.yaml"
+KOZA_CONFIG = "kg_phenio/transform_utils/phenio/phenio_sources.yaml"
 
 TRANSLATION_TABLE = "./kg_phenio/transform_utils/translation_table.yaml"
 
