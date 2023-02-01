@@ -25,6 +25,7 @@ edge_properties:
   - 'object'
   - 'category'
   - 'relation'
-  - 'knowledge_source'
+  - 'primary_knowledge_source'
+  - 'aggregator_knowledge_source'
 
 transform_mode: 'flat'
