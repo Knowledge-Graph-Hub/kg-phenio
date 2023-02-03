@@ -138,3 +138,11 @@ class PhenioTransform(Transform):
             global_table=TRANSLATION_TABLE,
             local_table=None,
         )
+
+        # TODO: add node property enrichment here
+        #       Include source details
+        #       Also update node category if we have
+        #       a new one from the edges
+        #       If we have >1 category, assign both
+        #       (the rest should be handled by
+        #       universalizer) 
