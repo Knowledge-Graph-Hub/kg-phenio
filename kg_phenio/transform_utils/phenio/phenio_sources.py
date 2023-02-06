@@ -69,12 +69,17 @@ infores_sources = {
     "SEPIO": "sepio",
     "SO": "so",
     "STATO": "stato",
+    "TO": "to",  # TODO: check on these
     "UBERON": "uberon",
     "UMLS": "umls",  # TODO: check on these edges
     "UPHENO": "upheno",
     "WBPhenotype": "wbphenotype",
+    "WBBT": "wbbt",
     "WBbt": "wbbt",
+    "XAO": "xao",
+    "XCO": "xco",
     "ZFA": "zfa",
+    "ZFS": "zfs",
     "ZP": "zp",
     "biolink": "biolink",
     "faldo": "faldo",
