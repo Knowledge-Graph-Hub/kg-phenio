@@ -63,8 +63,10 @@ infores_sources = {
     "PCO": "pco",
     "PO": "po",
     "PR": "pr",
+    "PW": "pw",
     "RO": "ro",
     "RXCUI": "rxnorm",  # TODO: check on these edges
+    "SEPIO": "sepio",
     "SO": "so",
     "STATO": "stato",
     "UBERON": "uberon",
