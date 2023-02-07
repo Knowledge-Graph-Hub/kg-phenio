@@ -102,13 +102,6 @@ if subj_curie_prefix not in bad_prefixes:
     infores = infores_sources[subj_curie_prefix]
     primary_knowledge_source = f"infores:{infores}"
 
-# Remove category relations
-# TODO: save these in case the category
-#       didn't propagate to the node
-for row_name in ["category", "predicate"]:
-    if row[row_name] == "biolink:category":
-        valid = False
-
 # TODO: assign more specific association type
 # TODO: include relation type
 #       Biolink/Koza don't like assigning it directly
