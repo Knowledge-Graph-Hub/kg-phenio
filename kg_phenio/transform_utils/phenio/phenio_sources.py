@@ -54,11 +54,13 @@ infores_sources = {
     "NCBITaxon": "ncbitaxon",
     "NCIT": "ncit",
     "OBA": "oba",
+    "OBAN": "oban",
     "OBI": "obi",
     "OBO": "obo",  # TODO: Not quite right - these are extra OBO prefixes
     "OGMS": "ogms",
     "OIO": "oio",
     "OMIM": "omim",  # TODO: certainly check these
+    "Orphanet": "orphanet",
     "PATO": "pato",
     "PCO": "pco",
     "PO": "po",
@@ -68,6 +70,7 @@ infores_sources = {
     "RXCUI": "rxnorm",  # TODO: check on these edges
     "SEPIO": "sepio",
     "SO": "so",
+    "SIO": "sio",
     "STATO": "stato",
     "TO": "to",  # TODO: check on these
     "UBERON": "uberon",
@@ -82,12 +85,19 @@ infores_sources = {
     "ZFS": "zfs",
     "ZP": "zp",
     "biolink": "biolink",
+    "dcat": "dcat",
+    "dcterms": "dcterms",
+    "dctypes": "dctypes",
     "faldo": "faldo",
     "foaf": "foaf",
     "owl": "owl",
+    "pav": "pav",  # TODO: check on this one
+    "rdf": "rdf",
+    "rdfs": "rdfs",
+    "skos": "skos",
 }
 
-bad_prefixes = ["http", "DATA"]
+bad_prefixes = ["http", "https", "DATA", "WD_Entity", "WD_Prop"]
 
 common_prefixes = ["BFO", "owl", "RO"]
 
