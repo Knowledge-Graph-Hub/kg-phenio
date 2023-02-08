@@ -1,21 +1,21 @@
 """Koza transform for adding knowledge sources to PHENIO."""
 
-from biolink.model import Association  # type: ignore
+import importlib
 from koza.cli_runner import get_koza_app  # type: ignore
 
-source_name = "phenio_sources"
+source_name = "phenio_node_sources"
 
 koza_app = get_koza_app(source_name)
 row = koza_app.get_row()
 
 valid = True
 
-# This transform is for enriching PHENIO-derived edges
-# with Biolink-compliant knowledge sources.
+# This transform is for enriching PHENIO-derived nodes
+# with Biolink-compliant knowledge sources,
+# in the provided_by slot.
 
 # This maps CURIE prefixes to infores: names.
-# TODO: technically the names should be part of
-#       biolink:InformationResource objects
+
 infores_sources = {
     "APO": "apo",  # TODO: check this one
     "BFO": "bfo",
@@ -24,7 +24,7 @@ infores_sources = {
     "CARO": "caro",
     "CHEBI": "chebi",
     "CHR": "chr",  # TODO: check this one
-    "CIO":  "cio",  # TODO: check this one
+    "CIO": "cio",  # TODO: check this one
     "CL": "cl",
     "CLO": "clo",  # TODO: check this one
     "DDANAT": "ddanat",  # TODO: check this one
@@ -99,34 +99,27 @@ infores_sources = {
 
 bad_prefixes = ["http", "https", "DATA", "WD_Entity", "WD_Prop"]
 
-common_prefixes = ["BFO", "owl", "RO"]
-
 primary_knowledge_source = "infores:unknown"
-aggregator_knowledge_source = "infores:phenio"
 
-subj_curie_prefix = (str(row["subject"]).split(":"))[0]
-obj_curie_prefix = (str(row["object"]).split(":"))[0]
+node_curie_prefix = (str(row["id"]).split(":"))[0]
+
+# The category tells us which class to use.
+category_name = (str(row["category"]).split(":"))[1]
+NodeClass = getattr(importlib.import_module("biolink.model"), category_name)
 
 # TODO: make this more specific, as it won't always be true
-if subj_curie_prefix not in bad_prefixes:
-    infores = infores_sources[subj_curie_prefix]
+if node_curie_prefix not in bad_prefixes:
+    infores = infores_sources[node_curie_prefix]
     primary_knowledge_source = f"infores:{infores}"
-
-# TODO: assign more specific association type
-# TODO: include relation type
-#       Biolink/Koza don't like assigning it directly
-#       as it isn't an association slot
 
 # Association
 if valid:
-    association = Association(
+    node = NodeClass(
         id=row["id"],
-        subject=row["subject"],
-        predicate=row["predicate"],
-        object=row["object"],
-        # relation=row["relation"],
-        primary_knowledge_source=primary_knowledge_source,
-        aggregator_knowledge_source=aggregator_knowledge_source,
+        category=row["category"],
+        name=row["name"],
+        description=row["description"],
+        provided_by=primary_knowledge_source,
     )
 
-    koza_app.write(association)
+    koza_app.write(node)

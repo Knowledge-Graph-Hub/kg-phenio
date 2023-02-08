@@ -14,7 +14,10 @@ ONTO_FILES = {
     "PhenioTransform": "phenio.owl",
 }
 
-KOZA_CONFIG = "kg_phenio/transform_utils/phenio/phenio_sources.yaml"
+KOZA_CONFIGS = {
+    "edge": "kg_phenio/transform_utils/phenio/phenio_edge_sources.yaml",
+    "node": "kg_phenio/transform_utils/phenio/phenio_node_sources.yaml",
+}
 
 TRANSLATION_TABLE = "./kg_phenio/transform_utils/translation_table.yaml"
 
@@ -122,7 +125,7 @@ class PhenioTransform(Transform):
                 input_format="obojson",
                 output=os.path.join(self.output_dir, name),
                 output_format="tsv",
-                stream=True
+                stream=True,
             )
         else:
             print(f"Found KGX TSV edges at {data_file_tsv}.")
@@ -130,19 +133,13 @@ class PhenioTransform(Transform):
         # Final step in translation:
         # Use Koza to apply additional properties,
         # based on each source
-        print(f"Adding sources using {KOZA_CONFIG}")
-        transform_source(
-            source=KOZA_CONFIG,
-            output_dir=self.output_dir,
-            output_format="tsv",
-            global_table=TRANSLATION_TABLE,
-            local_table=None,
-        )
-
-        # TODO: add node property enrichment here
-        #       Include source details
-        #       Also update node category if we have
-        #       a new one from the edges
-        #       If we have >1 category, assign both
-        #       (the rest should be handled by
-        #       universalizer) 
+        for config_type in ["edge","node"]:
+            config = KOZA_CONFIGS[config_type]
+            print(f"Adding {config_type} sources using {config}")
+            transform_source(
+                source=config,
+                output_dir=self.output_dir,
+                output_format="tsv",
+                global_table=TRANSLATION_TABLE,
+                local_table=None,
+            )

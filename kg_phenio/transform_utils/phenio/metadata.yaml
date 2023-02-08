@@ -7,4 +7,5 @@ dataset_description:
   rights: ''
 
 source_files:
-  - 'phenio_sources.yaml'
+  - 'phenio_edge_sources.yaml'
+  - 'phenio_node_sources.yaml'
