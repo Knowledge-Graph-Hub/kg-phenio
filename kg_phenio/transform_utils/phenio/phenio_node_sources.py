@@ -1,6 +1,7 @@
 """Koza transform for adding knowledge sources to PHENIO."""
 
 import importlib
+
 from koza.cli_runner import get_koza_app  # type: ignore
 
 source_name = "phenio_node_sources"
@@ -112,9 +113,9 @@ node_curie_prefix = (str(row["id"]).split(":"))[0]
 # The category tells us which class to use.
 # Some categories won't fit the model and need
 # to be remapped.
-remap_cats = {"OntologyClass":"NamedThing",
-              "ChemicalSubstance":"ChemicalEntity",
-              "SequenceFeature":"SequenceVariant"}
+remap_cats = {"OntologyClass": "NamedThing",
+              "ChemicalSubstance": "ChemicalEntity",
+              "SequenceFeature": "SequenceVariant"}
 category_name = (str(row["category"]).split(":"))[1]
 if category_name in remap_cats:
     category_name = remap_cats[category_name]

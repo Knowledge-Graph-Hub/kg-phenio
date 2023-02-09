@@ -133,7 +133,7 @@ class PhenioTransform(Transform):
         # Final step in translation:
         # Use Koza to apply additional properties,
         # based on each source
-        for config_type in ["node","edge"]:
+        for config_type in ["node", "edge"]:
             config = KOZA_CONFIGS[config_type]
             print(f"Adding {config_type} sources using {config}")
             transform_source(

@@ -24,7 +24,7 @@ infores_sources = {
     "CARO": "caro",
     "CHEBI": "chebi",
     "CHR": "chr",  # TODO: check this one
-    "CIO":  "cio",  # TODO: check this one
+    "CIO": "cio",  # TODO: check this one
     "CL": "cl",
     "CLO": "clo",  # TODO: check this one
     "DDANAT": "ddanat",  # TODO: check this one
