@@ -23,7 +23,7 @@ infores_sources = {
     "BFO": "bfo",
     "BSPO": "upheno",  # Biological Spatial Ontology - from Upheno
     "BTO": "bto",  # BRENDA vocab - cat only
-    "CARO": "caro", # CARO - cat only
+    "CARO": "caro",  # CARO - cat only
     "CHEBI": "chebi",
     "CHR": "mondo",  # Chromosome ID - from MONDO
     "CIO": "cio",  # Confidence Information - cat only
