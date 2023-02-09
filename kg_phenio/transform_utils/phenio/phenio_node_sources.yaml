@@ -3,7 +3,7 @@ name: 'phenio_node_sources'
 delimiter: '\t'
 
 files:
-  - './data/transformed/PhenioTransform_nodes.tsv'
+  - './data/transformed/phenio/PhenioTransform_nodes.tsv'
 
 metadata: './kg_idg/transform_utils/phenio/metadata.yaml'
 

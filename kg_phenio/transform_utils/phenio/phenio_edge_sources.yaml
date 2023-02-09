@@ -3,7 +3,7 @@ name: 'phenio_edge_sources'
 delimiter: '\t'
 
 files:
-  - './data/transformed/PhenioTransform_edges.tsv'
+  - './data/transformed/phenio/PhenioTransform_edges.tsv'
 
 metadata: './kg_idg/transform_utils/phenio/metadata.yaml'
 

@@ -97,14 +97,27 @@ infores_sources = {
     "skos": "skos",
 }
 
-bad_prefixes = ["http", "https", "DATA", "WD_Entity", "WD_Prop"]
+bad_prefixes = ["dc",
+                "http",
+                "https",
+                "DATA",
+                "WD_Entity",
+                "WD_Prop"
+                ]
 
 primary_knowledge_source = "infores:unknown"
 
 node_curie_prefix = (str(row["id"]).split(":"))[0]
 
 # The category tells us which class to use.
+# Some categories won't fit the model and need
+# to be remapped.
+remap_cats = {"OntologyClass":"NamedThing",
+              "ChemicalSubstance":"ChemicalEntity",
+              "SequenceFeature":"SequenceVariant"}
 category_name = (str(row["category"]).split(":"))[1]
+if category_name in remap_cats:
+    category_name = remap_cats[category_name]
 NodeClass = getattr(importlib.import_module("biolink.model"), category_name)
 
 # TODO: make this more specific, as it won't always be true
