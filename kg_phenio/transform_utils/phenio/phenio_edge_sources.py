@@ -1,4 +1,5 @@
 """Koza transform for adding knowledge sources to PHENIO."""
+import importlib
 
 from biolink.model import Association  # type: ignore
 from koza.cli_runner import get_koza_app  # type: ignore
@@ -118,11 +119,23 @@ if subj_curie_prefix not in bad_prefixes:
         infores = infores_sources[subj_curie_prefix]
     primary_knowledge_source = f"infores:{infores}"
 
-# TODO: assign more specific association type
-
 # Association
+
+# The relation tells us which class to use.
+# We default to generic Association.
+# TODO: add more to this map
+remap_rels = {
+    "UPHENO:0000003": "DiseaseOrPhenotypicFeatureToLocationAssociation"
+}
+relation = str(row["relation"])
+if relation in remap_rels:
+    category_name = remap_rels[relation]
+else:
+    category_name = "Association"
+AssocClass = getattr(importlib.import_module("biolink.model"), category_name)
+
 if valid:
-    association = Association(
+    association = AssocClass(
         id=row["id"],
         subject=row["subject"],
         predicate=row["predicate"],
