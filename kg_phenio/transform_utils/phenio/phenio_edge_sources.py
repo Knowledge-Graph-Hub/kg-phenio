@@ -1,7 +1,6 @@
 """Koza transform for adding knowledge sources to PHENIO."""
 import importlib
 
-from biolink.model import Association  # type: ignore
 from koza.cli_runner import get_koza_app  # type: ignore
 
 source_name = "phenio_edge_sources"
