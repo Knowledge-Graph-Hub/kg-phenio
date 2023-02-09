@@ -119,9 +119,6 @@ if subj_curie_prefix not in bad_prefixes:
     primary_knowledge_source = f"infores:{infores}"
 
 # TODO: assign more specific association type
-# TODO: include relation type
-#       Biolink/Koza don't like assigning it directly
-#       as it isn't an association slot
 
 # Association
 if valid:
@@ -130,7 +127,7 @@ if valid:
         subject=row["subject"],
         predicate=row["predicate"],
         object=row["object"],
-        # relation=row["relation"],
+        original_predicate=row["relation"],
         primary_knowledge_source=primary_knowledge_source,
         aggregator_knowledge_source=aggregator_knowledge_source,
     )
