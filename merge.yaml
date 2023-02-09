@@ -11,8 +11,8 @@ merged_graph:
       input:
         format: tsv
         filename:
-          - data/transformed/phenio/PhenioTransform_nodes.tsv
-          - data/transformed/phenio/PhenioTransform_edges.tsv
+          - data/transformed/phenio/phenio_node_sources_nodes.tsv
+          - data/transformed/phenio/phenio_edge_sources_edges.tsv
   operations:
     - name: kgx.graph_operations.summarize_graph.generate_graph_stats
       args:

@@ -5,6 +5,7 @@ import tarfile
 from typing import Optional
 
 from kgx.cli.cli_utils import transform  # type: ignore
+from koza.cli_runner import transform_source
 
 from kg_phenio.transform_utils.transform import Transform
 from kg_phenio.utils.robot_utils import initialize_robot, robot_convert
@@ -13,7 +14,12 @@ ONTO_FILES = {
     "PhenioTransform": "phenio.owl",
 }
 
-QUERY_PATH = "kg_phenio/transform_utils/phenio/subq_construct.sparql"
+KOZA_CONFIGS = {
+    "edge": "kg_phenio/transform_utils/phenio/phenio_edge_sources.yaml",
+    "node": "kg_phenio/transform_utils/phenio/phenio_node_sources.yaml",
+}
+
+TRANSLATION_TABLE = "./kg_phenio/transform_utils/translation_table.yaml"
 
 
 class PhenioTransform(Transform):
@@ -95,22 +101,45 @@ class PhenioTransform(Transform):
                         print(f"Found error at line {linenum}: {line.strip()}.")
         os.replace(data_file_tmp, data_file)
 
-        # Convert to obojson.
+        # Convert to obojson, if necessary
         data_file_json = os.path.splitext(data_file)[0] + ".json"
 
-        if not robot_convert(
-            robot_path=self.robot_path,
-            input_path=data_file,
-            output_path=data_file_json,
-            robot_env=self.robot_env,
-        ):
-            sys.exit(f"Failed to convert {data_file}!")
+        if not os.path.exists(data_file_json):
+            if not robot_convert(
+                robot_path=self.robot_path,
+                input_path=data_file,
+                output_path=data_file_json,
+                robot_env=self.robot_env,
+            ):
+                sys.exit(f"Failed to convert {data_file}!")
+        else:
+            print(f"Found JSON ontology at {data_file_json}.")
 
-        # Now do that transform.
-        transform(
-            inputs=[data_file_json],
-            input_format="obojson",
-            output=os.path.join(self.output_dir, name),
-            output_format="tsv",
-            stream=True,
-        )
+        # Now do that transform to TSV, if necessary
+        data_file_tsv = os.path.join(self.output_dir, name + "_edges.tsv")
+
+        if not os.path.exists(data_file_tsv):
+            print("Transforming to KGX TSV...")
+            transform(
+                inputs=[data_file_json],
+                input_format="obojson",
+                output=os.path.join(self.output_dir, name),
+                output_format="tsv",
+                stream=True,
+            )
+        else:
+            print(f"Found KGX TSV edges at {data_file_tsv}.")
+
+        # Final step in translation:
+        # Use Koza to apply additional properties,
+        # based on each source
+        for config_type in ["node", "edge"]:
+            config = KOZA_CONFIGS[config_type]
+            print(f"Adding {config_type} sources using {config}")
+            transform_source(
+                source=config,
+                output_dir=self.output_dir,
+                output_format="tsv",
+                global_table=TRANSLATION_TABLE,
+                local_table=None,
+            )

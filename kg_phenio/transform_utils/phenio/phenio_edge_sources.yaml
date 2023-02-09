@@ -1,0 +1,31 @@
+name: 'phenio_edge_sources'
+
+delimiter: '\t'
+
+files:
+  - './data/transformed/phenio/PhenioTransform_edges.tsv'
+
+metadata: './kg_idg/transform_utils/phenio/metadata.yaml'
+
+header: 'infer'
+
+columns:
+  - 'id'
+  - 'subject'
+  - 'predicate'
+  - 'object'
+  - 'category'
+  - 'relation'
+  - 'knowledge_source'
+
+edge_properties:
+  - 'id'
+  - 'subject'
+  - 'predicate'
+  - 'object'
+  - 'category'
+  - 'relation'
+  - 'primary_knowledge_source'
+  - 'aggregator_knowledge_source'
+
+transform_mode: 'flat'

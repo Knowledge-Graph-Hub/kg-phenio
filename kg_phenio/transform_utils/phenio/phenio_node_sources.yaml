@@ -1,0 +1,26 @@
+name: 'phenio_node_sources'
+
+delimiter: '\t'
+
+files:
+  - './data/transformed/phenio/PhenioTransform_nodes.tsv'
+
+metadata: './kg_idg/transform_utils/phenio/metadata.yaml'
+
+header: 'infer'
+
+columns:
+  - 'id'
+  - 'category'
+  - 'name'
+  - 'description'
+  - 'provided_by'
+
+node_properties:
+  - 'id'
+  - 'category'
+  - 'name'
+  - 'description'
+  - 'provided_by'
+
+transform_mode: 'flat'
