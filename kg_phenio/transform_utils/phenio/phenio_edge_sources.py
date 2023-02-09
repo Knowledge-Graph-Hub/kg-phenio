@@ -14,21 +14,22 @@ valid = True
 # with Biolink-compliant knowledge sources.
 
 # This maps CURIE prefixes to infores: names.
+# For edges, the source isn't necessarily
+# the same as the node source.
 # TODO: technically the names should be part of
 #       biolink:InformationResource objects
 infores_sources = {
-    "APO": "apo",  # TODO: check this one
+    "APO": "apo",  # Ascomycete phenotype ontology - cat only
     "BFO": "bfo",
-    "BSPO": "bspo",  # TODO: check this one
-    "BTO": "bto",  # TODO: check this one
-    "CARO": "caro",
+    "BSPO": "upheno",  # Biological Spatial Ontology - from Upheno
+    "BTO": "bto",  # BRENDA vocab - cat only
     "CHEBI": "chebi",
-    "CHR": "chr",  # TODO: check this one
-    "CIO": "cio",  # TODO: check this one
+    "CHR": "mondo",  # Chromosome ID - from MONDO
+    "CIO": "cio",  # Confidence Information - cat only
     "CL": "cl",
-    "CLO": "clo",  # TODO: check this one
-    "DDANAT": "ddanat",  # TODO: check this one
-    "DOID": "doid",  # TODO: check this one
+    "CLO": "clo",  # Cell Line - cat only
+    "DDANAT": "ddanat",  # Dictyostelium discoideum anatomy - cat only
+    "DOID": "doid",  # Disease ID - cat only
     "ECO": "eco",
     "EMAPA": "emapa",
     "ENVO": "envo",
@@ -45,7 +46,7 @@ infores_sources = {
     "IAO": "iao",
     "MA": "ma",
     "MF": "mf",
-    "MFOMD": "mfomd",  # TODO: check this
+    "MFOMD": "mondo",  # Mental Disease - ref'd by MONDO
     "MI": "mi",
     "MONDO": "mondo",
     "MP": "mp",
@@ -56,10 +57,10 @@ infores_sources = {
     "OBA": "oba",
     "OBAN": "oban",
     "OBI": "obi",
-    "OBO": "obo",  # TODO: Not quite right - these are extra OBO prefixes
+    "OBO": "unknown",  # a messy one - usually not OBO, though
     "OGMS": "ogms",
     "OIO": "oio",
-    "OMIM": "omim",  # TODO: certainly check these
+    "OMIM": "omim",  # OMIM - cat only
     "Orphanet": "orphanet",
     "PATO": "pato",
     "PCO": "pco",
@@ -67,14 +68,14 @@ infores_sources = {
     "PR": "pr",
     "PW": "pw",
     "RO": "ro",
-    "RXCUI": "rxnorm",  # TODO: check on these edges
+    "RXCUI": "rxnorm",  # RXNORM - cat only
     "SEPIO": "sepio",
     "SO": "so",
     "SIO": "sio",
     "STATO": "stato",
-    "TO": "to",  # TODO: check on these
+    "TO": "to",  # Plant Trait - cat only
     "UBERON": "uberon",
-    "UMLS": "umls",  # TODO: check on these edges
+    "UMLS": "umls",  # UMLS - cat only
     "UPHENO": "upheno",
     "WBPhenotype": "wbphenotype",
     "WBBT": "wbbt",
@@ -91,7 +92,7 @@ infores_sources = {
     "faldo": "faldo",
     "foaf": "foaf",
     "owl": "owl",
-    "pav": "pav",  # TODO: check on this one
+    "pav": "pav",  # PAV onto - cat only
     "rdf": "rdf",
     "rdfs": "rdfs",
     "skos": "skos",
@@ -106,10 +107,15 @@ aggregator_knowledge_source = "infores:phenio"
 
 subj_curie_prefix = (str(row["subject"]).split(":"))[0]
 obj_curie_prefix = (str(row["object"]).split(":"))[0]
+relation_prefix = (str(row["relation"]).split(":"))[0]
 
-# TODO: make this more specific, as it won't always be true
+# This makes an assumption that the subject determines
+# the source, which isn't always the case,
 if subj_curie_prefix not in bad_prefixes:
-    infores = infores_sources[subj_curie_prefix]
+    if relation_prefix == "UPHENO":
+        infores = "upheno"
+    else:
+        infores = infores_sources[subj_curie_prefix]
     primary_knowledge_source = f"infores:{infores}"
 
 # TODO: assign more specific association type
