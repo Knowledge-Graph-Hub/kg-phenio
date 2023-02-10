@@ -33,7 +33,7 @@ if p1.id[0:2] in desired_types and p2.id[0:2] in desired_types:
         subject=p1.id,
         predicate="biolink:same_as",
         object=p2.id,
-        relation="skos:exactMatch",
+        original_predicate="skos:exactMatch",
     )
 
     koza_app.write(p1, association, p2)
