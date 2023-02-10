@@ -162,7 +162,7 @@ pipeline {
                                 // make $BUILDSTARTDATE/ directory and sync to s3 bucket
                                 //
                                 sh 'mkdir $BUILDSTARTDATE/'
-                                sh 'cp -p data/merged/${MERGEDKGNAME_BASE}.nt.gz $BUILDSTARTDATE/${MERGEDKGNAME_BASE}.nt.gz'
+                                // sh 'cp -p data/merged/${MERGEDKGNAME_BASE}.nt.gz $BUILDSTARTDATE/${MERGEDKGNAME_BASE}.nt.gz'
                                 sh 'cp -p merged-kg.tar.gz $BUILDSTARTDATE/${MERGEDKGNAME_BASE}.tar.gz'
 
                                 // transformed data
