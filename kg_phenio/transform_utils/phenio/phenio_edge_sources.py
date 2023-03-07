@@ -83,6 +83,7 @@ infores_sources = {
     "WBbt": "wbbt",
     "XAO": "xao",
     "XCO": "xco",
+    "XPO": "xpo",
     "ZFA": "zfa",
     "ZFS": "zfs",
     "ZP": "zp",
@@ -114,6 +115,8 @@ relation_prefix = (str(row["relation"]).split(":"))[0]
 # the source, which isn't always the case,
 if subj_curie_prefix not in bad_prefixes:
     if relation_prefix == "UPHENO":
+        infores = "upheno"
+    elif obj_curie_prefix == "UPHENO":
         infores = "upheno"
     else:
         infores = infores_sources[subj_curie_prefix]
