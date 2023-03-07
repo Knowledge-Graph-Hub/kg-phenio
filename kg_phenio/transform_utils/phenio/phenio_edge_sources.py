@@ -83,6 +83,7 @@ infores_sources = {
     "WBbt": "wbbt",
     "XAO": "xao",
     "XCO": "xco",
+    "XPO": "xpo",
     "ZFA": "zfa",
     "ZFS": "zfs",
     "ZP": "zp",
