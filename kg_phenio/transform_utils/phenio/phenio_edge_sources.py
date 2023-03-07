@@ -116,6 +116,8 @@ relation_prefix = (str(row["relation"]).split(":"))[0]
 if subj_curie_prefix not in bad_prefixes:
     if relation_prefix == "UPHENO":
         infores = "upheno"
+    elif obj_curie_prefix == "UPHENO":
+        infores = "upheno"
     else:
         infores = infores_sources[subj_curie_prefix]
     primary_knowledge_source = f"infores:{infores}"
