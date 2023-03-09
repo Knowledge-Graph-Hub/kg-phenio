@@ -108,7 +108,7 @@ primary_knowledge_source = "infores:unknown"
 aggregator_knowledge_source = "infores:phenio"
 
 subj_curie_prefix = (str(row["subject"]).split(":"))[0]
-if subj_curie_prefix == "OBO": # See if there's another prefix
+if subj_curie_prefix == "OBO":  # See if there's another prefix
     subj_curie_prefix = (str(row["subject"]).split("_"))[4:]
 obj_curie_prefix = (str(row["object"]).split(":"))[0]
 relation_prefix = (str(row["relation"]).split(":"))[0]
