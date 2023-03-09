@@ -58,7 +58,7 @@ infores_sources = {
     "OBA": "oba",
     "OBAN": "oban",
     "OBI": "obi",
-    "OBO": "unknown",  # a messy one - usually not OBO, though
+    "OBO": "unknown",  # a messy one - may not be OBO though
     "OGMS": "ogms",
     "OIO": "oio",
     "OMIM": "omim",  # OMIM - cat only
@@ -108,11 +108,11 @@ primary_knowledge_source = "infores:unknown"
 aggregator_knowledge_source = "infores:phenio"
 
 subj_curie_prefix = (str(row["subject"]).split(":"))[0]
+if subj_curie_prefix == "OBO": # See if there's another prefix
+    subj_curie_prefix = (str(row["subject"]).split("_"))[4:]
 obj_curie_prefix = (str(row["object"]).split(":"))[0]
 relation_prefix = (str(row["relation"]).split(":"))[0]
 
-# This makes an assumption that the subject determines
-# the source, which isn't always the case,
 if subj_curie_prefix not in bad_prefixes:
     if relation_prefix == "UPHENO":
         infores = "upheno"
