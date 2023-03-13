@@ -45,6 +45,7 @@ infores_sources = {
     "FYPO": "fypo",
     "GENO": "geno",
     "GO": "go",
+    "GOREL": "go",
     "HP": "hp",
     "HsapDv": "HsapDv",
     "IAO": "iao",
