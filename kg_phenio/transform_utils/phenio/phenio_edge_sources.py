@@ -32,6 +32,7 @@ infores_sources = {
     "DDANAT": "ddanat",  # Dictyostelium discoideum anatomy - cat only
     "DOID": "doid",  # Disease ID - cat only
     "ECO": "eco",
+    "ECTO": "ecto",
     "EMAPA": "emapa",
     "ENVO": "envo",
     "FAO": "fao",
@@ -103,9 +104,11 @@ infores_sources = {
 
 bad_prefixes = ["DATA",
                 "emapa#Tmp",
+                "emapa#group",
                 "emapa#group_term",
                 "http",
                 "https",
+                "stato.owl#response",
                 "WD_Entity",
                 "WD_Prop"]
 
