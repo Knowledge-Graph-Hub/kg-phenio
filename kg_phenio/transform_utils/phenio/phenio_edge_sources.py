@@ -32,6 +32,8 @@ infores_sources = {
     "DDANAT": "ddanat",  # Dictyostelium discoideum anatomy - cat only
     "DOID": "doid",  # Disease ID - cat only
     "ECO": "eco",
+    "ECTO": "ecto",
+    "ExO": "exo",
     "EMAPA": "emapa",
     "ENVO": "envo",
     "FAO": "fao",
@@ -43,9 +45,13 @@ infores_sources = {
     "FYPO": "fypo",
     "GENO": "geno",
     "GO": "go",
+    "GOREL": "go",
     "HP": "hp",
+    "HsapDv": "HsapDv",
     "IAO": "iao",
+    "INO": "ino",
     "MA": "ma",
+    "MAXO": "maxo",
     "MF": "mf",
     "MFOMD": "mondo",  # Mental Disease - ref'd by MONDO
     "MI": "mi",
@@ -69,18 +75,21 @@ infores_sources = {
     "PR": "pr",
     "PW": "pw",
     "RO": "ro",
+    "RnorDv": "rnordv",
     "RXCUI": "rxnorm",  # RXNORM - cat only
     "SEPIO": "sepio",
     "SO": "so",
     "SIO": "sio",
     "STATO": "stato",
     "TO": "to",  # Plant Trait - cat only
+    "TS": "ts",  # almost always with EMAPA
     "UBERON": "uberon",
     "UMLS": "umls",  # UMLS - cat only
     "UPHENO": "upheno",
     "WBPhenotype": "wbphenotype",
     "WBBT": "wbbt",
     "WBbt": "wbbt",
+    "WBls": "wbls",
     "XAO": "xao",
     "XCO": "xco",
     "XPO": "xpo",
@@ -100,7 +109,29 @@ infores_sources = {
     "skos": "skos",
 }
 
-bad_prefixes = ["http", "https", "DATA", "WD_Entity", "WD_Prop"]
+bad_prefixes = ["DATA",
+                "PHENIO",
+                "WD_Entity",
+                "WD_Prop",
+                "chebi#is",
+                "core#connected",
+                "core#distally",
+                "core#innervated",
+                "core#subdivision",
+                "doid#derives",
+                "doid#has",
+                "emapa#Tmp",
+                "emapa#group",
+                "emapa#group_term",
+                "http",
+                "https",
+                "mondo#disease",
+                "nbo#by",
+                "nbo#has",
+                "nbo#in",
+                "nbo#is",
+                "stato.owl#is",
+                "stato.owl#response"]
 
 common_prefixes = ["BFO", "owl", "RO"]
 
@@ -109,7 +140,10 @@ aggregator_knowledge_source = "infores:phenio"
 
 subj_curie_prefix = (str(row["subject"]).split(":"))[0]
 if subj_curie_prefix == "OBO":  # See if there's another prefix
-    subj_curie_prefix = (str(row["subject"]).split("_"))[0][4:]
+    if (str(row["subject"])).startswith("OBO:uberon"):
+        subj_curie_prefix = "UBERON"
+    else:
+        subj_curie_prefix = (str(row["subject"]).split("_"))[0][4:]
 obj_curie_prefix = (str(row["object"]).split(":"))[0]
 relation_prefix = (str(row["relation"]).split(":"))[0]
 
@@ -127,9 +161,7 @@ if subj_curie_prefix not in bad_prefixes:
 # The relation tells us which class to use.
 # We default to generic Association.
 # TODO: add more to this map
-remap_rels = {
-    "UPHENO:0000003": "DiseaseOrPhenotypicFeatureToLocationAssociation"
-}
+remap_rels = {"UPHENO:0000003": "DiseaseOrPhenotypicFeatureToLocationAssociation"}
 relation = str(row["relation"])
 if relation in remap_rels:
     category_name = remap_rels[relation]
