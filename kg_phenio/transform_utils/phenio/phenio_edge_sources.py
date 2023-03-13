@@ -75,6 +75,7 @@ infores_sources = {
     "PR": "pr",
     "PW": "pw",
     "RO": "ro",
+    "RnorDv": "rnordv",
     "RXCUI": "rxnorm",  # RXNORM - cat only
     "SEPIO": "sepio",
     "SO": "so",
@@ -112,6 +113,7 @@ bad_prefixes = ["DATA",
                 "emapa#group_term",
                 "http",
                 "https",
+                "PHENIO",
                 "stato.owl#response",
                 "WD_Entity",
                 "WD_Prop"]
