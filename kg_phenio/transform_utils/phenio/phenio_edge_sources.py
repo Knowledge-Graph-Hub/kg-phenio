@@ -89,6 +89,7 @@ infores_sources = {
     "WBPhenotype": "wbphenotype",
     "WBBT": "wbbt",
     "WBbt": "wbbt",
+    "WBls": "wbls",
     "XAO": "xao",
     "XCO": "xco",
     "XPO": "xpo",
