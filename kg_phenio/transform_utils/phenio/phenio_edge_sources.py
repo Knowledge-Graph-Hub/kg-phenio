@@ -82,7 +82,7 @@ infores_sources = {
     "SIO": "sio",
     "STATO": "stato",
     "TO": "to",  # Plant Trait - cat only
-    "TS": "ts", # almost always with EMAPA
+    "TS": "ts",  # almost always with EMAPA
     "UBERON": "uberon",
     "UMLS": "umls",  # UMLS - cat only
     "UPHENO": "upheno",
@@ -110,15 +110,28 @@ infores_sources = {
 }
 
 bad_prefixes = ["DATA",
+                "PHENIO",
+                "WD_Entity",
+                "WD_Prop",
+                "chebi#is",
+                "core#connected",
+                "core#distally",
+                "core#innervated",
+                "core#subdivision",
+                "doid#derives",
+                "doid#has",
                 "emapa#Tmp",
                 "emapa#group",
                 "emapa#group_term",
                 "http",
                 "https",
-                "PHENIO",
-                "stato.owl#response",
-                "WD_Entity",
-                "WD_Prop"]
+                "mondo#disease",
+                "nbo#by",
+                "nbo#has",
+                "nbo#in",
+                "nbo#is",
+                "stato.owl#is",
+                "stato.owl#response"]
 
 common_prefixes = ["BFO", "owl", "RO"]
 
@@ -128,7 +141,7 @@ aggregator_knowledge_source = "infores:phenio"
 subj_curie_prefix = (str(row["subject"]).split(":"))[0]
 if subj_curie_prefix == "OBO":  # See if there's another prefix
     if (str(row["subject"])).startswith("OBO:uberon"):
-        subj_curie_prefix = "uberon"
+        subj_curie_prefix = "UBERON"
     else:
         subj_curie_prefix = (str(row["subject"]).split("_"))[0][4:]
 obj_curie_prefix = (str(row["object"]).split(":"))[0]
