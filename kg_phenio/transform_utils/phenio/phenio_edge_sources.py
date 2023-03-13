@@ -33,6 +33,7 @@ infores_sources = {
     "DOID": "doid",  # Disease ID - cat only
     "ECO": "eco",
     "ECTO": "ecto",
+    "ExO": "exo",
     "EMAPA": "emapa",
     "ENVO": "envo",
     "FAO": "fao",
