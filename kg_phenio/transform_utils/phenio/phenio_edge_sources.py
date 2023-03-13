@@ -49,6 +49,7 @@ infores_sources = {
     "HP": "hp",
     "HsapDv": "HsapDv",
     "IAO": "iao",
+    "INO": "ino",
     "MA": "ma",
     "MF": "mf",
     "MFOMD": "mondo",  # Mental Disease - ref'd by MONDO
