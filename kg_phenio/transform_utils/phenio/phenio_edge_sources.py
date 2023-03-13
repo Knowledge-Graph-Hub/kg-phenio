@@ -51,6 +51,7 @@ infores_sources = {
     "IAO": "iao",
     "INO": "ino",
     "MA": "ma",
+    "MAXO": "maxo",
     "MF": "mf",
     "MFOMD": "mondo",  # Mental Disease - ref'd by MONDO
     "MI": "mi",
