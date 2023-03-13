@@ -101,7 +101,13 @@ infores_sources = {
     "skos": "skos",
 }
 
-bad_prefixes = ["http", "https", "DATA", "WD_Entity", "WD_Prop"]
+bad_prefixes = ["DATA",
+                "emapa#Tmp",
+                "emapa#group_term",
+                "http",
+                "https",
+                "WD_Entity",
+                "WD_Prop"]
 
 common_prefixes = ["BFO", "owl", "RO"]
 
@@ -128,9 +134,7 @@ if subj_curie_prefix not in bad_prefixes:
 # The relation tells us which class to use.
 # We default to generic Association.
 # TODO: add more to this map
-remap_rels = {
-    "UPHENO:0000003": "DiseaseOrPhenotypicFeatureToLocationAssociation"
-}
+remap_rels = {"UPHENO:0000003": "DiseaseOrPhenotypicFeatureToLocationAssociation"}
 relation = str(row["relation"])
 if relation in remap_rels:
     category_name = remap_rels[relation]
