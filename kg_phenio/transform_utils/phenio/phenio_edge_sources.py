@@ -82,6 +82,7 @@ infores_sources = {
     "SIO": "sio",
     "STATO": "stato",
     "TO": "to",  # Plant Trait - cat only
+    "TS": "ts", # almost always with EMAPA
     "UBERON": "uberon",
     "UMLS": "umls",  # UMLS - cat only
     "UPHENO": "upheno",
