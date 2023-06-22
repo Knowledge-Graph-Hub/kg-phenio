@@ -17,14 +17,6 @@ class Transform:
     ):
         """Write defaults; can be appended to or overwritten as necessary."""
         self.source_name = source_name
-        self.node_header = ["id", "name", "category"]
-        self.edge_header = [
-            "subject",
-            "edge_label",
-            "object",
-            "relation",
-            "provided_by",
-        ]
 
         # default dirs
         self.input_base_dir = input_dir if input_dir else self.DEFAULT_INPUT_DIR

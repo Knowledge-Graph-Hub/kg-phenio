@@ -128,12 +128,20 @@ if node_curie_prefix not in bad_prefixes:
 
 # Association
 if valid:
-    node = NodeClass(
-        id=row["id"],
-        category=row["category"],
-        name=row["name"],
-        description=row["description"],
-        provided_by=primary_knowledge_source,
-    )
-
+    try:
+        node = NodeClass(
+            id=row["id"],
+            category=row["category"],
+            name=row["name"],
+            description=row["description"],
+            provided_by=primary_knowledge_source,
+        )
+        if row["xref"]:
+            node.xref = row["xref"].split("|")
+        if row["synonym"]:
+            node.synonym = row["synonym"].split("|")
+    except ValueError as e:
+        print(e)
+        print(row)
+        raise e
     koza_app.write(node)

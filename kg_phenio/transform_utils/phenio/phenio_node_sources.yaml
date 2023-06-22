@@ -14,13 +14,19 @@ columns:
   - 'category'
   - 'name'
   - 'description'
+  - 'xref'
   - 'provided_by'
-
+  - 'synonym'
+  - 'iri'
+  - 'same_as'
+  - 'subsets'
 node_properties:
   - 'id'
   - 'category'
   - 'name'
   - 'description'
+  - 'synonym'
+  - 'xref'
   - 'provided_by'
 
 transform_mode: 'flat'
