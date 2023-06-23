@@ -125,7 +125,7 @@ class PhenioTransform(Transform):
                 input_format="obojson",
                 output=os.path.join(self.output_dir, name),
                 output_format="tsv",
-                stream=True,
+                stream=False,
             )
         else:
             print(f"Found KGX TSV edges at {data_file_tsv}.")
