@@ -1,8 +1,8 @@
 """Test functions for removing obsolete nodes/edges."""
-#import os
+# import os
 import unittest
 
-#from kg_phenio.utils.transform_utils import remove_obsoletes
+# from kg_phenio.utils.transform_utils import remove_obsoletes
 
 
 class TestRemoveObsoletes(unittest.TestCase):
