@@ -5,9 +5,9 @@ pipeline {
             image 'caufieldjh/kg-idg:4'
         }
     }
-    //triggers{
-    //    cron('H H 1 1-12 *')
-    //}
+    triggers{
+        cron('0 9 8 1-12 *')
+    }
     environment {
         BUILDSTARTDATE = sh(script: "echo `date +%Y%m%d`", returnStdout: true).trim()
         S3PROJECTDIR = 'kg-phenio' // no trailing slash
