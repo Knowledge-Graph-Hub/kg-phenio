@@ -71,6 +71,7 @@ infores_sources = {
     "RO": "ro",
     "RXCUI": "rxnorm",
     "SEPIO": "sepio",
+    "SNOMED": "snomed",
     "SO": "so",
     "SIO": "sio",
     "STATO": "stato",
