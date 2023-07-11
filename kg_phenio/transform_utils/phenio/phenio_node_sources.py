@@ -61,6 +61,7 @@ infores_sources = {
     "OGMS": "ogms",
     "OIO": "oio",
     "OMIM": "omim",
+    "OMIT": "omit",
     "Orphanet": "orphanet",
     "PATO": "pato",
     "PCO": "pco",
