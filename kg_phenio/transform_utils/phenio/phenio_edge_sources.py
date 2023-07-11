@@ -68,6 +68,7 @@ infores_sources = {
     "OGMS": "ogms",
     "OIO": "oio",
     "OMIM": "omim",  # OMIM - cat only
+    "OMIT": "omit",
     "Orphanet": "orphanet",
     "PATO": "pato",
     "PCO": "pco",
@@ -80,6 +81,7 @@ infores_sources = {
     "SEPIO": "sepio",
     "SO": "so",
     "SIO": "sio",
+    "SNOMED": "snomed",
     "STATO": "stato",
     "TO": "to",  # Plant Trait - cat only
     "TS": "ts",  # almost always with EMAPA
