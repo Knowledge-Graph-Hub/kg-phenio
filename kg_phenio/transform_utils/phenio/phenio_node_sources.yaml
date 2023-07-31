@@ -26,7 +26,6 @@ node_properties:
   - 'name'
   - 'description'
   - 'synonym'
-  - 'xref'
   - 'provided_by'
 
 transform_mode: 'flat'

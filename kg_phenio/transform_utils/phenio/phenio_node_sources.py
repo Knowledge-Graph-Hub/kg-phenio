@@ -6,6 +6,8 @@ from koza.cli_runner import get_koza_app  # type: ignore
 
 source_name = "phenio_node_sources"
 
+SYNONYM = "synonym"
+
 koza_app = get_koza_app(source_name)
 row = koza_app.get_row()
 
@@ -130,20 +132,16 @@ if node_curie_prefix not in bad_prefixes:
 
 # Association
 if valid:
-    try:
-        node = NodeClass(
+    
+    node = NodeClass(
             id=row["id"],
             category=row["category"],
             name=row["name"],
             description=row["description"],
             provided_by=primary_knowledge_source,
         )
-        if row["xref"]:
-            node.xref = row["xref"].split("|")
-        if row["synonym"]:
-            node.synonym = row["synonym"].split("|")
-    except ValueError as e:
-        print(e)
-        print(row)
-        raise e
+    all_slots = list(node.__dict__.keys())
+    if row[SYNONYM] and SYNONYM in all_slots:
+        node.synonym = (row["synonym"]).split("|")
+
     koza_app.write(node)
