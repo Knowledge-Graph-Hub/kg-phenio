@@ -1048,24 +1048,6 @@ rdflib-shim = "*"
 rfc3987 = "*"
 
 [[package]]
-name = "ghp-import"
-version = "2.1.0"
-description = "Copy your docs directly to the gh-pages branch."
-category = "main"
-optional = false
-python-versions = "*"
-files = [
-    {file = "ghp-import-2.1.0.tar.gz", hash = "sha256:9c535c4c61193c2df8871222567d7fd7e5014d835f97dc7b7439069e2413d343"},
-    {file = "ghp_import-2.1.0-py3-none-any.whl", hash = "sha256:8337dd7b50877f163d4c0289bc1f1c7f127550241988d568c1db512c4324a619"},
-]
-
-[package.dependencies]
-python-dateutil = ">=2.8.1"
-
-[package.extras]
-dev = ["flake8", "markdown", "twine", "wheel"]
-
-[[package]]
 name = "graphviz"
 version = "0.20.1"
 description = "Simple Python interface for Graphviz"
@@ -1608,29 +1590,25 @@ validators = ">=0.13.0"
 
 [[package]]
 name = "koza"
-version = "0.2.1"
-description = "Koza, an ETL framework for LinkML data models"
+version = "0.3.1"
+description = "Data transformation framework for LinkML data models"
 category = "main"
 optional = false
-python-versions = ">=3.8"
+python-versions = ">=3.8,<4.0"
 files = [
-    {file = "koza-0.2.1-py3-none-any.whl", hash = "sha256:55d4b9f5565a0a6c98c1470582d5b2c2ab97f7c225373913f6008645ff9dfafe"},
-    {file = "koza-0.2.1.tar.gz", hash = "sha256:2273245b98ec2ba1d19532d116db124260e8fc5e05556b97f96de7c8168713ee"},
+    {file = "koza-0.3.1-py3-none-any.whl", hash = "sha256:b000144b7d5d1d90d84784d82bbf53757b9f99289212778a6d396e8aae343d76"},
+    {file = "koza-0.3.1.tar.gz", hash = "sha256:d450174cfb1dbadcd886541e6cead0ee95425edc56093ef5dd3359cf1b2dc14d"},
 ]
 
 [package.dependencies]
-linkml-validator = ">=0.1.0"
-mkdocs = ">=1.3.0"
-mkdocs-material = ">=8.3.4"
+linkml-validator = ">=0.4.4"
+loguru = "*"
 ordered-set = ">=4.1.0"
 pydantic = ">=1.0.0,<2.0.0"
-pyyaml = ">=5.3.1,<6.0.0"
+pyyaml = ">=5.0.0"
 requests = ">=2.24.0,<3.0.0"
-typer = ">=0.3"
-
-[package.extras]
-dev = ["autoflake (>=1.3.1,<2.0.0)", "biolink-model-pydantic (>=0.1.11)", "black (==22.3.0)", "dask (>=2022.5.2)", "flake8 (>=3.8.3,<4.0.0)", "isort (>=5.0.6,<6.0.0)"]
-test = ["pytest (>=6.0.0)"]
+typer = ">=0.7.0,<0.8.0"
+typer-cli = ">=0.0.13,<0.0.14"
 
 [[package]]
 name = "lark"
@@ -1760,22 +1738,23 @@ stringcase = ">=1.2.0"
 dev = ["mkdocs", "mkdocs-material", "mkdocstrings", "mkdocstrings-python-legacy", "pytest", "pytest-cov"]
 
 [[package]]
-name = "markdown"
-version = "3.3.7"
-description = "Python implementation of Markdown."
+name = "loguru"
+version = "0.7.0"
+description = "Python logging made (stupidly) simple"
 category = "main"
 optional = false
-python-versions = ">=3.6"
+python-versions = ">=3.5"
 files = [
-    {file = "Markdown-3.3.7-py3-none-any.whl", hash = "sha256:f5da449a6e1c989a4cea2631aa8ee67caa5a2ef855d551c88f9e309f4634c621"},
-    {file = "Markdown-3.3.7.tar.gz", hash = "sha256:cbb516f16218e643d8e0a95b309f77eb118cb138d39a4f27851e6a63581db874"},
+    {file = "loguru-0.7.0-py3-none-any.whl", hash = "sha256:b93aa30099fa6860d4727f1b81f8718e965bb96253fa190fab2077aaad6d15d3"},
+    {file = "loguru-0.7.0.tar.gz", hash = "sha256:1612053ced6ae84d7959dd7d5e431a0532642237ec21f7fd83ac73fe539e03e1"},
 ]
 
 [package.dependencies]
-importlib-metadata = {version = ">=4.4", markers = "python_version < \"3.10\""}
+colorama = {version = ">=0.3.4", markers = "sys_platform == \"win32\""}
+win32-setctime = {version = ">=1.0.0", markers = "sys_platform == \"win32\""}
 
 [package.extras]
-testing = ["coverage", "pyyaml"]
+dev = ["Sphinx (==5.3.0)", "colorama (==0.4.5)", "colorama (==0.4.6)", "freezegun (==1.1.0)", "freezegun (==1.2.2)", "mypy (==v0.910)", "mypy (==v0.971)", "mypy (==v0.990)", "pre-commit (==3.2.1)", "pytest (==6.1.2)", "pytest (==7.2.1)", "pytest-cov (==2.12.1)", "pytest-cov (==4.0.0)", "pytest-mypy-plugins (==1.10.1)", "pytest-mypy-plugins (==1.9.3)", "sphinx-autobuild (==2021.3.14)", "sphinx-rtd-theme (==1.2.0)", "tox (==3.27.1)", "tox (==4.4.6)"]
 
 [[package]]
 name = "markdown-it-py"
@@ -1904,82 +1883,6 @@ python-versions = ">=3.7"
 files = [
     {file = "mdurl-0.1.2-py3-none-any.whl", hash = "sha256:84008a41e51615a49fc9966191ff91509e3c40b939176e643fd50a5c2196b8f8"},
     {file = "mdurl-0.1.2.tar.gz", hash = "sha256:bb413d29f5eea38f31dd4754dd7377d4465116fb207585f97bf925588687c1ba"},
-]
-
-[[package]]
-name = "mergedeep"
-version = "1.3.4"
-description = "A deep merge function for 🐍."
-category = "main"
-optional = false
-python-versions = ">=3.6"
-files = [
-    {file = "mergedeep-1.3.4-py3-none-any.whl", hash = "sha256:70775750742b25c0d8f36c55aed03d24c3384d17c951b3175d898bd778ef0307"},
-    {file = "mergedeep-1.3.4.tar.gz", hash = "sha256:0096d52e9dad9939c3d975a774666af186eda617e6ca84df4c94dec30004f2a8"},
-]
-
-[[package]]
-name = "mkdocs"
-version = "1.4.2"
-description = "Project documentation with Markdown."
-category = "main"
-optional = false
-python-versions = ">=3.7"
-files = [
-    {file = "mkdocs-1.4.2-py3-none-any.whl", hash = "sha256:c8856a832c1e56702577023cd64cc5f84948280c1c0fcc6af4cd39006ea6aa8c"},
-    {file = "mkdocs-1.4.2.tar.gz", hash = "sha256:8947af423a6d0facf41ea1195b8e1e8c85ad94ac95ae307fe11232e0424b11c5"},
-]
-
-[package.dependencies]
-click = ">=7.0"
-colorama = {version = ">=0.4", markers = "platform_system == \"Windows\""}
-ghp-import = ">=1.0"
-importlib-metadata = {version = ">=4.3", markers = "python_version < \"3.10\""}
-jinja2 = ">=2.11.1"
-markdown = ">=3.2.1,<3.4"
-mergedeep = ">=1.3.4"
-packaging = ">=20.5"
-pyyaml = ">=5.1"
-pyyaml-env-tag = ">=0.1"
-watchdog = ">=2.0"
-
-[package.extras]
-i18n = ["babel (>=2.9.0)"]
-min-versions = ["babel (==2.9.0)", "click (==7.0)", "colorama (==0.4)", "ghp-import (==1.0)", "importlib-metadata (==4.3)", "jinja2 (==2.11.1)", "markdown (==3.2.1)", "markupsafe (==2.0.1)", "mergedeep (==1.3.4)", "packaging (==20.5)", "pyyaml (==5.1)", "pyyaml-env-tag (==0.1)", "typing-extensions (==3.10)", "watchdog (==2.0)"]
-
-[[package]]
-name = "mkdocs-material"
-version = "9.1.2"
-description = "Documentation that simply works"
-category = "main"
-optional = false
-python-versions = ">=3.7"
-files = [
-    {file = "mkdocs_material-9.1.2-py3-none-any.whl", hash = "sha256:344a1c66f0e217e5ceaf67739d274e51c61ac9f9d7af55a5b4805a4a2ab54184"},
-    {file = "mkdocs_material-9.1.2.tar.gz", hash = "sha256:9ca8c980c30aab3b70e3bfbec691f9ffcbea8319873911c86e8af145147e2a9d"},
-]
-
-[package.dependencies]
-colorama = ">=0.4"
-jinja2 = ">=3.0"
-markdown = ">=3.2"
-mkdocs = ">=1.4.2"
-mkdocs-material-extensions = ">=1.1"
-pygments = ">=2.14"
-pymdown-extensions = ">=9.9.1"
-regex = ">=2022.4.24"
-requests = ">=2.26"
-
-[[package]]
-name = "mkdocs-material-extensions"
-version = "1.1.1"
-description = "Extension pack for Python Markdown and MkDocs Material."
-category = "main"
-optional = false
-python-versions = ">=3.7"
-files = [
-    {file = "mkdocs_material_extensions-1.1.1-py3-none-any.whl", hash = "sha256:e41d9f38e4798b6617ad98ca8f7f1157b1e4385ac1459ca1e4ea219b556df945"},
-    {file = "mkdocs_material_extensions-1.1.1.tar.gz", hash = "sha256:9c003da71e2cc2493d910237448c672e00cefc800d3d6ae93d2fc69979e3bd93"},
 ]
 
 [[package]]
@@ -2764,22 +2667,6 @@ antlr4-python3-runtime = ">=4.9.3,<4.10.0"
 jsonasobj = ">=1.2.1"
 
 [[package]]
-name = "pymdown-extensions"
-version = "9.10"
-description = "Extension pack for Python Markdown."
-category = "main"
-optional = false
-python-versions = ">=3.7"
-files = [
-    {file = "pymdown_extensions-9.10-py3-none-any.whl", hash = "sha256:31eaa76ce6f96aabfcea98787c2fff2c5c0611b20a53a94213970cfbf05f02b8"},
-    {file = "pymdown_extensions-9.10.tar.gz", hash = "sha256:562c38eee4ce3f101ce631b804bfc2177a8a76c7e4dc908871fb6741a90257a7"},
-]
-
-[package.dependencies]
-markdown = ">=3.2"
-pyyaml = "*"
-
-[[package]]
 name = "pyparsing"
 version = "3.0.9"
 description = "pyparsing module - Classes and methods to define and execute parsing grammars"
@@ -3058,21 +2945,6 @@ files = [
     {file = "PyYAML-5.4.1-cp39-cp39-win_amd64.whl", hash = "sha256:c20cfa2d49991c8b4147af39859b167664f2ad4561704ee74c1de03318e898db"},
     {file = "PyYAML-5.4.1.tar.gz", hash = "sha256:607774cbba28732bfa802b54baa7484215f530991055bb562efbed5b2f20a45e"},
 ]
-
-[[package]]
-name = "pyyaml-env-tag"
-version = "0.1"
-description = "A custom YAML tag for referencing environment variables in YAML files. "
-category = "main"
-optional = false
-python-versions = ">=3.6"
-files = [
-    {file = "pyyaml_env_tag-0.1-py3-none-any.whl", hash = "sha256:af31106dec8a4d68c60207c1886031cbf839b68aa7abccdb19868200532c2069"},
-    {file = "pyyaml_env_tag-0.1.tar.gz", hash = "sha256:70092675bda14fdec33b31ba77e7543de9ddc88f2e5b99160396572d11525bdb"},
-]
-
-[package.dependencies]
-pyyaml = "*"
 
 [[package]]
 name = "ratelimit"
@@ -3471,6 +3343,18 @@ optional = false
 python-versions = "*"
 files = [
     {file = "sh-1.14.3.tar.gz", hash = "sha256:e4045b6c732d9ce75d571c79f5ac2234edd9ae4f5fa9d59b09705082bdca18c7"},
+]
+
+[[package]]
+name = "shellingham"
+version = "1.4.0"
+description = "Tool to Detect Surrounding Shell"
+category = "main"
+optional = false
+python-versions = "!=3.0,!=3.1,!=3.2,!=3.3,>=2.6"
+files = [
+    {file = "shellingham-1.4.0-py2.py3-none-any.whl", hash = "sha256:536b67a0697f2e4af32ab176c00a50ac2899c5a05e0d8e2dadac8e58888283f9"},
+    {file = "shellingham-1.4.0.tar.gz", hash = "sha256:4855c2458d6904829bd34c299f11fdeed7cfefbf8a2c522e4caea6cd76b3171e"},
 ]
 
 [[package]]
@@ -4060,6 +3944,23 @@ doc = ["cairosvg (>=2.5.2,<3.0.0)", "mdx-include (>=1.4.1,<2.0.0)", "mkdocs (>=1
 test = ["black (>=22.3.0,<23.0.0)", "coverage (>=6.2,<7.0)", "isort (>=5.0.6,<6.0.0)", "mypy (==0.910)", "pytest (>=4.4.0,<8.0.0)", "pytest-cov (>=2.10.0,<5.0.0)", "pytest-sugar (>=0.9.4,<0.10.0)", "pytest-xdist (>=1.32.0,<4.0.0)", "rich (>=10.11.0,<13.0.0)", "shellingham (>=1.3.0,<2.0.0)"]
 
 [[package]]
+name = "typer-cli"
+version = "0.0.13"
+description = "Run Typer scripts with completion, without having to create a package, using Typer CLI."
+category = "main"
+optional = false
+python-versions = ">=3.7"
+files = [
+    {file = "typer_cli-0.0.13-py3-none-any.whl", hash = "sha256:5ae0f99dce8f8f9669137a2c98eb42485cd4412e0ec225c8eb29ce8ac3378731"},
+    {file = "typer_cli-0.0.13.tar.gz", hash = "sha256:f5b85764e56fb3fe835ed008ad5bc7db4961f7bcce1f1c1698ac46b6c5d9b86f"},
+]
+
+[package.dependencies]
+colorama = ">=0.4.3,<=0.5.0"
+shellingham = ">=1.3.2,<=1.4.0"
+typer = ">=0.4.0,<=0.7.0"
+
+[[package]]
 name = "typing-extensions"
 version = "4.5.0"
 description = "Backported and Experimental Type Hints for Python 3.7+"
@@ -4241,6 +4142,21 @@ python-versions = "*"
 files = [
     {file = "wget-3.2.zip", hash = "sha256:35e630eca2aa50ce998b9b1a127bb26b30dfee573702782aa982f875e3f16061"},
 ]
+
+[[package]]
+name = "win32-setctime"
+version = "1.1.0"
+description = "A small Python utility to set file creation time on Windows"
+category = "main"
+optional = false
+python-versions = ">=3.5"
+files = [
+    {file = "win32_setctime-1.1.0-py3-none-any.whl", hash = "sha256:231db239e959c2fe7eb1d7dc129f11172354f98361c4fa2d6d2d7e278baa8aad"},
+    {file = "win32_setctime-1.1.0.tar.gz", hash = "sha256:15cf5750465118d6929ae4de4eb46e8edae9a5634350c01ba582df868e932cb2"},
+]
+
+[package.extras]
+dev = ["black (>=19.3b0)", "pytest (>=4.6.2)"]
 
 [[package]]
 name = "wrapt"
@@ -4434,4 +4350,4 @@ testing = ["big-O", "flake8 (<5)", "jaraco.functools", "jaraco.itertools", "more
 [metadata]
 lock-version = "2.0"
 python-versions = ">=3.9,<3.12"
-content-hash = "b76364be74143dbed1bcf12284800dfa60016df74ac520901aa348af2dba8cca"
+content-hash = "29f7f7a67077941413125b9813aa356e5b37b372441091bd59854844c894d459"
