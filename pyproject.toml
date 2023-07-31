@@ -17,7 +17,7 @@ Sphinx = "^5.2.3"
 tqdm = "^4.64.1"
 wget = "^3.2"
 universalizer = "^0.0.4"
-biolink-model = "^3.1.2"
+biolink-model = ">=3.5.2"
 
 [tool.poetry.dev-dependencies]
 pytest = "^7.1.3"
