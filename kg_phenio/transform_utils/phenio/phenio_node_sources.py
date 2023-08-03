@@ -6,6 +6,8 @@ from koza.cli_runner import get_koza_app  # type: ignore
 
 source_name = "phenio_node_sources"
 
+SYNONYM = "synonym"
+
 koza_app = get_koza_app(source_name)
 row = koza_app.get_row()
 
@@ -100,13 +102,7 @@ infores_sources = {
     "skos": "skos",
 }
 
-bad_prefixes = ["dc",
-                "http",
-                "https",
-                "DATA",
-                "WD_Entity",
-                "WD_Prop"
-                ]
+bad_prefixes = ["dc", "http", "https", "DATA", "WD_Entity", "WD_Prop"]
 
 primary_knowledge_source = "infores:unknown"
 
@@ -115,9 +111,11 @@ node_curie_prefix = (str(row["id"]).split(":"))[0]
 # The category tells us which class to use.
 # Some categories won't fit the model and need
 # to be remapped.
-remap_cats = {"OntologyClass": "NamedThing",
-              "ChemicalSubstance": "ChemicalEntity",
-              "SequenceFeature": "SequenceVariant"}
+remap_cats = {
+    "OntologyClass": "NamedThing",
+    "ChemicalSubstance": "ChemicalEntity",
+    "SequenceFeature": "SequenceVariant",
+}
 category_name = (str(row["category"]).split(":"))[1]
 if category_name in remap_cats:
     category_name = remap_cats[category_name]
@@ -130,20 +128,15 @@ if node_curie_prefix not in bad_prefixes:
 
 # Association
 if valid:
-    try:
-        node = NodeClass(
-            id=row["id"],
-            category=row["category"],
-            name=row["name"],
-            description=row["description"],
-            provided_by=primary_knowledge_source,
-        )
-        if row["xref"]:
-            node.xref = row["xref"].split("|")
-        if row["synonym"]:
-            node.synonym = row["synonym"].split("|")
-    except ValueError as e:
-        print(e)
-        print(row)
-        raise e
+    node = NodeClass(
+        id=row["id"],
+        category=row["category"],
+        name=row["name"],
+        description=row["description"],
+        provided_by=primary_knowledge_source,
+    )
+    all_slots = list(node.__dict__.keys())
+    if row[SYNONYM] and SYNONYM in all_slots:
+        node.synonym = (row["synonym"]).split("|")
+
     koza_app.write(node)
