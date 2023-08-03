@@ -14,9 +14,9 @@ columns:
   - 'subject'
   - 'predicate'
   - 'object'
-  - 'category'
   - 'relation'
   - 'knowledge_source'
+  - 'meta'
 
 edge_properties:
   - 'id'
