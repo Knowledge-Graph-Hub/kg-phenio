@@ -5,7 +5,7 @@ delimiter: '\t'
 files:
   - './data/transformed/phenio/PhenioTransform_nodes.tsv'
 
-metadata: './kg_idg/transform_utils/phenio/metadata.yaml'
+metadata: './kg_phenio/transform_utils/phenio/metadata.yaml'
 
 header: 'infer'
 
