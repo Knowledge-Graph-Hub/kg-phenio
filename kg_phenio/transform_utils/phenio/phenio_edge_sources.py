@@ -6,9 +6,6 @@ from koza.cli_runner import get_koza_app  # type: ignore
 source_name = "phenio_edge_sources"
 
 koza_app = get_koza_app(source_name)
-row = koza_app.get_row()
-
-valid = True
 
 # This transform is for enriching PHENIO-derived edges
 # with Biolink-compliant knowledge sources.
@@ -141,46 +138,49 @@ common_prefixes = ["BFO", "owl", "RO"]
 primary_knowledge_source = "infores:unknown"
 aggregator_knowledge_source = "infores:phenio"
 
-subj_curie_prefix = (str(row["subject"]).split(":"))[0]
-if subj_curie_prefix == "OBO":  # See if there's another prefix
-    if (str(row["subject"])).startswith("OBO:uberon"):
-        subj_curie_prefix = "UBERON"
+while (row := koza_app.get_row()) is not None:
+    valid = True
+
+    subj_curie_prefix = (str(row["subject"]).split(":"))[0]
+    if subj_curie_prefix == "OBO":  # See if there's another prefix
+        if (str(row["subject"])).startswith("OBO:uberon"):
+            subj_curie_prefix = "UBERON"
+        else:
+            subj_curie_prefix = (str(row["subject"]).split("_"))[0][4:]
+    obj_curie_prefix = (str(row["object"]).split(":"))[0]
+    relation_prefix = (str(row["relation"]).split(":"))[0]
+
+    if subj_curie_prefix not in bad_prefixes:
+        if relation_prefix == "UPHENO":
+            infores = "upheno"
+        elif obj_curie_prefix == "UPHENO":
+            infores = "upheno"
+        else:
+            infores = infores_sources[subj_curie_prefix]
+        primary_knowledge_source = f"infores:{infores}"
+
+    # Association
+
+    # The relation tells us which class to use.
+    # We default to generic Association.
+    # TODO: add more to this map
+    remap_rels = {"UPHENO:0000003": "DiseaseOrPhenotypicFeatureToLocationAssociation"}
+    relation = str(row["relation"])
+    if relation in remap_rels:
+        category_name = remap_rels[relation]
     else:
-        subj_curie_prefix = (str(row["subject"]).split("_"))[0][4:]
-obj_curie_prefix = (str(row["object"]).split(":"))[0]
-relation_prefix = (str(row["relation"]).split(":"))[0]
+        category_name = "Association"
+    AssocClass = getattr(importlib.import_module("biolink.model"), category_name)
 
-if subj_curie_prefix not in bad_prefixes:
-    if relation_prefix == "UPHENO":
-        infores = "upheno"
-    elif obj_curie_prefix == "UPHENO":
-        infores = "upheno"
-    else:
-        infores = infores_sources[subj_curie_prefix]
-    primary_knowledge_source = f"infores:{infores}"
+    if valid:
+        association = AssocClass(
+            id=row["id"],
+            subject=row["subject"],
+            predicate=row["predicate"],
+            object=row["object"],
+            original_predicate=row["relation"],
+            primary_knowledge_source=primary_knowledge_source,
+            aggregator_knowledge_source=aggregator_knowledge_source,
+        )
 
-# Association
-
-# The relation tells us which class to use.
-# We default to generic Association.
-# TODO: add more to this map
-remap_rels = {"UPHENO:0000003": "DiseaseOrPhenotypicFeatureToLocationAssociation"}
-relation = str(row["relation"])
-if relation in remap_rels:
-    category_name = remap_rels[relation]
-else:
-    category_name = "Association"
-AssocClass = getattr(importlib.import_module("biolink.model"), category_name)
-
-if valid:
-    association = AssocClass(
-        id=row["id"],
-        subject=row["subject"],
-        predicate=row["predicate"],
-        object=row["object"],
-        original_predicate=row["relation"],
-        primary_knowledge_source=primary_knowledge_source,
-        aggregator_knowledge_source=aggregator_knowledge_source,
-    )
-
-    koza_app.write(association)
+        koza_app.write(association)
