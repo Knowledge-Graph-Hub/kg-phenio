@@ -458,22 +458,6 @@ files = [
 test = ["flake8 (==3.7.8)", "hypothesis (==3.55.3)"]
 
 [[package]]
-name = "compress-json"
-version = "1.0.8"
-description = "The missing Python utility to read and write large compressed JSONs."
-optional = false
-python-versions = "*"
-files = [
-    {file = "compress_json-1.0.8.tar.gz", hash = "sha256:463e55fb8bb154f605130c7f6c2411fcb20f9ef4cb16020fd9880ba143002814"},
-]
-
-[package.dependencies]
-support_developer = "*"
-
-[package.extras]
-test = ["codacy-coverage", "coveralls", "dict_hash", "pytest", "pytest-cov", "random_dict", "validate_version_code"]
-
-[[package]]
 name = "coverage"
 version = "7.2.1"
 description = "Code coverage measurement for Python"
@@ -3810,19 +3794,6 @@ files = [
 ]
 
 [[package]]
-name = "support-developer"
-version = "1.0.5"
-description = "Package designed to centralize messages to support developers development work."
-optional = false
-python-versions = "*"
-files = [
-    {file = "support_developer-1.0.5.tar.gz", hash = "sha256:7739f63766b90480ee71d56c70ed8953500c48ab19e2782f867786642fce03d9"},
-]
-
-[package.extras]
-test = ["codacy-coverage", "coveralls", "pytest", "pytest-cov", "validate_version_code"]
-
-[[package]]
 name = "terminaltables"
 version = "3.1.10"
 description = "Generate simple tables in terminals from a nested list of strings."
@@ -4227,4 +4198,4 @@ testing = ["big-O", "flake8 (<5)", "jaraco.functools", "jaraco.itertools", "more
 [metadata]
 lock-version = "2.0"
 python-versions = ">=3.9,<3.12"
-content-hash = "d3c54ac883c03e55d20661ea039a7f6ca5019b92171acbec71cff9282777c7f2"
+content-hash = "5b2874dffe8b6805dcd483c41c993a496ea065c959fac2bf3868ba63aba44829"
