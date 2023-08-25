@@ -15,7 +15,7 @@ sh = "^1.14.3"
 Sphinx = "^5.2.3"
 tqdm = "^4.64.1"
 wget = "^3.2"
-universalizer = ">=0.0.9"
+universalizer = "^0.0.10"
 biolink-model = ">=3.5.3"
 pyyaml = ">=6.0.1"
 
