@@ -1,0 +1,18 @@
+---
+configuration:
+  output_directory: data/transformed
+  checkpoint: false
+  prefix_map:
+  # define non-canonical CURIE to IRI mappings
+  node_property_predicates:
+  # define predicates that are to be treated as direct node properties (for RDF)
+  predicate_mappings:
+  # map non-canonical predicates to a property name (for RDF)
+  property_types:
+  # define the type for non-canonical properties for RDF export
+  reverse_prefix_map:
+  # define IRI to CURIE mappings
+  reverse_predicate_mappings:
+  # map property names to non-canonical predicates (for RDF)
+transform:
+  source:
