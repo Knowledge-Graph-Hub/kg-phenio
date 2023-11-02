@@ -153,7 +153,6 @@ while (row := koza_app.get_row()) is not None:
     if valid:
         node = NodeClass(
             id=row["id"],
-            iri=row["iri"],
             category=row["category"],
             name=row["name"],
             description=row["description"],
@@ -161,6 +160,8 @@ while (row := koza_app.get_row()) is not None:
             has_attribute=attribute,
         )
         all_slots = list(node.__dict__.keys())
+        if row["iri"]:
+            node.iri = row["iri"]
         if row[SYNONYM] and SYNONYM in all_slots:
             node.synonym = (row["synonym"]).split("|")
 
