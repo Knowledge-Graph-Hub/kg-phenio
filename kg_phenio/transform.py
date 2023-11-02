@@ -13,7 +13,7 @@ DATA_SOURCES = {
 
 
 def transform(
-    input_dir: str, output_dir: str, sources: List[str]
+    input_dir: str, output_dir: str, sources: List[str], yaml: str
 ) -> None:
     """Call scripts in kg_phenio/transform/[source name]/ to transform each source.
 
@@ -21,6 +21,7 @@ def transform(
         input_dir: A string pointing to the directory to import data from.
         output_dir: A string pointing to the directory to output data to.
         sources: A list of sources to transform.
+        yaml: A string pointing to a KGX compatible config YAML.
     Returns:
         None.
     """
@@ -31,5 +32,5 @@ def transform(
     for source in sources:
         if source in DATA_SOURCES:
             logging.info(f"Parsing {source}")
-            t = DATA_SOURCES[source](input_dir, output_dir)
+            t = DATA_SOURCES[source](input_dir, output_dir, yaml)
             t.run()
