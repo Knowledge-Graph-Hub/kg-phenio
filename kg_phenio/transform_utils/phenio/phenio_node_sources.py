@@ -148,14 +148,14 @@ while (row := koza_app.get_row()) is not None:
         if row["subsets"]:
             subsets = (row["subsets"]).split("|")
 
-        if "deprecated" in subsets:
-            attribute = Attribute(
-                id="owl:deprecated",
-                name="deprecated",
-                type="biolink:Attribute",
-                category="biolink:Attribute",
-                has_attribute_type="biolink:Attribute",
-            )
-            node.has_attribute=attribute,
+            if "deprecated" in subsets:
+                attribute = Attribute(
+                    id="owl:deprecated",
+                    name="deprecated",
+                    type="biolink:Attribute",
+                    category="biolink:Attribute",
+                    has_attribute_type="biolink:Attribute",
+                )
+                node.has_attribute=attribute,
 
         koza_app.write(node)
