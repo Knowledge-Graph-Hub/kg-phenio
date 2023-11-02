@@ -42,8 +42,6 @@ class PhenioTransform(Transform):
         if config:
             print(f"Have a transform config: {config}")
             self.config = config
-        else:
-            self.config = None
 
     def run(self, data_file: Optional[str] = None) -> None:
         """Call transform and perform it.
