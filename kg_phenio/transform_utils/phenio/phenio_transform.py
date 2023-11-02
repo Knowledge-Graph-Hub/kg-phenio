@@ -131,6 +131,7 @@ class PhenioTransform(Transform):
             if self.config:
                 print(f"Transforming to KGX TSV with config in {self.config}...")
                 transform(
+                    inputs=None,
                     transform_config=self.config,
                 )
             else:
