@@ -27,5 +27,8 @@ node_properties:
   - 'description'
   - 'synonym'
   - 'provided_by'
+  - 'iri'
+  - 'same_as'
+  - 'subsets'
 
 transform_mode: 'flat'
