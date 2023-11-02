@@ -3,8 +3,7 @@ import logging
 from typing import List
 
 from kg_phenio.transform_utils.phenio.phenio_transform import PhenioTransform
-from kg_phenio.transform_utils.upheno.upheno_map_transform import \
-    UphenoMapTransform
+from kg_phenio.transform_utils.upheno.upheno_map_transform import UphenoMapTransform
 
 DATA_SOURCES = {
     "PhenioTransform": PhenioTransform,
@@ -12,9 +11,7 @@ DATA_SOURCES = {
 }
 
 
-def transform(
-    input_dir: str, output_dir: str, sources: List[str], yaml: str
-) -> None:
+def transform(input_dir: str, output_dir: str, sources: List[str], yaml: str) -> None:
     """Call scripts in kg_phenio/transform/[source name]/ to transform each source.
 
     Args:
@@ -32,5 +29,7 @@ def transform(
     for source in sources:
         if source in DATA_SOURCES:
             logging.info(f"Parsing {source}")
-            t = DATA_SOURCES[source](input_dir, output_dir, yaml)
+            t = DATA_SOURCES[source](
+                input_dir=input_dir, output_dir=output_dir, config=yaml
+            )
             t.run()
