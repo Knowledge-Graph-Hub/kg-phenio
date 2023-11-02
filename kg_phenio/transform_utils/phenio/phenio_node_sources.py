@@ -129,11 +129,25 @@ while (row := koza_app.get_row()) is not None:
         infores = infores_sources[node_curie_prefix]
         primary_knowledge_source = f"infores:{infores}"
 
-    if "deprecated" in row["subsets"]:
-        attribute = Attribute(id="owl:deprecated", name="deprecated")
-    else:
-        attribute = Attribute(id="")
+    subsets = []
+    if row["subsets"]:
+        subsets = (row["subsets"]).split("|")
 
+    if "deprecated" in subsets:
+        attribute = Attribute(
+            id="owl:deprecated",
+            name="deprecated",
+            type="biolink:Attribute",
+            category="biolink:Attribute",
+            has_attribute_type="biolink:Attribute",
+        )
+    else:
+        attribute = Attribute(
+            id="",
+            type="biolink:Attribute",
+            category="biolink:Attribute",
+            has_attribute_type="biolink:Attribute",
+        )
 
     # Association
     if valid:
