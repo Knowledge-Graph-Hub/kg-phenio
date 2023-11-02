@@ -29,6 +29,6 @@ node_properties:
   - 'provided_by'
   - 'iri'
   - 'same_as'
-  - 'deprecated'
+  - 'has_attribute'
 
 transform_mode: 'flat'
