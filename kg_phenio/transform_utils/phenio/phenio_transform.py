@@ -40,6 +40,7 @@ class PhenioTransform(Transform):
         print(f"ROBOT evironment variables: {self.robot_env['ROBOT_JAVA_ARGS']}")
 
         if config:
+            print(f"Have a transform config: {config}")
             self.config = config
         else:
             self.config = None
@@ -128,9 +129,9 @@ class PhenioTransform(Transform):
 
         if not os.path.exists(data_file_tsv):
             if self.config:
-                print(f"Transforming to KGX TSV with config in {config}...")
+                print(f"Transforming to KGX TSV with config in {self.config}...")
                 transform(
-                    transform_config=config,
+                    transform_config=self.config,
                 )
             else:
                 print("Transforming to KGX TSV...")
