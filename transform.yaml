@@ -1,6 +1,6 @@
 ---
 configuration:
-  output_directory: data/transformed
+  output_directory: data/transformed/phenio
   checkpoint: false
 transform:
   source:
