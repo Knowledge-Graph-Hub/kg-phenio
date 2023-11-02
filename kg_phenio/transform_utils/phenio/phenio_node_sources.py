@@ -129,26 +129,6 @@ while (row := koza_app.get_row()) is not None:
         infores = infores_sources[node_curie_prefix]
         primary_knowledge_source = f"infores:{infores}"
 
-    subsets = []
-    if row["subsets"]:
-        subsets = (row["subsets"]).split("|")
-
-    if "deprecated" in subsets:
-        attribute = Attribute(
-            id="owl:deprecated",
-            name="deprecated",
-            type="biolink:Attribute",
-            category="biolink:Attribute",
-            has_attribute_type="biolink:Attribute",
-        )
-    else:
-        attribute = Attribute(
-            id="",
-            type="biolink:Attribute",
-            category="biolink:Attribute",
-            has_attribute_type="biolink:Attribute",
-        )
-
     # Association
     if valid:
         node = NodeClass(
@@ -157,12 +137,25 @@ while (row := koza_app.get_row()) is not None:
             name=row["name"],
             description=row["description"],
             provided_by=primary_knowledge_source,
-            has_attribute=attribute,
         )
+
         all_slots = list(node.__dict__.keys())
         if row["iri"]:
             node.iri = row["iri"]
         if row[SYNONYM] and SYNONYM in all_slots:
             node.synonym = (row["synonym"]).split("|")
+
+        if row["subsets"]:
+            subsets = (row["subsets"]).split("|")
+
+        if "deprecated" in subsets:
+            attribute = Attribute(
+                id="owl:deprecated",
+                name="deprecated",
+                type="biolink:Attribute",
+                category="biolink:Attribute",
+                has_attribute_type="biolink:Attribute",
+            )
+            node.has_attribute=attribute,
 
         koza_app.write(node)
