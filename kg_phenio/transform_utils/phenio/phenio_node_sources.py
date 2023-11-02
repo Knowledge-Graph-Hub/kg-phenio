@@ -2,6 +2,7 @@
 
 import importlib
 
+from biolink.model import Attribute
 from koza.cli_runner import get_koza_app  # type: ignore
 
 source_name = "phenio_node_sources"
@@ -128,14 +129,22 @@ while (row := koza_app.get_row()) is not None:
         infores = infores_sources[node_curie_prefix]
         primary_knowledge_source = f"infores:{infores}"
 
+    if "deprecated" in row["subsets"]:
+        attribute = Attribute(id="owl:deprecated", name="deprecated")
+    else:
+        attribute = Attribute(id="")
+
+
     # Association
     if valid:
         node = NodeClass(
             id=row["id"],
+            iri=row["iri"],
             category=row["category"],
             name=row["name"],
             description=row["description"],
             provided_by=primary_knowledge_source,
+            has_attribute=attribute,
         )
         all_slots = list(node.__dict__.keys())
         if row[SYNONYM] and SYNONYM in all_slots:
