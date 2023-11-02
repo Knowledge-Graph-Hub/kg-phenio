@@ -156,6 +156,6 @@ while (row := koza_app.get_row()) is not None:
                     category="biolink:Attribute",
                     has_attribute_type="biolink:Attribute",
                 )
-                node.has_attribute=attribute,
+                node.has_attribute = (attribute,)
 
         koza_app.write(node)
