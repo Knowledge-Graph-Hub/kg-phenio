@@ -52,6 +52,7 @@ infores_sources = {
     "MF": "mf",
     "MFOMD": "mondo",  # Mental Disease - ref'd by MONDO
     "MI": "mi",
+    "MOD": "mod",
     "MONDO": "mondo",
     "MP": "mp",
     "MPATH": "mpath",

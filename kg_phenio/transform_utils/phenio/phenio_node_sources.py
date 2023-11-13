@@ -48,6 +48,7 @@ infores_sources = {
     "MF": "mf",
     "MFOMD": "mfomd",
     "MI": "mi",
+    "MOD": "mod",
     "MONDO": "mondo",
     "MP": "mp",
     "MPATH": "mpath",
