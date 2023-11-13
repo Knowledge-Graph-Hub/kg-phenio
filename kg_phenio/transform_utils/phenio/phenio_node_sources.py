@@ -134,6 +134,7 @@ while (row := koza_app.get_row()) is not None:
             category=row["category"],
             name=row["name"],
             description=row["description"],
+            deprecated=row["deprecated"],
             provided_by=primary_knowledge_source,
         )
         all_slots = list(node.__dict__.keys())
