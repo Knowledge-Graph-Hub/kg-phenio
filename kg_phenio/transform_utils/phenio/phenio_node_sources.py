@@ -2,6 +2,7 @@
 
 import importlib
 
+from biolink.model import Attribute
 from koza.cli_runner import get_koza_app  # type: ignore
 
 source_name = "phenio_node_sources"
@@ -139,8 +140,24 @@ while (row := koza_app.get_row()) is not None:
             deprecated=bool(row["deprecated"]) if row["deprecated"] else None,
             provided_by=[primary_knowledge_source],
         )
+
         all_slots = list(node.__dict__.keys())
+        if row["iri"]:
+            node.iri = row["iri"]
         if row[SYNONYM] and SYNONYM in all_slots:
             node.synonym = (row["synonym"]).split("|")
+
+        if row["subsets"]:
+            subsets = (row["subsets"]).split("|")
+
+            if "deprecated" in subsets:
+                attribute = Attribute(
+                    id="owl:deprecated",
+                    name="deprecated",
+                    type="biolink:Attribute",
+                    category="biolink:Attribute",
+                    has_attribute_type="biolink:Attribute",
+                )
+                node.has_attribute = (attribute,)
 
         koza_app.write(node)

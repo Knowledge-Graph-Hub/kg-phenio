@@ -50,6 +50,7 @@ def download(*args, **kwargs) -> None:
 
 
 @cli.command()
+@click.option("yaml", "-y", default="transform.yaml", type=click.Path(exists=True))
 @click.option("input_dir", "-i", default="data/raw", type=click.Path(exists=True))
 @click.option("output_dir", "-o", default="data/transformed")
 @click.option(
@@ -60,6 +61,7 @@ def transform(*args, **kwargs) -> None:
     into nodes and edges.
 
     Args:
+        yaml: A string pointing to a KGX compatible config YAML.
         input_dir: A string pointing to the directory to import data from.
         output_dir: A string pointing to the directory to output data to.
         sources: A list of sources to transform.

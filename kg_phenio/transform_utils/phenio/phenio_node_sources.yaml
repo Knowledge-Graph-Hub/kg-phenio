@@ -29,5 +29,8 @@ node_properties:
   - 'synonym'
   - 'deprecated'
   - 'provided_by'
+  - 'iri'
+  - 'same_as'
+  - 'has_attribute'
 
 transform_mode: 'flat'

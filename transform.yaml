@@ -1,0 +1,16 @@
+---
+configuration:
+  output_directory: data/transformed/phenio
+  checkpoint: false
+transform:
+  source:
+    phenio-transform:
+      input:
+        name: "PHENIO"
+        format: obojson
+        filename:
+          - data/raw/phenio.json
+      output:
+        format: tsv
+        filename:
+          - PhenioTransform

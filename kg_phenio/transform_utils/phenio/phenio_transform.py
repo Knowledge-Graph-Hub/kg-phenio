@@ -25,7 +25,9 @@ TRANSLATION_TABLE = "./kg_phenio/transform_utils/translation_table.yaml"
 class PhenioTransform(Transform):
     """Parse the PHENIO OWL into nodes and edges."""
 
-    def __init__(self, input_dir: str = "", output_dir: str = ""):
+    def __init__(
+        self, input_dir: str = "", output_dir: str = "", config: Optional[str] = None
+    ):
         """Set defaults for PHENIO and set up ROBOT."""
         source_name = "phenio"
         super().__init__(source_name, input_dir, output_dir)
@@ -36,6 +38,10 @@ class PhenioTransform(Transform):
         print(f"ROBOT path: {self.robot_path}")
         self.robot_env = self.robot_params[1]
         print(f"ROBOT evironment variables: {self.robot_env['ROBOT_JAVA_ARGS']}")
+
+        if config:
+            print(f"Have a transform config: {config}")
+            self.config = config
 
     def run(self, data_file: Optional[str] = None) -> None:
         """Call transform and perform it.
@@ -116,17 +122,25 @@ class PhenioTransform(Transform):
             print(f"Found JSON ontology at {data_file_json}.")
 
         # Now do that transform to TSV, if necessary
+        # This is where the KGX config file is used, if provided
         data_file_tsv = os.path.join(self.output_dir, name + "_edges.tsv")
 
         if not os.path.exists(data_file_tsv):
-            print("Transforming to KGX TSV...")
-            transform(
-                inputs=[data_file_json],
-                input_format="obojson",
-                output=os.path.join(self.output_dir, name),
-                output_format="tsv",
-                stream=False,
-            )
+            if self.config:
+                print(f"Transforming to KGX TSV with config in {self.config}...")
+                transform(
+                    inputs=None,
+                    transform_config=self.config,
+                )
+            else:
+                print("Transforming to KGX TSV...")
+                transform(
+                    inputs=[data_file_json],
+                    input_format="obojson",
+                    output=os.path.join(self.output_dir, name),
+                    output_format="tsv",
+                    stream=False,
+                )
         else:
             print(f"Found KGX TSV edges at {data_file_tsv}.")
 

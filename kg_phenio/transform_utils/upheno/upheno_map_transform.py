@@ -28,9 +28,13 @@ class UphenoMapTransform(Transform):
     require less processing.
     """
 
-    def __init__(self, input_dir: str = "", output_dir: str = "") -> None:
+    def __init__(
+        self, input_dir: str = "", output_dir: str = "", config: Optional[str] = None
+    ) -> None:
         """Initialize the default source name."""
         source_name = "upheno_mapping"
+        if config:
+            print(f"UPHENO mapping transform ignores config in {config}.")
         super().__init__(source_name, input_dir, output_dir)
 
     def run(self, upheno_file: Optional[str] = None) -> None:  # type: ignore
