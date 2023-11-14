@@ -2,7 +2,6 @@
 
 import importlib
 
-from biolink.model import Attribute
 from koza.cli_runner import get_koza_app  # type: ignore
 
 source_name = "phenio_node_sources"
@@ -151,13 +150,6 @@ while (row := koza_app.get_row()) is not None:
             subsets = (row["subsets"]).split("|")
 
             if "deprecated" in subsets:
-                attribute = Attribute(
-                    id="owl:deprecated",
-                    name="deprecated",
-                    type="biolink:Attribute",
-                    category="biolink:Attribute",
-                    has_attribute_type="biolink:Attribute",
-                )
-                node.has_attribute = (attribute,)
+                node.deprecated = True
 
         koza_app.write(node)
