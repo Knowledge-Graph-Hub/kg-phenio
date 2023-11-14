@@ -121,7 +121,7 @@ while (row := koza_app.get_row()) is not None:
     category_name = (str(row["category"]).split(":"))[1]
     if category_name in remap_cats:
         category_name = remap_cats[category_name]
-    NodeClass = getattr(importlib.import_module("biolink.model"), category_name)
+    NodeClass = getattr(importlib.import_module("biolink.pydanticmodel"), category_name)
 
     # TODO: make this more specific, as it won't always be true
     if node_curie_prefix not in bad_prefixes:
@@ -132,10 +132,12 @@ while (row := koza_app.get_row()) is not None:
     if valid:
         node = NodeClass(
             id=row["id"],
-            category=row["category"],
+            category=['biolink:' + category_name],
             name=row["name"],
             description=row["description"],
-            provided_by=primary_knowledge_source,
+            # turning empty strings into False feels wrong, keeping them empty
+            deprecated=bool(row["deprecated"]) if row["deprecated"] else None,
+            provided_by=[primary_knowledge_source],
         )
         all_slots = list(node.__dict__.keys())
         if row[SYNONYM] and SYNONYM in all_slots:
