@@ -121,36 +121,42 @@ lxml = ["lxml"]
 
 [[package]]
 name = "biolink-model"
-version = "3.5.4"
-description = "'A high level datamodel of biological entities and associations'"
+version = "3.3.3.post25.dev0+93c02412c"
+description = "Entity and association taxonomy and datamodel for life-sciences data"
 optional = false
-python-versions = ">=3.9"
-files = [
-    {file = "biolink-model-3.5.4.tar.gz", hash = "sha256:3a9d007785229a4e04d69fe419fea8d64d78a783ff25c6fb959eeefa2b241f69"},
-    {file = "biolink_model-3.5.4-py3-none-any.whl", hash = "sha256:3b130cbd9dfa033e2ef9f168809677b879110d55ed3f472ea49b01cd75112cd9"},
-]
+python-versions = "^3.9"
+files = []
+develop = false
 
 [package.dependencies]
-curies = "*"
-linkml = "*"
-prefixmaps = "*"
+bs4 = "^0.0.1"
+curies = "^0.5.2"
+linkml = ">=1.6.1"
+prefixmaps = "^0.1.4"
+pytest = "^7.3.1"
+
+[package.source]
+type = "git"
+url = "https://github.com/biolink/biolink-model.git"
+reference = "HEAD"
+resolved_reference = "7893e8763dcc508d5ba39104c2dea98b3d547ce3"
 
 [[package]]
 name = "bioregistry"
-version = "0.10.15"
+version = "0.9.97"
 description = "Integrated registry of biological databases and nomenclatures"
 optional = false
 python-versions = ">=3.8"
 files = [
-    {file = "bioregistry-0.10.15-py3-none-any.whl", hash = "sha256:b6dc68dc80932a390c7aa953519d0dbefd201e6409334539bbd8d390300039c3"},
-    {file = "bioregistry-0.10.15.tar.gz", hash = "sha256:0d5e93210271bfd09cbba5f4e0098bf61166b89f324d37d21680482286bdb336"},
+    {file = "bioregistry-0.9.97-py3-none-any.whl", hash = "sha256:b60ab536b146652dbfde5e79560de0de7a3c8d04f91a3e6c66aceb7013605a78"},
+    {file = "bioregistry-0.9.97.tar.gz", hash = "sha256:9c02a2b70bc359b1b2188c70ca8144c8767fe797f603c0baad8390a8570ec161"},
 ]
 
 [package.dependencies]
 click = "*"
-curies = ">=0.6.0"
+curies = ">=0.5.6"
 more-click = ">=0.1.2"
-pydantic = "*"
+pydantic = "<2.0"
 pystow = ">=0.1.13"
 requests = "*"
 tqdm = "*"
@@ -158,7 +164,7 @@ tqdm = "*"
 [package.extras]
 align = ["beautifulsoup4", "class-resolver", "defusedxml", "fairsharing-client (>=0.1.0)", "pyyaml", "tabulate"]
 charts = ["jinja2", "matplotlib", "matplotlib-venn", "pandas", "seaborn"]
-docs = ["autodoc-pydantic", "sphinx", "sphinx-automodapi", "sphinx-click", "sphinx-rtd-theme"]
+docs = ["autodoc-pydantic", "sphinx", "sphinx-autodoc-typehints (==1.21.1)", "sphinx-automodapi", "sphinx-click", "sphinx-rtd-theme"]
 export = ["ndex2", "pyyaml", "rdflib", "rdflib-jsonld"]
 gha = ["more-itertools"]
 health = ["click-default-group", "jinja2", "pandas", "pyyaml", "tabulate"]
@@ -218,6 +224,19 @@ urllib3 = ">=1.25.4,<1.27"
 
 [package.extras]
 crt = ["awscrt (==0.16.26)"]
+
+[[package]]
+name = "bs4"
+version = "0.0.1"
+description = "Dummy package for Beautiful Soup"
+optional = false
+python-versions = "*"
+files = [
+    {file = "bs4-0.0.1.tar.gz", hash = "sha256:36ecea1fd7cc5c0c6e4a1ff075df26d50da647b75376626cc186e2212886dd3a"},
+]
+
+[package.dependencies]
+beautifulsoup4 = "*"
 
 [[package]]
 name = "cachetools"
@@ -537,22 +556,23 @@ files = [
 
 [[package]]
 name = "curies"
-version = "0.6.0"
+version = "0.5.7"
 description = "Idiomatic conversion between URIs and compact URIs (CURIEs)."
 optional = false
 python-versions = ">=3.8"
 files = [
-    {file = "curies-0.6.0-py3-none-any.whl", hash = "sha256:0bf79e2176b2e44dee7fefadcd1f2d69e643fea124dc4a8d0dbf47ca5e1589f2"},
-    {file = "curies-0.6.0.tar.gz", hash = "sha256:a31533ae9caeec332f9bb33e21366ab7ec32437c5f347fc9d85aa77cc48093cc"},
+    {file = "curies-0.5.7-py3-none-any.whl", hash = "sha256:74fc743e2c41c3bcd2ecb1178cce72236018f245e970c88faf452b89694b475a"},
+    {file = "curies-0.5.7.tar.gz", hash = "sha256:eb984c51dcd04187fec88074a43070ae6f96467887fd502fa5547377722c9a4a"},
 ]
 
 [package.dependencies]
-pydantic = "*"
+pydantic = "<2.0"
 pytrie = "*"
 requests = "*"
 
 [package.extras]
-docs = ["sphinx", "sphinx-automodapi", "sphinx-rtd-theme"]
+bioregistry = ["bioregistry (>=0.5.136)"]
+docs = ["sphinx (<7.0)", "sphinx-autodoc-typehints", "sphinx-automodapi", "sphinx-rtd-theme"]
 fastapi = ["defusedxml", "fastapi", "httpx", "python-multipart", "uvicorn"]
 flask = ["defusedxml", "flask"]
 pandas = ["pandas"]
@@ -1399,13 +1419,13 @@ regex = ["regex"]
 
 [[package]]
 name = "linkml"
-version = "1.5.7"
+version = "1.6.2"
 description = "Linked Open Data Modeling Language"
 optional = false
-python-versions = ">=3.7.6,<4.0.0"
+python-versions = ">=3.8,<4.0"
 files = [
-    {file = "linkml-1.5.7-py3-none-any.whl", hash = "sha256:677f4c5809dc51b151b86accc69e77482ad86b9c1326a212cef9b4a2a9a96c10"},
-    {file = "linkml-1.5.7.tar.gz", hash = "sha256:bca3dd56837ced79749656843e1e20b8d1db1a89287e7b29d1ee145e4a75ad4d"},
+    {file = "linkml-1.6.2-py3-none-any.whl", hash = "sha256:0e11b085ada080e0ebe9eee469ad55970b0cc333e7c39be956740dbc3a9e50b0"},
+    {file = "linkml-1.6.2.tar.gz", hash = "sha256:b1560a67de8c7de074c8be2ef5b810425f058e0874076e49c17a2dc4112f9da2"},
 ]
 
 [package.dependencies]
@@ -1418,12 +1438,12 @@ jinja2 = ">=3.1.0"
 jsonasobj2 = ">=1.0.3,<2.0.0"
 jsonschema = {version = ">=4.0.0", extras = ["format"]}
 linkml-dataops = "*"
-linkml-runtime = ">=1.5.4"
+linkml-runtime = ">=1.6.0"
 openpyxl = "*"
 parse = "*"
 prefixcommons = ">=0.1.7"
 prefixmaps = ">=0.1.3"
-pydantic = "*"
+pydantic = ">=1.0.0,<3.0.0"
 pyjsg = ">=0.11.6"
 pyshex = ">=0.7.20"
 pyshexc = ">=0.8.3"
@@ -1471,13 +1491,13 @@ pydantic = "*"
 
 [[package]]
 name = "linkml-runtime"
-version = "1.5.6"
+version = "1.6.2"
 description = "Runtime environment for LinkML, the Linked open data modeling language"
 optional = false
 python-versions = ">=3.7.6,<4.0.0"
 files = [
-    {file = "linkml_runtime-1.5.6-py3-none-any.whl", hash = "sha256:b869f7adf340b7df73f4fefa28a402de5719bbd7d172590e8a7ae9c25e179d77"},
-    {file = "linkml_runtime-1.5.6.tar.gz", hash = "sha256:eb5f506f7ec08c44e49578d0ecc80e2d3d922756c2430e06906ee9502cca1b4c"},
+    {file = "linkml_runtime-1.6.2-py3-none-any.whl", hash = "sha256:d9a915faf0ee8c8749f42d38394a06d37f016e155e077ff9cb5c5a21f24e19d6"},
+    {file = "linkml_runtime-1.6.2.tar.gz", hash = "sha256:bcbeff96d24433276755db85375e3dff0c9af0fd04f8a05f7ccd8a669a9e9877"},
 ]
 
 [package.dependencies]
@@ -3220,8 +3240,7 @@ files = [
     {file = "ruamel.yaml.clib-0.2.7-cp310-cp310-win32.whl", hash = "sha256:763d65baa3b952479c4e972669f679fe490eee058d5aa85da483ebae2009d231"},
     {file = "ruamel.yaml.clib-0.2.7-cp310-cp310-win_amd64.whl", hash = "sha256:d000f258cf42fec2b1bbf2863c61d7b8918d31ffee905da62dede869254d3b8a"},
     {file = "ruamel.yaml.clib-0.2.7-cp311-cp311-macosx_10_9_universal2.whl", hash = "sha256:045e0626baf1c52e5527bd5db361bc83180faaba2ff586e763d3d5982a876a9e"},
-    {file = "ruamel.yaml.clib-0.2.7-cp311-cp311-macosx_13_0_arm64.whl", hash = "sha256:1a6391a7cabb7641c32517539ca42cf84b87b667bad38b78d4d42dd23e957c81"},
-    {file = "ruamel.yaml.clib-0.2.7-cp311-cp311-manylinux2014_aarch64.whl", hash = "sha256:9c7617df90c1365638916b98cdd9be833d31d337dbcd722485597b43c4a215bf"},
+    {file = "ruamel.yaml.clib-0.2.7-cp311-cp311-macosx_12_6_arm64.whl", hash = "sha256:721bc4ba4525f53f6a611ec0967bdcee61b31df5a56801281027a3a6d1c2daf5"},
     {file = "ruamel.yaml.clib-0.2.7-cp311-cp311-manylinux_2_17_x86_64.manylinux2014_x86_64.manylinux_2_24_x86_64.whl", hash = "sha256:41d0f1fa4c6830176eef5b276af04c89320ea616655d01327d5ce65e50575c94"},
     {file = "ruamel.yaml.clib-0.2.7-cp311-cp311-win32.whl", hash = "sha256:f6d3d39611ac2e4f62c3128a9eed45f19a6608670c5a2f4f07f24e8de3441d38"},
     {file = "ruamel.yaml.clib-0.2.7-cp311-cp311-win_amd64.whl", hash = "sha256:da538167284de58a52109a9b89b8f6a53ff8437dd6dc26d33b57bf6699153122"},
@@ -4221,4 +4240,4 @@ testing = ["big-O", "jaraco.functools", "jaraco.itertools", "more-itertools", "p
 [metadata]
 lock-version = "2.0"
 python-versions = ">=3.9,<3.12"
-content-hash = "f032e54eb4977bba48c20c6bfd03bdd40d80516d0524869a2f78cb0c0bae6bce"
+content-hash = "780eee52680048aba1ecbc07232a280bcea4a0795da70174da8021acf55e1f11"

@@ -16,8 +16,9 @@ Sphinx = "^5.2.3"
 tqdm = "^4.64.1"
 wget = "^3.2"
 universalizer = ">=0.0.4"
-biolink-model = ">=3.5.3"
+# biolink-model = ">=3.5.3"
 pyyaml = ">=6.0.1"
+biolink-model = {git = "https://github.com/biolink/biolink-model.git"}
 
 [tool.poetry.dev-dependencies]
 pytest = "^7.1.3"
