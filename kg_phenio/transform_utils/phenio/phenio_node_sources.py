@@ -2,7 +2,6 @@
 
 import importlib
 
-from biolink.model import Attribute
 from koza.cli_runner import get_koza_app  # type: ignore
 
 source_name = "phenio_node_sources"
