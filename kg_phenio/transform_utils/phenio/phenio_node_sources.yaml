@@ -31,6 +31,5 @@ node_properties:
   - 'provided_by'
   - 'iri'
   - 'same_as'
-  - 'has_attribute'
 
 transform_mode: 'flat'
