@@ -15,7 +15,7 @@ sh = "^1.14.3"
 Sphinx = "^5.2.3"
 tqdm = "^4.64.1"
 wget = "^3.2"
-universalizer = ">=0.0.4"
+universalizer = ">=0.0.11"
 biolink-model = ">=3.5.5"
 pyyaml = ">=6.0.1"
 #biolink-model = {git = "https://github.com/biolink/biolink-model.git"}
