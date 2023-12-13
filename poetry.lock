@@ -1376,13 +1376,13 @@ validators = ">=0.20.0,<0.21.0"
 
 [[package]]
 name = "koza"
-version = "0.5.2"
+version = "0.5.3"
 description = "Data transformation framework for LinkML data models"
 optional = false
 python-versions = ">=3.9,<4.0"
 files = [
-    {file = "koza-0.5.2-py3-none-any.whl", hash = "sha256:7a66153d1fa60fc6828f5dcced73af0b27ebae583188c14588fd8b6a31f6fba6"},
-    {file = "koza-0.5.2.tar.gz", hash = "sha256:13e4617917b6cbe67c4b0ba1a56725e46876969662efe9616b2d2d72b483f575"},
+    {file = "koza-0.5.3-py3-none-any.whl", hash = "sha256:e55f209c64f2c0c3c60212afd29507cc8701ee37ff11ecb0eb11318f6087eaa8"},
+    {file = "koza-0.5.3.tar.gz", hash = "sha256:c04c64a9aa67f8b34f4cd45fdc28109b9db407653b6af5b07d9b15b5962a8867"},
 ]
 
 [package.dependencies]
@@ -1392,7 +1392,7 @@ ordered-set = ">=4.1.0"
 pydantic = ">=2.4,<3.0"
 pyyaml = ">=5.0.0"
 requests = ">=2.24.0,<3.0.0"
-sssom = ">=0.3.41,<0.4.0"
+sssom = ">=0.4"
 typer = ">=0.7.0,<0.8.0"
 typer-cli = ">=0.0.13,<0.0.14"
 
@@ -2018,13 +2018,13 @@ files = [
 
 [[package]]
 name = "oaklib"
-version = "0.5.23"
+version = "0.5.24"
 description = "Ontology Access Kit: Python library for common ontology operations over a variety of backends"
 optional = false
 python-versions = ">=3.9,<4.0.0"
 files = [
-    {file = "oaklib-0.5.23-py3-none-any.whl", hash = "sha256:a6c1bd2a368298b941a66b16ec213bd3640ffcd3998a3fe45b3853d6b9de549f"},
-    {file = "oaklib-0.5.23.tar.gz", hash = "sha256:6eec623f0b07a359518814092588e60b49b6f9179f6b918817294bc60aa7f0b9"},
+    {file = "oaklib-0.5.24-py3-none-any.whl", hash = "sha256:21a9b49677caf44686e908b9d76a6dec2167620404f79745a966fcb9d9974e34"},
+    {file = "oaklib-0.5.24.tar.gz", hash = "sha256:279a570012eecc309dd0adf178d369ef6ec70be43debd528ffecb106f7abaa4b"},
 ]
 
 [package.dependencies]
@@ -2054,7 +2054,7 @@ semsimian = ">=0.2.1,<0.3.0"
 semsql = ">=0.3.1"
 SPARQLWrapper = "*"
 SQLAlchemy = ">=1.4.32"
-sssom = "<0.4.0"
+sssom = ">=0.4.0,<0.5.0"
 
 [package.extras]
 gilda = ["gilda (>=1.0.0)", "urllib3 (<2)"]
@@ -3842,24 +3842,23 @@ url = ["furl (>=0.4.1)"]
 
 [[package]]
 name = "sssom"
-version = "0.3.41"
+version = "0.4.2"
 description = "Operations on SSSOM mapping tables"
 optional = false
 python-versions = ">=3.8,<4.0"
 files = [
-    {file = "sssom-0.3.41-py3-none-any.whl", hash = "sha256:04ce1935b3492019b16b7b748c49af366f84bbd3c059982af992d049f46098e7"},
-    {file = "sssom-0.3.41.tar.gz", hash = "sha256:1d09fa9f88153963372811af829ebc1e5aefff935a4e6e12bcb65c94181aa730"},
+    {file = "sssom-0.4.2-py3-none-any.whl", hash = "sha256:4ca51db9c22c9f946fb002f23b9260906f6024799ddea556a1612a3495c3b480"},
+    {file = "sssom-0.4.2.tar.gz", hash = "sha256:19c8788573221e63ca092c9d2ffb0a3e88834901cd8b7fedad07e6ad26ef5d49"},
 ]
 
 [package.dependencies]
 click = ">=8.1.6"
-curies = ">=0.5.7"
+curies = ">=0.7.3"
 deprecation = ">=2.1.0,<3.0.0"
-importlib-metadata = ">=6.8.0"
 linkml-runtime = ">=1.5.5"
-networkx = ">=3.1"
-pandas = ">=2.0.3"
-pansql = ">=0.0.1"
+networkx = {version = ">=3.1", extras = ["networkx"]}
+pandas = ">1.0.3"
+pansql = {version = ">=0.0.1", extras = ["pansql"]}
 pyyaml = ">=6.0.1,<7.0.0"
 rdflib = ">=6.0.0"
 scipy = {version = "*", extras = ["scipy"]}
@@ -4333,4 +4332,4 @@ testing = ["big-O", "jaraco.functools", "jaraco.itertools", "more-itertools", "p
 [metadata]
 lock-version = "2.0"
 python-versions = ">=3.9,<3.12"
-content-hash = "69b410cdecf8a56313d5929c08a37712c26d1df11b5c89c3749d48414a7ae589"
+content-hash = "2f0f6dee8eef5975f2865b276cd3472ee3b5d1e6d1d6f3e979d59e0082e4023c"
