@@ -11,7 +11,7 @@ from kg_phenio.transform_utils.transform import Transform
 from kg_phenio.utils.robot_utils import initialize_robot, robot_convert
 
 ONTO_FILES = {
-#    "PhenioTransform": "phenio.owl",
+    "PhenioTransform": "phenio.owl",
     "PhenioTransformTest": "phenio-test.owl",
 }
 
@@ -151,16 +151,21 @@ class PhenioTransform(Transform):
         else:
             print(f"Found KGX TSV edges at {data_file_tsv}.")
 
-        # Final step in translation:
-        # Use Koza to apply additional properties,
-        # based on each source
-        for config_type in ["node", "edge"]:
-            config = KOZA_CONFIGS[config_type]
-            print(f"Adding {config_type} sources using {config}")
-            transform_source(
-                source=config,
-                output_dir=self.output_dir,
-                output_format="tsv",
-                global_table=TRANSLATION_TABLE,
-                local_table=None,
-            )
+        # For the test file, expand the header to match the main ontology
+        if name == "PhenioTransformTest":
+            print("Completed transform of test file.")
+        else:
+            # Final step in translation:
+            # Use Koza to apply additional properties,
+            # based on each source.
+            # This is not done for the test file as it is not as detailed as the main ontology.
+            for config_type in ["node", "edge"]:
+                config = KOZA_CONFIGS[config_type]
+                print(f"Adding {config_type} sources using {config}")
+                transform_source(
+                    source=config,
+                    output_dir=self.output_dir,
+                    output_format="tsv",
+                    global_table=TRANSLATION_TABLE,
+                    local_table=None,
+                )
