@@ -23,7 +23,9 @@ KOZA_CONFIGS = {
 
 TRANSLATION_TABLE = "./kg_phenio/transform_utils/translation_table.yaml"
 
-HEADERLINE = '<owl:Ontology rdf:about="http://purl.obolibrary.org/obo/phenio-test.owl">\n</owl:Ontology>\n'
+HEADERLINE_PART1 = '<owl:Ontology rdf:about="http://purl.obolibrary.org/obo/'
+HEADERLINE_PART2 = 'phenio-test.owl">\n</owl:Ontology>\n'
+HEADERLINE = HEADERLINE_PART1 + HEADERLINE_PART2
 
 
 class PhenioTransform(Transform):
