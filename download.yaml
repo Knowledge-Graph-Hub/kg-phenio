@@ -14,6 +14,13 @@
   local_name: phenio.owl
 
 #
+# phenio.owl test file
+#
+-
+  url: https://github.com/monarch-initiative/phenio/releases/latest/download/phenio-test.owl
+  local_name: phenio-test.owl
+
+#
 # Current Upheno mappings.
 # These are for use as gold standards for mouse vs. human phenotype predictions.
 # They are transformed for processing but are not included in the merged graph.

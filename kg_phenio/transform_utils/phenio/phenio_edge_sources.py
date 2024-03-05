@@ -26,6 +26,7 @@ infores_sources = {
     "CIO": "cio",  # Confidence Information - cat only
     "CL": "cl",
     "CLO": "clo",  # Cell Line - cat only
+    "COB": "cob",
     "DDANAT": "ddanat",  # Dictyostelium discoideum anatomy - cat only
     "DOID": "doid",  # Disease ID - cat only
     "ECO": "eco",

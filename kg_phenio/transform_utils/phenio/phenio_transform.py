@@ -1,4 +1,5 @@
 """Transform for PHENIO."""
+
 import os
 import sys
 import tarfile
@@ -12,6 +13,7 @@ from kg_phenio.utils.robot_utils import initialize_robot, robot_convert
 
 ONTO_FILES = {
     "PhenioTransform": "phenio.owl",
+    "PhenioTransformTest": "phenio-test.owl",
 }
 
 KOZA_CONFIGS = {
@@ -20,6 +22,10 @@ KOZA_CONFIGS = {
 }
 
 TRANSLATION_TABLE = "./kg_phenio/transform_utils/translation_table.yaml"
+
+HEADERLINE_PART1 = '<owl:Ontology rdf:about="http://purl.obolibrary.org/obo/'
+HEADERLINE_PART2 = 'phenio-test.owl">\n</owl:Ontology>\n'
+HEADERLINE = HEADERLINE_PART1 + HEADERLINE_PART2
 
 
 class PhenioTransform(Transform):
@@ -94,6 +100,7 @@ class PhenioTransform(Transform):
             "<oboInOwl:hasRelatedSynonym></oboInOwl:hasRelatedSynonym>",
             "<oboInOwl:hasDbXref></oboInOwl:hasDbXref>",
             "<rdfs:comment></rdfs:comment>",
+            "<Ontology/>",
         ]
         data_file_tmp = data_file + ".tmp"
         with open(data_file, "r") as infile:
@@ -103,6 +110,9 @@ class PhenioTransform(Transform):
                     linenum = linenum + 1
                     if line.strip() not in offending_lines:
                         outfile.write(line)
+                    elif line.strip() == "<Ontology/>":
+                        print(f"Repairing header at line {linenum}.")
+                        outfile.write(HEADERLINE)
                     else:
                         print(f"Found error at line {linenum}: {line.strip()}.")
         os.replace(data_file_tmp, data_file)
@@ -123,6 +133,8 @@ class PhenioTransform(Transform):
 
         # Now do that transform to TSV, if necessary
         # This is where the KGX config file is used, if provided
+        # Note that the config-based transform will transform
+        # both the main ontology and the test set.
         data_file_tsv = os.path.join(self.output_dir, name + "_edges.tsv")
 
         if not os.path.exists(data_file_tsv):
@@ -144,16 +156,22 @@ class PhenioTransform(Transform):
         else:
             print(f"Found KGX TSV edges at {data_file_tsv}.")
 
-        # Final step in translation:
-        # Use Koza to apply additional properties,
-        # based on each source
-        for config_type in ["node", "edge"]:
-            config = KOZA_CONFIGS[config_type]
-            print(f"Adding {config_type} sources using {config}")
-            transform_source(
-                source=config,
-                output_dir=self.output_dir,
-                output_format="tsv",
-                global_table=TRANSLATION_TABLE,
-                local_table=None,
-            )
+        # For the test file, expand the header to match the main ontology
+        if name == "PhenioTransformTest":
+            print("Completed transform of test file.")
+        else:
+            # Final step in translation:
+            # Use Koza to apply additional properties,
+            # based on each source.
+            # This is not done for the test file
+            # as it is not as detailed as the main ontology.
+            for config_type in ["node", "edge"]:
+                config = KOZA_CONFIGS[config_type]
+                print(f"Adding {config_type} sources using {config}")
+                transform_source(
+                    source=config,
+                    output_dir=self.output_dir,
+                    output_format="tsv",
+                    global_table=TRANSLATION_TABLE,
+                    local_table=None,
+                )
