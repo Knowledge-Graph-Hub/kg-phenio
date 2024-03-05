@@ -1,4 +1,5 @@
 """Transform for PHENIO."""
+
 import os
 import sys
 import tarfile
@@ -95,7 +96,7 @@ class PhenioTransform(Transform):
             "<oboInOwl:hasRelatedSynonym></oboInOwl:hasRelatedSynonym>",
             "<oboInOwl:hasDbXref></oboInOwl:hasDbXref>",
             "<rdfs:comment></rdfs:comment>",
-            "<Ontology/>"
+            "<Ontology/>",
         ]
         data_file_tmp = data_file + ".tmp"
         with open(data_file, "r") as infile:
@@ -107,7 +108,9 @@ class PhenioTransform(Transform):
                         outfile.write(line)
                     elif line.strip() == "<Ontology/>":
                         print(f"Repairing header at line {linenum}.")
-                        outfile.write("<owl:Ontology rdf:about=\"http://purl.obolibrary.org/obo/phenio-test.owl\">\n</owl:Ontology>\n")
+                        outfile.write(
+                            '<owl:Ontology rdf:about="http://purl.obolibrary.org/obo/phenio-test.owl">\n</owl:Ontology>\n'
+                        )
                     else:
                         print(f"Found error at line {linenum}: {line.strip()}.")
         os.replace(data_file_tmp, data_file)
