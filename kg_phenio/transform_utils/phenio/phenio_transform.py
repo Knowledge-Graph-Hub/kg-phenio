@@ -12,6 +12,7 @@ from kg_phenio.utils.robot_utils import initialize_robot, robot_convert
 
 ONTO_FILES = {
     "PhenioTransform": "phenio.owl",
+    "PhenioTransformTest": "phenio-test.owl",
 }
 
 KOZA_CONFIGS = {
