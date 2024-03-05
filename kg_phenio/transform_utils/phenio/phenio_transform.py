@@ -23,6 +23,8 @@ KOZA_CONFIGS = {
 
 TRANSLATION_TABLE = "./kg_phenio/transform_utils/translation_table.yaml"
 
+HEADERLINE = '<owl:Ontology rdf:about="http://purl.obolibrary.org/obo/phenio-test.owl">\n</owl:Ontology>\n'
+
 
 class PhenioTransform(Transform):
     """Parse the PHENIO OWL into nodes and edges."""
@@ -108,9 +110,7 @@ class PhenioTransform(Transform):
                         outfile.write(line)
                     elif line.strip() == "<Ontology/>":
                         print(f"Repairing header at line {linenum}.")
-                        outfile.write(
-                            '<owl:Ontology rdf:about="http://purl.obolibrary.org/obo/phenio-test.owl">\n</owl:Ontology>\n'
-                        )
+                        outfile.write(HEADERLINE)
                     else:
                         print(f"Found error at line {linenum}: {line.strip()}.")
         os.replace(data_file_tmp, data_file)
@@ -161,7 +161,8 @@ class PhenioTransform(Transform):
             # Final step in translation:
             # Use Koza to apply additional properties,
             # based on each source.
-            # This is not done for the test file as it is not as detailed as the main ontology.
+            # This is not done for the test file 
+            # as it is not as detailed as the main ontology.
             for config_type in ["node", "edge"]:
                 config = KOZA_CONFIGS[config_type]
                 print(f"Adding {config_type} sources using {config}")
