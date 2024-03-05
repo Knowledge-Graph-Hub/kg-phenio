@@ -23,7 +23,7 @@ KOZA_CONFIGS = {
 
 TRANSLATION_TABLE = "./kg_phenio/transform_utils/translation_table.yaml"
 
-HEADERLINE = '<owl:Ontology rdf:about="http://purl.obolibrary.org/obo/phenio-test.owl">\n</owl:Ontology>\n'
+HEADERLINE = '<owl:Ontology rdf:about="http://purl.obolibrary.org/obo/phenio-test.owl">\n</owl:Ontology>\n'   # type: ignore
 
 
 class PhenioTransform(Transform):
@@ -161,7 +161,7 @@ class PhenioTransform(Transform):
             # Final step in translation:
             # Use Koza to apply additional properties,
             # based on each source.
-            # This is not done for the test file 
+            # This is not done for the test file
             # as it is not as detailed as the main ontology.
             for config_type in ["node", "edge"]:
                 config = KOZA_CONFIGS[config_type]
