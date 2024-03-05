@@ -14,3 +14,13 @@ transform:
         format: tsv
         filename:
           - PhenioTransform
+    phenio-transform-test:
+      input:
+        name: "PHENIO-TEST"
+        format: obojson
+        filename:
+          - data/raw/phenio-test.json
+      output:
+        format: tsv
+        filename:
+          - PhenioTransformTest

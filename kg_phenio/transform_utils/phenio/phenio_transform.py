@@ -11,7 +11,7 @@ from kg_phenio.transform_utils.transform import Transform
 from kg_phenio.utils.robot_utils import initialize_robot, robot_convert
 
 ONTO_FILES = {
-    "PhenioTransform": "phenio.owl",
+#    "PhenioTransform": "phenio.owl",
     "PhenioTransformTest": "phenio-test.owl",
 }
 
@@ -95,6 +95,7 @@ class PhenioTransform(Transform):
             "<oboInOwl:hasRelatedSynonym></oboInOwl:hasRelatedSynonym>",
             "<oboInOwl:hasDbXref></oboInOwl:hasDbXref>",
             "<rdfs:comment></rdfs:comment>",
+            "<Ontology/>"
         ]
         data_file_tmp = data_file + ".tmp"
         with open(data_file, "r") as infile:
@@ -104,6 +105,9 @@ class PhenioTransform(Transform):
                     linenum = linenum + 1
                     if line.strip() not in offending_lines:
                         outfile.write(line)
+                    elif line.strip() == "<Ontology/>":
+                        print(f"Repairing header at line {linenum}.")
+                        outfile.write("<owl:Ontology rdf:about=\"http://purl.obolibrary.org/obo/phenio-test.owl\">\n</owl:Ontology>\n")
                     else:
                         print(f"Found error at line {linenum}: {line.strip()}.")
         os.replace(data_file_tmp, data_file)
@@ -124,6 +128,8 @@ class PhenioTransform(Transform):
 
         # Now do that transform to TSV, if necessary
         # This is where the KGX config file is used, if provided
+        # Note that the config-based transform will transform
+        # both the main ontology and the test set.
         data_file_tsv = os.path.join(self.output_dir, name + "_edges.tsv")
 
         if not os.path.exists(data_file_tsv):
