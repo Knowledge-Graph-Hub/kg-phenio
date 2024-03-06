@@ -49,7 +49,8 @@ class PhenioTransform(Transform):
             print(f"Have a transform config: {config}")
             self.config = config
 
-            test_config = f"{config}-test.yaml"
+            config_name = (config.split("."))[0]
+            test_config = f"{config_name}-test.yaml"
             print(f"Have a test transform config: {test_config}")
             self.test_config = test_config
 
