@@ -4,13 +4,13 @@ configuration:
   checkpoint: false
 transform:
   source:
-    phenio-transform:
+    phenio-transform-test:
       input:
-        name: "PHENIO"
+        name: "PHENIO-TEST"
         format: obojson
         filename:
-          - data/raw/phenio.json
+          - data/raw/phenio-test.json
       output:
         format: tsv
         filename:
-          - PhenioTransform
+          - PhenioTransformTest

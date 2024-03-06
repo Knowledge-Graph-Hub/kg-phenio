@@ -49,6 +49,10 @@ class PhenioTransform(Transform):
             print(f"Have a transform config: {config}")
             self.config = config
 
+            test_config = f"{config}-test.yaml"
+            print(f"Have a test transform config: {test_config}")
+            self.test_config = test_config
+
     def run(self, data_file: Optional[str] = None) -> None:
         """Call transform and perform it.
 
@@ -139,10 +143,15 @@ class PhenioTransform(Transform):
 
         if not os.path.exists(data_file_tsv):
             if self.config:
-                print(f"Transforming to KGX TSV with config in {self.config}...")
+                if name == "PhenioTransformTest":
+                    print(f"Transforming to KGX TSV with test config in {self.test_config}...")
+                    tx_config = self.test_config
+                else:
+                    print(f"Transforming to KGX TSV with config in {self.config}...")
+                    tx_config = self.config
                 transform(
                     inputs=None,
-                    transform_config=self.config,
+                    transform_config=tx_config,
                 )
             else:
                 print("Transforming to KGX TSV...")
