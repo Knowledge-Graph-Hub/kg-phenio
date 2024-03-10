@@ -140,7 +140,7 @@ bad_prefixes = [
 common_prefixes = ["BFO", "owl", "RO"]
 
 primary_knowledge_source = "infores:unknown"
-aggregator_knowledge_source = "infores:phenio"
+aggregator_knowledge_source = ["infores:phenio"]
 
 while (row := koza_app.get_row()) is not None:
     valid = True
