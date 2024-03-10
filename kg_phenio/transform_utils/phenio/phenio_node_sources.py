@@ -122,7 +122,7 @@ while (row := koza_app.get_row()) is not None:
     if category_name in remap_cats:
         category_name = remap_cats[category_name]
     NodeClass = getattr(
-        importlib.import_module("biolink.pydanticmodel_v2"), category_name
+        importlib.import_module("biolink_model.datamodel.pydanticmodel_v2"), category_name
     )
 
     # TODO: make this more specific, as it won't always be true

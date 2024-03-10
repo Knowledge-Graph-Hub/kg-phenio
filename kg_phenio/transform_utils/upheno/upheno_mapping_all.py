@@ -1,7 +1,9 @@
 """Koza ingest for Upheno phenotype maps."""
+
 import uuid
 
-from biolink.model import Association, PhenotypicFeature
+from biolink_model.datamodel.pydanticmodel_v2 import (Association,
+                                                      PhenotypicFeature)
 from koza.cli_runner import get_koza_app
 
 source_name = "upheno_mapping_all"
@@ -17,13 +19,13 @@ p1 = PhenotypicFeature(
     id=(((row["p1"]).split("/"))[-1]).replace("_", ":"),
     iri=row["p1"],
     name=row["label_x"],
-    category="biolink:PhenotypicFeature",
+    category=["biolink:PhenotypicFeature"],
 )
 p2 = PhenotypicFeature(
     id=(((row["p2"]).split("/"))[-1]).replace("_", ":"),
     iri=row["p2"],
     name=row["label_y"],
-    category="biolink:PhenotypicFeature",
+    category=["biolink:PhenotypicFeature"],
 )
 
 # Association
