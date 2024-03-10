@@ -1,4 +1,5 @@
 """Koza ingest for Upheno phenotype maps."""
+
 import uuid
 
 from biolink_model.datamodel.pydanticmodel_v2 import Association, PhenotypicFeature
