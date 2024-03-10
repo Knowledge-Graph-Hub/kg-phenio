@@ -174,7 +174,7 @@ while (row := koza_app.get_row()) is not None:
         category_name = remap_rels[relation]
     else:
         category_name = "Association"
-    AssocClass = getattr(importlib.import_module("biolink.model"), category_name)
+    AssocClass = getattr(importlib.import_module("biolink_model.datamodel.pydanticmodel_v2"), category_name)
 
     if valid:
         association = AssocClass(
