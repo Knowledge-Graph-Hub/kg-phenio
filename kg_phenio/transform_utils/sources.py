@@ -13,6 +13,7 @@ EDGE_INFORES_SOURCES = {
     "CLO": "clo",  # Cell Line - cat only
     "COB": "cob",
     "DDANAT": "ddanat",  # Dictyostelium discoideum anatomy - cat only
+    "DDPHENO": "ddpheno",
     "DOID": "doid",  # Disease ID - cat only
     "ECO": "eco",
     "ECTO": "ecto",
