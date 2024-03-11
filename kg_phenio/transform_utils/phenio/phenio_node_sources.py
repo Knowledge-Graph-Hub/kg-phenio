@@ -29,6 +29,7 @@ infores_sources = {
     "CL": "cl",
     "CLO": "clo",
     "DDANAT": "ddanat",
+    "DDPHENO": "ddpheno",
     "DOID": "doid",
     "ECO": "eco",
     "EMAPA": "emapa",
