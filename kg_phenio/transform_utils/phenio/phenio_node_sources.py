@@ -4,6 +4,8 @@ import importlib
 
 from koza.cli_runner import get_koza_app  # type: ignore
 
+from kg_phenio.transform_utils.sources import NODE_INFORES_SOURCES
+
 source_name = "phenio_node_sources"
 
 SYNONYM = "synonym"
@@ -16,91 +18,7 @@ koza_app = get_koza_app(source_name)
 # in the provided_by slot.
 
 # This maps CURIE prefixes to infores: names.
-
-infores_sources = {
-    "APO": "apo",
-    "BFO": "bfo",
-    "BSPO": "bspo",
-    "BTO": "bto",
-    "CARO": "caro",
-    "CHEBI": "chebi",
-    "CHR": "chr",
-    "CIO": "cio",
-    "CL": "cl",
-    "CLO": "clo",
-    "DDANAT": "ddanat",
-    "DDPHENO": "ddpheno",
-    "DOID": "doid",
-    "ECO": "eco",
-    "EMAPA": "emapa",
-    "ENVO": "envo",
-    "FAO": "fao",
-    "FBbt": "fbbt",
-    "FBcv": "fbcv",
-    "FMA": "fma",
-    "FOODON": "foodon",
-    "FlyBase": "flybase",
-    "FYPO": "fypo",
-    "GENO": "geno",
-    "GO": "go",
-    "HP": "hp",
-    "IAO": "iao",
-    "MA": "ma",
-    "MF": "mf",
-    "MFOMD": "mfomd",
-    "MI": "mi",
-    "MOD": "mod",
-    "MONDO": "mondo",
-    "MP": "mp",
-    "MPATH": "mpath",
-    "NBO": "nbo",
-    "NCBITaxon": "ncbitaxon",
-    "NCIT": "ncit",
-    "OBA": "oba",
-    "OBAN": "oban",
-    "OBI": "obi",
-    "OBO": "obo",  # TODO: clean this up
-    "OGMS": "ogms",
-    "OIO": "oio",
-    "OMIM": "omim",
-    "OMIT": "omit",
-    "Orphanet": "orphanet",
-    "PATO": "pato",
-    "PCO": "pco",
-    "PO": "po",
-    "PR": "pr",
-    "PW": "pw",
-    "RO": "ro",
-    "RXCUI": "rxnorm",
-    "SEPIO": "sepio",
-    "SNOMED": "snomed",
-    "SO": "so",
-    "SIO": "sio",
-    "STATO": "stato",
-    "TO": "to",
-    "UBERON": "uberon",
-    "UMLS": "umls",
-    "UPHENO": "upheno",
-    "WBPhenotype": "wbphenotype",
-    "WBBT": "wbbt",
-    "WBbt": "wbbt",
-    "XAO": "xao",
-    "XCO": "xco",
-    "ZFA": "zfa",
-    "ZFS": "zfs",
-    "ZP": "zp",
-    "biolink": "biolink",
-    "dcat": "dcat",
-    "dcterms": "dcterms",
-    "dctypes": "dctypes",
-    "faldo": "faldo",
-    "foaf": "foaf",
-    "owl": "owl",
-    "pav": "pav",
-    "rdf": "rdf",
-    "rdfs": "rdfs",
-    "skos": "skos",
-}
+infores_sources = NODE_INFORES_SOURCES
 
 bad_prefixes = ["dc", "http", "https", "DATA", "WD_Entity", "WD_Prop"]
 
