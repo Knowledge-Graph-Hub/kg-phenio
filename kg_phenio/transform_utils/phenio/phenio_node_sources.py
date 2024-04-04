@@ -59,6 +59,7 @@ while (row := koza_app.get_row()) is not None:
             # turning empty strings into False feels wrong, keeping them empty
             deprecated=bool(row["deprecated"]) if row["deprecated"] else None,
             provided_by=[primary_knowledge_source],
+            xrefs=row["xref"],
         )
 
         all_slots = list(node.__dict__.keys())

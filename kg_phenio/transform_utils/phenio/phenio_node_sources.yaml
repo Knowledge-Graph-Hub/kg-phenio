@@ -26,6 +26,7 @@ node_properties:
   - 'category'
   - 'name'
   - 'description'
+  - 'xref'
   - 'synonym'
   - 'deprecated'
   - 'provided_by'
