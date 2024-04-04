@@ -144,30 +144,23 @@ lxml = ["lxml"]
 
 [[package]]
 name = "biolink-model"
-version = "0.0.0"
+version = "4.2.0rc2"
 description = "The Biolink Model is a high-level data model designed to standardize types and relationships in biological knowledgebases."
 optional = false
-python-versions = "^3.9"
-files = []
-develop = false
+python-versions = ">=3.9,<4.0"
+files = [
+    {file = "biolink_model-4.2.0rc2-py3-none-any.whl", hash = "sha256:25afcaeeab85b7fc92136b898670e7bd52a3e78f77a3c317efa59893f5ac2e3c"},
+    {file = "biolink_model-4.2.0rc2.tar.gz", hash = "sha256:e7189704e23034ddde8cf5c298bf896e3c4fd67c212400a8ce7fe08ba21df99a"},
+]
 
 [package.dependencies]
 beautifulsoup4 = ">=4.0.0"
-curies = "^0.7.4"
-prefixmaps = "^0.2.0"
-pytest = "^7.3.1"
-pyyaml = "^6.0.1"
-stringcase = "^1.2.0"
-yamllint = "^1.35.1"
-
-[package.extras]
-docs = []
-
-[package.source]
-type = "git"
-url = "https://github.com/biolink/biolink-model.git"
-reference = "HEAD"
-resolved_reference = "82745c21181ac891712427ad938e0eee7a01e055"
+curies = ">=0.7.4,<0.8.0"
+prefixmaps = ">=0.2.0,<0.3.0"
+pytest = ">=7.3.1,<8.0.0"
+pyyaml = ">=6.0.1,<7.0.0"
+stringcase = ">=1.2.0,<2.0.0"
+yamllint = ">=1.35.1,<2.0.0"
 
 [[package]]
 name = "bmt"
@@ -4347,4 +4340,4 @@ testing = ["big-O", "jaraco.functools", "jaraco.itertools", "more-itertools", "p
 [metadata]
 lock-version = "2.0"
 python-versions = ">=3.9,<3.12"
-content-hash = "c76fef0093f763fc17bafa184c51d48bc6a2e59bc0332a3655528bd23fa1e7ca"
+content-hash = "7a7f4892ebc11621bd645d16cb5beb773881dda9b68b778b169fa4e83fe3425d"
