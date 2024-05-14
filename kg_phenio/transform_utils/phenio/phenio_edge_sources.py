@@ -89,6 +89,10 @@ while (row := koza_app.get_row()) is not None:
         category_name,
     )
 
+    # These are default values for these slots
+    agent_type = "not_provided"
+    knowledge_level = "not_provided"
+
     if valid:
         association = AssocClass(
             id=row["id"],
@@ -98,6 +102,8 @@ while (row := koza_app.get_row()) is not None:
             original_predicate=row["relation"],
             primary_knowledge_source=primary_knowledge_source,
             aggregator_knowledge_source=aggregator_knowledge_source,
+            agent_type=agent_type,
+            knowledge_level=knowledge_level,
         )
 
         koza_app.write(association)
