@@ -6,7 +6,7 @@ import tarfile
 from typing import Optional
 
 from kgx.cli.cli_utils import transform  # type: ignore
-from koza.cli_runner import transform_source
+from koza.cli_utils import transform_source
 
 from kg_phenio.transform_utils.transform import Transform
 from kg_phenio.utils.robot_utils import initialize_robot, robot_convert
