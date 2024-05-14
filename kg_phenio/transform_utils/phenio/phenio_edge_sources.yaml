@@ -27,5 +27,7 @@ edge_properties:
   - 'relation'
   - 'primary_knowledge_source'
   - 'aggregator_knowledge_source'
+  - 'agent_type'
+  - 'knowledge_level'
 
 transform_mode: 'flat'
