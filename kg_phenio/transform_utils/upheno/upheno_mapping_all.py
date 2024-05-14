@@ -29,6 +29,14 @@ p2 = PhenotypicFeature(
 )
 
 # Association
+
+# These are default values for these slots
+agent_type = "not_provided"
+knowledge_level = "not_provided"
+
+primary_knowledge_source = "infores:upheno"
+aggregator_knowledge_source = ["infores:phenio"]
+
 if p1.id[0:2] in desired_types and p2.id[0:2] in desired_types:
     association = Association(
         id="uuid:" + str(uuid.uuid1()),
@@ -36,6 +44,10 @@ if p1.id[0:2] in desired_types and p2.id[0:2] in desired_types:
         predicate="biolink:same_as",
         object=p2.id,
         original_predicate="skos:exactMatch",
+        primary_knowledge_source=primary_knowledge_source,
+        aggregator_knowledge_source=aggregator_knowledge_source,
+        agent_type=agent_type,
+        knowledge_level=knowledge_level,
     )
 
     koza_app.write(p1, association, p2)
