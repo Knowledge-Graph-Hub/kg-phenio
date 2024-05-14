@@ -3,7 +3,7 @@
 import os
 from typing import Optional
 
-from koza.cli_runner import transform_source  # type: ignore
+from koza.cli_utils import transform_source  # type: ignore
 
 from kg_phenio.transform_utils.transform import Transform
 

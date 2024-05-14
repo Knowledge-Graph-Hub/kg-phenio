@@ -2,7 +2,7 @@
 
 import importlib
 
-from koza.cli_runner import get_koza_app  # type: ignore
+from koza.cli_utils import get_koza_app  # type: ignore
 
 from kg_phenio.transform_utils.sources import EDGE_INFORES_SOURCES
 
