@@ -81,8 +81,11 @@ while (row := koza_app.get_row()) is not None:
     remap_rels = {
         "biolink:has_phenotype": "DiseaseToPhenotypicFeatureAssociation",
         "UPHENO:0000003": "DiseaseOrPhenotypicFeatureToLocationAssociation"}
-    relation = str(row["relation"])
-
+    
+    if subj_curie_prefix == "MONDO" and obj_curie_prefix == "HP":
+        relation = "biolink:has_phenotype"
+    else:
+        relation = str(row["relation"])
 
     if relation in remap_rels:
         category_name = remap_rels[relation]
