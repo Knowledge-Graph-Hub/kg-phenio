@@ -80,8 +80,9 @@ while (row := koza_app.get_row()) is not None:
     # TODO: add more to this map
     remap_rels = {
         "biolink:has_phenotype": "DiseaseToPhenotypicFeatureAssociation",
-        "UPHENO:0000003": "DiseaseOrPhenotypicFeatureToLocationAssociation"}
-    
+        "UPHENO:0000003": "DiseaseOrPhenotypicFeatureToLocationAssociation",
+    }
+
     if subj_curie_prefix == "MONDO" and obj_curie_prefix == "HP":
         relation = "biolink:has_phenotype"
     else:
