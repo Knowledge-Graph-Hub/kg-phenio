@@ -78,8 +78,16 @@ while (row := koza_app.get_row()) is not None:
     # The relation tells us which class to use.
     # We default to generic Association.
     # TODO: add more to this map
-    remap_rels = {"UPHENO:0000003": "DiseaseOrPhenotypicFeatureToLocationAssociation"}
-    relation = str(row["relation"])
+    remap_rels = {
+        "biolink:has_phenotype": "DiseaseToPhenotypicFeatureAssociation",
+        "UPHENO:0000003": "DiseaseOrPhenotypicFeatureToLocationAssociation",
+    }
+
+    if subj_curie_prefix == "MONDO" and obj_curie_prefix == "HP":
+        relation = "biolink:has_phenotype"
+    else:
+        relation = str(row["relation"])
+
     if relation in remap_rels:
         category_name = remap_rels[relation]
     else:
