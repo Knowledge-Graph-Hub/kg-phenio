@@ -75,21 +75,24 @@ while (row := koza_app.get_row()) is not None:
 
     # Association
 
-    # The relation tells us which class to use.
+    # The relation or predicate tells us which class to use.
     # We default to generic Association.
-    # TODO: add more to this map
     remap_rels = {
         "biolink:has_phenotype": "DiseaseToPhenotypicFeatureAssociation",
         "UPHENO:0000003": "DiseaseOrPhenotypicFeatureToLocationAssociation",
     }
 
     if subj_curie_prefix == "MONDO" and obj_curie_prefix == "HP":
-        relation = "biolink:has_phenotype"
+        relation = str(row["relation"])
+        predicate = "biolink:has_phenotype"
     else:
         relation = str(row["relation"])
+        predicate = str(row["predicate"])
 
     if relation in remap_rels:
         category_name = remap_rels[relation]
+    elif predicate in remap_rels:
+        category_name = remap_rels[predicate]
     else:
         category_name = "Association"
     AssocClass = getattr(
@@ -105,7 +108,8 @@ while (row := koza_app.get_row()) is not None:
         association = AssocClass(
             id=row["id"],
             subject=row["subject"],
-            predicate=row["predicate"],
+            predicate=predicate,
+            relation=relation,
             object=row["object"],
             original_predicate=row["relation"],
             primary_knowledge_source=primary_knowledge_source,
