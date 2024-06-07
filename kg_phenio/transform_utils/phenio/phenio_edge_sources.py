@@ -111,7 +111,6 @@ while (row := koza_app.get_row()) is not None:
             predicate=predicate,
             original_predicate=relation,
             object=row["object"],
-            original_predicate=row["relation"],
             primary_knowledge_source=primary_knowledge_source,
             aggregator_knowledge_source=aggregator_knowledge_source,
             agent_type=agent_type,
