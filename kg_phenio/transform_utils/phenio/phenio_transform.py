@@ -67,7 +67,7 @@ class PhenioTransform(Transform):
             data_file = os.path.join(self.input_base_dir, data_file)
             self.parse(k, data_file, k)
         else:
-            # load all ontologies
+            # Load PHENIO
             for k in ONTO_FILES.keys():
                 data_file = os.path.join(self.input_base_dir, ONTO_FILES[k])
                 self.parse(k, data_file, k)
@@ -82,10 +82,13 @@ class PhenioTransform(Transform):
         Returns:
              None.
         """
+        # Check if it needs to be decompressed first,
+        # and it probably does.
         if not os.path.exists(data_file):
             if os.path.exists(data_file + ".tar.gz"):
-                print(f"Decompressing {data_file}")
-                with tarfile.open(data_file) as compfile:
+                comp_data_file = data_file + ".tar.gz"
+                print(f"Decompressing {comp_data_file}")
+                with tarfile.open(comp_data_file) as compfile:
                     compfile.extractall(self.input_base_dir)
         else:
             print(f"Found ontology at {data_file}")
@@ -145,7 +148,9 @@ class PhenioTransform(Transform):
         if not os.path.exists(data_file_tsv):
             if self.config:
                 if name == "PhenioTransformTest":
-                    print(f"Transforming to KGX TSV with test config in {self.test_config}...")
+                    print(
+                        f"Transforming to KGX TSV with test config in {self.test_config}..."
+                    )
                     tx_config = self.test_config
                 else:
                     print(f"Transforming to KGX TSV with config in {self.config}...")
