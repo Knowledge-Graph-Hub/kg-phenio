@@ -83,6 +83,7 @@ class PhenioTransform(Transform):
              None.
         """
         data_file_json = os.path.splitext(data_file)[0] + ".json"
+        have_json = False
 
         # Check if it needs to be decompressed first,
         # and it probably does.
@@ -94,6 +95,7 @@ class PhenioTransform(Transform):
                     compfile.extractall(self.input_base_dir)
         elif os.path.exists(data_file_json):
             print(f"Found obojson ontology at {data_file_json}.")
+            have_json = True
         else:
             print(f"Found ontology at {data_file}")
 
@@ -104,33 +106,34 @@ class PhenioTransform(Transform):
         # and may contain errors impacting transform to
         # nodes/edges.
         # For now, this means removing empty synonyms, xrefs, and comments.
-        print("Checking for errors...")
-        offending_lines = [
-            "<oboInOwl:hasNarrowSynonym></oboInOwl:hasNarrowSynonym>",
-            "<oboInOwl:hasBroadSynonym></oboInOwl:hasBroadSynonym>",
-            "<oboInOwl:hasExactSynonym></oboInOwl:hasExactSynonym>",
-            "<oboInOwl:hasRelatedSynonym></oboInOwl:hasRelatedSynonym>",
-            "<oboInOwl:hasDbXref></oboInOwl:hasDbXref>",
-            "<rdfs:comment></rdfs:comment>",
-            "<Ontology/>",
-        ]
-        data_file_tmp = data_file + ".tmp"
-        with open(data_file, "r") as infile:
-            with open(data_file_tmp, "w") as outfile:
-                linenum = 0
-                for line in infile:
-                    linenum = linenum + 1
-                    if line.strip() not in offending_lines:
-                        outfile.write(line)
-                    elif line.strip() == "<Ontology/>":
-                        print(f"Repairing header at line {linenum}.")
-                        outfile.write(HEADERLINE)
-                    else:
-                        print(f"Found error at line {linenum}: {line.strip()}.")
-        os.replace(data_file_tmp, data_file)
+        if not have_json:
+            print("Checking for errors...")
+            offending_lines = [
+                "<oboInOwl:hasNarrowSynonym></oboInOwl:hasNarrowSynonym>",
+                "<oboInOwl:hasBroadSynonym></oboInOwl:hasBroadSynonym>",
+                "<oboInOwl:hasExactSynonym></oboInOwl:hasExactSynonym>",
+                "<oboInOwl:hasRelatedSynonym></oboInOwl:hasRelatedSynonym>",
+                "<oboInOwl:hasDbXref></oboInOwl:hasDbXref>",
+                "<rdfs:comment></rdfs:comment>",
+                "<Ontology/>",
+            ]
+            data_file_tmp = data_file + ".tmp"
+            with open(data_file, "r") as infile:
+                with open(data_file_tmp, "w") as outfile:
+                    linenum = 0
+                    for line in infile:
+                        linenum = linenum + 1
+                        if line.strip() not in offending_lines:
+                            outfile.write(line)
+                        elif line.strip() == "<Ontology/>":
+                            print(f"Repairing header at line {linenum}.")
+                            outfile.write(HEADERLINE)
+                        else:
+                            print(f"Found error at line {linenum}: {line.strip()}.")
+            os.replace(data_file_tmp, data_file)
 
         # Convert to obojson, if necessary
-        if not os.path.exists(data_file_json):
+        if not have_json:
             if not robot_convert(
                 robot_path=self.robot_path,
                 input_path=data_file,
@@ -138,8 +141,6 @@ class PhenioTransform(Transform):
                 robot_env=self.robot_env,
             ):
                 sys.exit(f"Failed to convert {data_file}!")
-        else:
-            print(f"Found JSON ontology at {data_file_json}.")
 
         # Now do that transform to TSV, if necessary
         # This is where the KGX config file is used, if provided
