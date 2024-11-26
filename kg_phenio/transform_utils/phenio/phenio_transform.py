@@ -82,6 +82,8 @@ class PhenioTransform(Transform):
         Returns:
              None.
         """
+        data_file_json = os.path.splitext(data_file)[0] + ".json"
+
         # Check if it needs to be decompressed first,
         # and it probably does.
         if not os.path.exists(data_file):
@@ -90,6 +92,8 @@ class PhenioTransform(Transform):
                 print(f"Decompressing {comp_data_file}")
                 with tarfile.open(comp_data_file) as compfile:
                     compfile.extractall(self.input_base_dir)
+        elif os.path.exists(data_file_json):
+            print(f"Found obojson ontology at {data_file_json}.")
         else:
             print(f"Found ontology at {data_file}")
 
@@ -126,8 +130,6 @@ class PhenioTransform(Transform):
         os.replace(data_file_tmp, data_file)
 
         # Convert to obojson, if necessary
-        data_file_json = os.path.splitext(data_file)[0] + ".json"
-
         if not os.path.exists(data_file_json):
             if not robot_convert(
                 robot_path=self.robot_path,
