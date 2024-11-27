@@ -87,12 +87,16 @@ class PhenioTransform(Transform):
 
         # Check if it needs to be decompressed first,
         # and it probably does.
-        if not os.path.exists(data_file):
+        if not os.path.exists(data_file) and not os.path.exists(data_file_json):
             if os.path.exists(data_file + ".tar.gz"):
                 comp_data_file = data_file + ".tar.gz"
-                print(f"Decompressing {comp_data_file}")
-                with tarfile.open(comp_data_file) as compfile:
-                    compfile.extractall(self.input_base_dir)
+            elif os.path.exists(data_file + ".gz"):
+                comp_data_file = data_file + ".gz"
+            else:
+                sys.exit("Cannot find ontology file! Exiting...")
+            print(f"Decompressing {comp_data_file}")
+            with tarfile.open(comp_data_file) as compfile:
+                compfile.extractall(self.input_base_dir)
         elif os.path.exists(data_file_json):
             print(f"Found obojson ontology at {data_file_json}.")
             have_json = True
@@ -132,8 +136,7 @@ class PhenioTransform(Transform):
                             print(f"Found error at line {linenum}: {line.strip()}.")
             os.replace(data_file_tmp, data_file)
 
-        # Convert to obojson, if necessary
-        if not have_json:
+            # Convert to obojson, if necessary
             if not robot_convert(
                 robot_path=self.robot_path,
                 input_path=data_file,
