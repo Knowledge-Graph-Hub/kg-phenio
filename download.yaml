@@ -10,8 +10,8 @@
 # # phenio.owl
 # #
 # -
-#   url: https://github.com/monarch-initiative/phenio/releases/latest/download/phenio.owl.tar.gz
-#   local_name: phenio.owl.tar.gz
+#   url: https://github.com/monarch-initiative/phenio/releases/latest/download/phenio.owl.gz
+#   local_name: phenio.owl.gz
 
 #
 # phenio.json
