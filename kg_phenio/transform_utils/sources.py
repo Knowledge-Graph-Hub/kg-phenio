@@ -13,7 +13,7 @@ BAD_PREFIXES = [
     "https",
     "rdf",
     "rdfs",
-    ]
+]
 
 EDGE_SOURCES = {
     "APO": "apo",  # Ascomycete phenotype ontology - cat only
@@ -133,7 +133,7 @@ NODE_SOURCES = {
     "DOID": ("doid", "Disease"),
     "ECO": ("eco", ""),
     "EMAPA": ("emapa", "AnatomicalEntity"),
-    "ENVO": ("envo", ""),
+    "ENVO": ("envo", "EnvironmentalFeature"),
     "FAO": ("fao", ""),
     "FBbt": ("fbbt", "AnatomicalEntity"),
     "FBcv": ("fbcv", ""),
@@ -146,6 +146,7 @@ NODE_SOURCES = {
     "GENO": ("geno", ""),
     "GO": ("go", ""),
     "HP": ("hp", "PhenotypicFeature"),
+    "HsapDv": ("hsapdv", "LifeStage"),
     "IAO": ("iao", ""),
     "MA": ("ma", "AnatomicalEntity"),
     "MF": ("mf", ""),
@@ -154,7 +155,7 @@ NODE_SOURCES = {
     "MOD": ("mod", ""),
     "MONDO": ("mondo", "Disease"),
     "MP": ("mp", "PhenotypicFeature"),
-    "MPATH": ("mpath", ""),
+    "MPATH": ("mpath", "Disease"),
     "NBO": ("nbo", ""),
     "NCBITaxon": ("ncbitaxon", ""),
     "NCIT": ("ncit", ""),

@@ -25,7 +25,7 @@ primary_knowledge_source = "infores:unknown"
 
 while (row := koza_app.get_row()) is not None:
 
-    node_curie_prefix, node_curie_value = (str(row["id"]).split(":"))
+    node_curie_prefix, node_curie_value = str(row["id"]).split(":")
     category_name = (str(row["category"]).split(":"))[1]
 
     if node_curie_prefix in BAD_PREFIXES:
@@ -36,20 +36,23 @@ while (row := koza_app.get_row()) is not None:
     # We can assign a more specific category.
     remap_cats = ["OntologyClass", "NamedThing", "ChemicalSubstance", "SequenceFeature"]
 
-    # TODO: make this more specific
-    infores = infores_sources[node_curie_prefix]
-    primary_knowledge_source = f"infores:{infores}"
     if category_name in remap_cats:
         if category_name == "OntologyClass":
             category_name = "NamedThing"
-        if node_curie_prefix == "FlyBase": # Look at ID to get the category
+        if node_curie_prefix == "FlyBase":  # Look at ID to get the category
             if node_curie_value.startswith("FBgn"):
                 node_curie_prefix = "FBgn"
-        if node_curie_prefix == "OBO": # Look at ID to get the category
+        if node_curie_prefix == "OBO":  # Look at ID to get the category
             if node_curie_value.startswith("XPO"):
                 node_curie_prefix = "XPO"
+            elif node_curie_value.startswith("HsapDv"):
+                node_curie_prefix = "HsapDv"
         if category_sources[node_curie_prefix]:
             category_name = category_sources[node_curie_prefix]
+
+    # TODO: make this more specific
+    infores = infores_sources[node_curie_prefix]
+    primary_knowledge_source = f"infores:{infores}"
 
     # Write the node
     # The category tells us which class to use.
