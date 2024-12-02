@@ -4,7 +4,7 @@ import importlib
 
 from koza.cli_utils import get_koza_app  # type: ignore
 
-from kg_phenio.transform_utils.sources import EDGE_INFORES_SOURCES
+from kg_phenio.transform_utils.sources import EDGE_SOURCES
 
 source_name = "phenio_edge_sources"
 
@@ -18,7 +18,7 @@ koza_app = get_koza_app(source_name)
 # the same as the node source.
 # TODO: technically the names should be part of
 #       biolink:InformationResource objects
-infores_sources = EDGE_INFORES_SOURCES
+infores_sources = EDGE_SOURCES
 
 bad_prefixes = [
     "DATA",

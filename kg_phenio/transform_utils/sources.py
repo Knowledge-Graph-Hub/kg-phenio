@@ -1,6 +1,6 @@
 """Source assignments for transforms."""
 
-EDGE_INFORES_SOURCES = {
+EDGE_SOURCES = {
     "APO": "apo",  # Ascomycete phenotype ontology - cat only
     "BFO": "bfo",
     "BSPO": "upheno",  # Biological Spatial Ontology - from Upheno
@@ -97,7 +97,7 @@ EDGE_INFORES_SOURCES = {
     "skos": "skos",
 }
 
-NODE_INFORES_SOURCES = {
+NODE_SOURCES = {
     "APO": "apo",
     "BFO": "bfo",
     "BSPO": "bspo",

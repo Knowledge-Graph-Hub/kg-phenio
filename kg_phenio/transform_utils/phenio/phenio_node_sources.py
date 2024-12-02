@@ -4,7 +4,7 @@ import importlib
 
 from koza.cli_utils import get_koza_app  # type: ignore
 
-from kg_phenio.transform_utils.sources import NODE_INFORES_SOURCES
+from kg_phenio.transform_utils.sources import NODE_SOURCES
 
 source_name = "phenio_node_sources"
 
@@ -13,12 +13,12 @@ SYNONYM = "synonym"
 koza_app = get_koza_app(source_name)
 
 
-# This transform is for enriching PHENIO-derived nodes
-# with Biolink-compliant knowledge sources,
-# in the provided_by slot.
+# This transform is for enriching PHENIO-derived nodes with:
+# * Biolink-compliant knowledge sources, in the provided_by slot.
+# * Biolink categories, in the category slot.
 
 # This maps CURIE prefixes to infores: names.
-infores_sources = NODE_INFORES_SOURCES
+infores_sources = NODE_SOURCES
 
 bad_prefixes = ["dc", "http", "https", "DATA", "WD_Entity", "WD_Prop"]
 
