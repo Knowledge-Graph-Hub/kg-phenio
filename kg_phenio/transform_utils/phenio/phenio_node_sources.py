@@ -26,65 +26,59 @@ bad_prefixes = ["dc", "http", "https", "DATA", "WD_Entity", "WD_Prop"]
 primary_knowledge_source = "infores:unknown"
 
 while (row := koza_app.get_row()) is not None:
-    valid = True
 
     node_curie_prefix = (str(row["id"]).split(":"))[0]
-
-    # The category tells us which class to use.
-    # Some categories won't fit the model and need
-    # to be remapped.
     category_name = (str(row["category"]).split(":"))[1]
-    remap_cats = {
-        "OntologyClass": "NamedThing",
-        "ChemicalSubstance": "ChemicalEntity",
-        "SequenceFeature": "SequenceVariant",
-    }
+
+    if node_curie_prefix in bad_prefixes:
+        continue
 
     # Many categories may still have a generic NamedThing,
-    # but we can assign a more specific category.
+    # or other generic category.
+    # We can assign a more specific category.
+    remap_cats = ["OntologyClass", "NamedThing", "ChemicalSubstance", "SequenceFeature"]
+
     # TODO: make this more specific
-    if node_curie_prefix not in bad_prefixes:
-        infores = infores_sources[node_curie_prefix]
-        primary_knowledge_source = f"infores:{infores}"
-        if category_name in remap_cats:
-            category_name = remap_cats[category_name]
-        elif category_sources[node_curie_prefix] != "":
+    infores = infores_sources[node_curie_prefix]
+    primary_knowledge_source = f"infores:{infores}"
+    if category_name in remap_cats:
+        if category_name == "OntologyClass":
+            category_name = "NamedThing"
+        if category_sources[node_curie_prefix]:
             category_name = category_sources[node_curie_prefix]
-    else:
-        valid = False
 
-    # Association
-    if valid:
-        # Get the class from the model
-        NodeClass = getattr(
-            importlib.import_module("biolink_model.datamodel.pydanticmodel_v2"),
-            category_name,
-        )
+    # Write the node
+    # The category tells us which class to use.
+    # Get the class from the model
+    NodeClass = getattr(
+        importlib.import_module("biolink_model.datamodel.pydanticmodel_v2"),
+        category_name,
+    )
 
-        node = NodeClass(
-            id=row["id"],
-            category=["biolink:" + category_name],
-            name=row["name"],
-            description=row["description"],
-            # turning empty strings into False feels wrong, keeping them empty
-            deprecated=bool(row["deprecated"]) if row["deprecated"] else None,
-            provided_by=[primary_knowledge_source],
-        )
+    node = NodeClass(
+        id=row["id"],
+        category=["biolink:" + category_name],
+        name=row["name"],
+        description=row["description"],
+        # turning empty strings into False feels wrong, keeping them empty
+        deprecated=bool(row["deprecated"]) if row["deprecated"] else None,
+        provided_by=[primary_knowledge_source],
+    )
 
-        all_slots = list(node.__dict__.keys())
-        if row["iri"]:
-            node.iri = row["iri"]
-        if row[SYNONYM] and SYNONYM in all_slots:
-            node.synonym = (row["synonym"]).split("|")
+    all_slots = list(node.__dict__.keys())
+    if row["iri"]:
+        node.iri = row["iri"]
+    if row[SYNONYM] and SYNONYM in all_slots:
+        node.synonym = (row["synonym"]).split("|")
 
-        if row["subsets"]:
-            subsets = (row["subsets"]).split("|")
+    if row["subsets"]:
+        subsets = (row["subsets"]).split("|")
 
-            if "deprecated" in subsets:
-                node.deprecated = True
+        if "deprecated" in subsets:
+            node.deprecated = True
 
-        if row["xref"]:
-            xrefs = (row["xref"]).split("|")
-            node.xref = xrefs
+    if row["xref"]:
+        xrefs = (row["xref"]).split("|")
+        node.xref = xrefs
 
-        koza_app.write(node)
+    koza_app.write(node)
