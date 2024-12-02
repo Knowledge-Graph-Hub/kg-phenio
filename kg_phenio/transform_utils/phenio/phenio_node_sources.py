@@ -17,8 +17,9 @@ koza_app = get_koza_app(source_name)
 # * Biolink-compliant knowledge sources, in the provided_by slot.
 # * Biolink categories, in the category slot.
 
-# This maps CURIE prefixes to infores: names.
-infores_sources = NODE_SOURCES
+# This maps CURIE prefixes to infores: names and categories.
+infores_sources = {key: value[0] for key, value in NODE_SOURCES.items()}
+category_sources = {key: value[1] for key, value in NODE_SOURCES.items()}
 
 bad_prefixes = ["dc", "http", "https", "DATA", "WD_Entity", "WD_Prop"]
 
@@ -32,26 +33,34 @@ while (row := koza_app.get_row()) is not None:
     # The category tells us which class to use.
     # Some categories won't fit the model and need
     # to be remapped.
+    category_name = (str(row["category"]).split(":"))[1]
     remap_cats = {
         "OntologyClass": "NamedThing",
         "ChemicalSubstance": "ChemicalEntity",
         "SequenceFeature": "SequenceVariant",
     }
-    category_name = (str(row["category"]).split(":"))[1]
-    if category_name in remap_cats:
-        category_name = remap_cats[category_name]
-    NodeClass = getattr(
-        importlib.import_module("biolink_model.datamodel.pydanticmodel_v2"),
-        category_name,
-    )
 
-    # TODO: make this more specific, as it won't always be true
+    # Many categories may still have a generic NamedThing,
+    # but we can assign a more specific category.
+    # TODO: make this more specific
     if node_curie_prefix not in bad_prefixes:
         infores = infores_sources[node_curie_prefix]
         primary_knowledge_source = f"infores:{infores}"
+        if category_name in remap_cats:
+            category_name = remap_cats[category_name]
+        elif category_sources[node_curie_prefix] != "":
+            category_name = category_sources[node_curie_prefix]
+    else:
+        valid = False
 
     # Association
     if valid:
+        # Get the class from the model
+        NodeClass = getattr(
+            importlib.import_module("biolink_model.datamodel.pydanticmodel_v2"),
+            category_name,
+        )
+
         node = NodeClass(
             id=row["id"],
             category=["biolink:" + category_name],
