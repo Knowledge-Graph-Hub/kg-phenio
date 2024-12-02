@@ -4,7 +4,7 @@ import importlib
 
 from koza.cli_utils import get_koza_app  # type: ignore
 
-from kg_phenio.transform_utils.sources import NODE_SOURCES
+from kg_phenio.transform_utils.sources import BAD_PREFIXES, NODE_SOURCES
 
 source_name = "phenio_node_sources"
 
@@ -21,8 +21,6 @@ koza_app = get_koza_app(source_name)
 infores_sources = {key: value[0] for key, value in NODE_SOURCES.items()}
 category_sources = {key: value[1] for key, value in NODE_SOURCES.items()}
 
-bad_prefixes = ["dc", "http", "https", "DATA", "WD_Entity", "WD_Prop"]
-
 primary_knowledge_source = "infores:unknown"
 
 while (row := koza_app.get_row()) is not None:
@@ -30,7 +28,7 @@ while (row := koza_app.get_row()) is not None:
     node_curie_prefix = (str(row["id"]).split(":"))[0]
     category_name = (str(row["category"]).split(":"))[1]
 
-    if node_curie_prefix in bad_prefixes:
+    if node_curie_prefix in BAD_PREFIXES:
         continue
 
     # Many categories may still have a generic NamedThing,
