@@ -57,12 +57,15 @@ while (row := koza_app.get_row()) is not None:
     # We default to generic Association.
     remap_rels = {
         "biolink:has_phenotype": "DiseaseToPhenotypicFeatureAssociation",
-        "UPHENO:0000003": "DiseaseOrPhenotypicFeatureToLocationAssociation",
+        "biolink:disease_has_location": "DiseaseOrPhenotypicFeatureToLocationAssociation",
     }
 
     if subj_curie_prefix == "MONDO" and obj_curie_prefix == "HP":
         relation = str(row["relation"])
         predicate = "biolink:has_phenotype"
+    elif subj_curie_prefix == "MONDO" and obj_curie_prefix == "UBERON":
+        relation = str(row["relation"])
+        predicate = "biolink:disease_has_location"
     else:
         relation = str(row["relation"])
         predicate = str(row["predicate"])
