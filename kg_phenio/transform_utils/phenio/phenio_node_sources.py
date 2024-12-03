@@ -25,7 +25,12 @@ primary_knowledge_source = "infores:unknown"
 
 while (row := koza_app.get_row()) is not None:
 
-    node_curie_prefix, node_curie_value = str(row["id"]).split(":")
+    try:
+        node_curie_prefix, node_curie_value = str(row["id"]).split(":")
+    except ValueError as e:  # Catch any malformed CURIEs
+        print(f"Error: {e}")
+        print(f"Row: {row}")
+        continue
     category_name = (str(row["category"]).split(":"))[1]
 
     # Catch some IDs first before we ignore them
