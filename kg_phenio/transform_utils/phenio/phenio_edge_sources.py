@@ -4,7 +4,7 @@ import importlib
 
 from koza.cli_utils import get_koza_app  # type: ignore
 
-from kg_phenio.transform_utils.sources import EDGE_INFORES_SOURCES
+from kg_phenio.transform_utils.sources import BAD_PREFIXES, EDGE_SOURCES
 
 source_name = "phenio_edge_sources"
 
@@ -18,34 +18,7 @@ koza_app = get_koza_app(source_name)
 # the same as the node source.
 # TODO: technically the names should be part of
 #       biolink:InformationResource objects
-infores_sources = EDGE_INFORES_SOURCES
-
-bad_prefixes = [
-    "DATA",
-    "PHENIO",
-    "WD_Entity",
-    "WD_Prop",
-    "chebi#is",
-    "core#connected",
-    "core#distally",
-    "core#innervated",
-    "core#subdivision",
-    "doid#derives",
-    "doid#has",
-    "emapa#Tmp",
-    "emapa#group",
-    "emapa#group_term",
-    "http",
-    "https",
-    "mondo#disease",
-    "ncit#C142749",
-    "nbo#by",
-    "nbo#has",
-    "nbo#in",
-    "nbo#is",
-    "stato.owl#is",
-    "stato.owl#response",
-]
+infores_sources = EDGE_SOURCES
 
 common_prefixes = ["BFO", "owl", "RO"]
 
@@ -53,7 +26,10 @@ primary_knowledge_source = "infores:unknown"
 aggregator_knowledge_source = ["infores:phenio"]
 
 while (row := koza_app.get_row()) is not None:
-    valid = True
+
+    # Ignore redundant category assignments
+    if row["predicate"] in ["biolink:category", "biolink:inverseOf"]:
+        continue
 
     subj_curie_prefix = (str(row["subject"]).split(":"))[0]
     if subj_curie_prefix == "OBO":  # See if there's another prefix
@@ -64,14 +40,22 @@ while (row := koza_app.get_row()) is not None:
     obj_curie_prefix = (str(row["object"]).split(":"))[0]
     relation_prefix = (str(row["relation"]).split(":"))[0]
 
-    if subj_curie_prefix not in bad_prefixes:
+    if subj_curie_prefix not in BAD_PREFIXES:
         if relation_prefix == "UPHENO":
             infores = "upheno"
         elif obj_curie_prefix == "UPHENO":
             infores = "upheno"
         else:
             infores = infores_sources[subj_curie_prefix]
+
+        object_curie = str(row["object"])
+
+        if str(row["object"]).startswith("http://identifiers.org/hgnc/"):  # Fix URLs
+            object_curie = "HGNC:" + str(row["object"]).split("/")[-1]
+
         primary_knowledge_source = f"infores:{infores}"
+    else:
+        continue
 
     # Association
 
@@ -79,12 +63,15 @@ while (row := koza_app.get_row()) is not None:
     # We default to generic Association.
     remap_rels = {
         "biolink:has_phenotype": "DiseaseToPhenotypicFeatureAssociation",
-        "UPHENO:0000003": "DiseaseOrPhenotypicFeatureToLocationAssociation",
+        "biolink:disease_has_location": "DiseaseOrPhenotypicFeatureToLocationAssociation",
     }
 
     if subj_curie_prefix == "MONDO" and obj_curie_prefix == "HP":
         relation = str(row["relation"])
         predicate = "biolink:has_phenotype"
+    elif subj_curie_prefix == "MONDO" and obj_curie_prefix == "UBERON":
+        relation = str(row["relation"])
+        predicate = "biolink:disease_has_location"
     else:
         relation = str(row["relation"])
         predicate = str(row["predicate"])
@@ -104,17 +91,16 @@ while (row := koza_app.get_row()) is not None:
     agent_type = "not_provided"
     knowledge_level = "not_provided"
 
-    if valid:
-        association = AssocClass(
-            id=row["id"],
-            subject=row["subject"],
-            predicate=predicate,
-            original_predicate=relation,
-            object=row["object"],
-            primary_knowledge_source=primary_knowledge_source,
-            aggregator_knowledge_source=aggregator_knowledge_source,
-            agent_type=agent_type,
-            knowledge_level=knowledge_level,
-        )
+    association = AssocClass(
+        id=row["id"],
+        subject=row["subject"],
+        predicate=predicate,
+        original_predicate=relation,
+        object=object_curie,
+        primary_knowledge_source=primary_knowledge_source,
+        aggregator_knowledge_source=aggregator_knowledge_source,
+        agent_type=agent_type,
+        knowledge_level=knowledge_level,
+    )
 
-        koza_app.write(association)
+    koza_app.write(association)
