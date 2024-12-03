@@ -4,7 +4,7 @@ import importlib
 
 from koza.cli_utils import get_koza_app  # type: ignore
 
-from kg_phenio.transform_utils.sources import EDGE_SOURCES
+from kg_phenio.transform_utils.sources import BAD_PREFIXES, EDGE_SOURCES
 
 source_name = "phenio_edge_sources"
 
@@ -19,33 +19,6 @@ koza_app = get_koza_app(source_name)
 # TODO: technically the names should be part of
 #       biolink:InformationResource objects
 infores_sources = EDGE_SOURCES
-
-bad_prefixes = [
-    "DATA",
-    "PHENIO",
-    "WD_Entity",
-    "WD_Prop",
-    "chebi#is",
-    "core#connected",
-    "core#distally",
-    "core#innervated",
-    "core#subdivision",
-    "doid#derives",
-    "doid#has",
-    "emapa#Tmp",
-    "emapa#group",
-    "emapa#group_term",
-    "http",
-    "https",
-    "mondo#disease",
-    "ncit#C142749",
-    "nbo#by",
-    "nbo#has",
-    "nbo#in",
-    "nbo#is",
-    "stato.owl#is",
-    "stato.owl#response",
-]
 
 common_prefixes = ["BFO", "owl", "RO"]
 
@@ -64,7 +37,7 @@ while (row := koza_app.get_row()) is not None:
     obj_curie_prefix = (str(row["object"]).split(":"))[0]
     relation_prefix = (str(row["relation"]).split(":"))[0]
 
-    if subj_curie_prefix not in bad_prefixes:
+    if subj_curie_prefix not in BAD_PREFIXES:
         if relation_prefix == "UPHENO":
             infores = "upheno"
         elif obj_curie_prefix == "UPHENO":
