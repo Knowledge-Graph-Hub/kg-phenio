@@ -26,7 +26,10 @@ primary_knowledge_source = "infores:unknown"
 aggregator_knowledge_source = ["infores:phenio"]
 
 while (row := koza_app.get_row()) is not None:
-    valid = True
+
+    # Ignore redundant category assignments
+    if row["predicate"] in ["biolink:category", "biolink:inverseOf"]:
+        continue
 
     subj_curie_prefix = (str(row["subject"]).split(":"))[0]
     if subj_curie_prefix == "OBO":  # See if there's another prefix
@@ -45,6 +48,8 @@ while (row := koza_app.get_row()) is not None:
         else:
             infores = infores_sources[subj_curie_prefix]
         primary_knowledge_source = f"infores:{infores}"
+    else:
+        continue
 
     # Association
 
@@ -77,17 +82,16 @@ while (row := koza_app.get_row()) is not None:
     agent_type = "not_provided"
     knowledge_level = "not_provided"
 
-    if valid:
-        association = AssocClass(
-            id=row["id"],
-            subject=row["subject"],
-            predicate=predicate,
-            original_predicate=relation,
-            object=row["object"],
-            primary_knowledge_source=primary_knowledge_source,
-            aggregator_knowledge_source=aggregator_knowledge_source,
-            agent_type=agent_type,
-            knowledge_level=knowledge_level,
-        )
+    association = AssocClass(
+        id=row["id"],
+        subject=row["subject"],
+        predicate=predicate,
+        original_predicate=relation,
+        object=row["object"],
+        primary_knowledge_source=primary_knowledge_source,
+        aggregator_knowledge_source=aggregator_knowledge_source,
+        agent_type=agent_type,
+        knowledge_level=knowledge_level,
+    )
 
-        koza_app.write(association)
+    koza_app.write(association)
