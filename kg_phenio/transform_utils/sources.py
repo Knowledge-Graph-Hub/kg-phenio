@@ -2,9 +2,12 @@
 
 BAD_PREFIXES = [
     "DATA",
+    "OBAN",
+    "OIO",
     "PHENIO",
     "WD_Entity",
     "WD_Prop",
+    "biolink",
     "chebi#is",
     "core#connected",
     "core#distally",
