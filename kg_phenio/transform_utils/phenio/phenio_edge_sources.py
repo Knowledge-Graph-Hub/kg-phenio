@@ -47,6 +47,12 @@ while (row := koza_app.get_row()) is not None:
             infores = "upheno"
         else:
             infores = infores_sources[subj_curie_prefix]
+
+        object_curie = str(row["object"])
+
+        if str(row["object"]).startswith("http://identifiers.org/hgnc/"):  # Fix URLs
+            object_curie = "HGNC:" + str(row["object"]).split("/")[-1]
+
         primary_knowledge_source = f"infores:{infores}"
     else:
         continue
@@ -90,7 +96,7 @@ while (row := koza_app.get_row()) is not None:
         subject=row["subject"],
         predicate=predicate,
         original_predicate=relation,
-        object=row["object"],
+        object=object_curie,
         primary_knowledge_source=primary_knowledge_source,
         aggregator_knowledge_source=aggregator_knowledge_source,
         agent_type=agent_type,

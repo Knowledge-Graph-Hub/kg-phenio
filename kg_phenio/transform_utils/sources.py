@@ -167,6 +167,7 @@ NODE_SOURCES = {
     "FYPO": ("fypo", "PhenotypicFeature"),
     "GENO": ("geno", ""),
     "GO": ("go", ""),
+    "HGNC": ("hgnc", "Gene"),
     "HP": ("hp", "PhenotypicFeature"),
     "HsapDv": ("hsapdv", "LifeStage"),
     "IAO": ("iao", ""),

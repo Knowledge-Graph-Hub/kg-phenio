@@ -28,6 +28,13 @@ while (row := koza_app.get_row()) is not None:
     node_curie_prefix, node_curie_value = str(row["id"]).split(":")
     category_name = (str(row["category"]).split(":"))[1]
 
+    # Catch some IDs first before we ignore them
+    if str(row["id"]).startswith("http://identifiers.org/hgnc/"):
+        node_curie_prefix = "HGNC"
+        node_curie_value = str(row["id"]).split("/")[-1]
+
+    identifier = f"{node_curie_prefix}:{node_curie_value}"
+
     if node_curie_prefix in BAD_PREFIXES:
         continue
 
@@ -63,7 +70,7 @@ while (row := koza_app.get_row()) is not None:
     )
 
     node = NodeClass(
-        id=row["id"],
+        id=identifier,
         category=["biolink:" + category_name],
         name=row["name"],
         description=row["description"],
