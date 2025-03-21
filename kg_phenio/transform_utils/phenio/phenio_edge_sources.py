@@ -61,14 +61,32 @@ while (row := koza_app.get_row()) is not None:
 
     # The relation or predicate tells us which class to use.
     # We default to generic Association.
-    remap_rels = {
+    remap_rels_to_aclass = {
         "biolink:has_phenotype": "DiseaseToPhenotypicFeatureAssociation",
         "biolink:disease_has_location": "DiseaseOrPhenotypicFeatureToLocationAssociation",
     }
 
+    # These relations have Biolink maps
+    remap_rels_to_preds = {
+        "RO:0004020": "biolink:has_participant",
+        "RO:0004021": "biolink:has_participant",
+        "RO:0004024": "biolink:disrupts",
+        "RO:0004026": "biolink:disease_has_location",
+        "RO:0004028": "biolink:caused_by",
+        "RO:0009501": "biolink:caused_by",
+        "OBO:mondo#disease_triggers": "biolink:causes",
+    }
+
+    # Some namespace combinations require special handling
     if subj_curie_prefix == "MONDO" and obj_curie_prefix == "HP":
         relation = str(row["relation"])
         predicate = "biolink:has_phenotype"
+    elif subj_curie_prefix == "MONDO" and obj_curie_prefix == "GO":
+        relation = str(row["relation"])
+        if relation in remap_rels_to_preds:
+            predicate = remap_rels_to_preds[relation]
+        else:
+            predicate = str(row["predicate"])
     elif subj_curie_prefix == "MONDO" and obj_curie_prefix == "UBERON":
         relation = str(row["relation"])
         predicate = "biolink:disease_has_location"
@@ -76,10 +94,11 @@ while (row := koza_app.get_row()) is not None:
         relation = str(row["relation"])
         predicate = str(row["predicate"])
 
-    if relation in remap_rels:
-        category_name = remap_rels[relation]
-    elif predicate in remap_rels:
-        category_name = remap_rels[predicate]
+    # Assign the correct Biolink association class
+    if relation in remap_rels_to_aclass:
+        category_name = remap_rels_to_aclass[relation]
+    elif predicate in remap_rels_to_aclass:
+        category_name = remap_rels_to_aclass[predicate]
     else:
         category_name = "Association"
     AssocClass = getattr(
