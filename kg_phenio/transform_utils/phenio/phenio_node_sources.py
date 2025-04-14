@@ -1,11 +1,10 @@
 """Koza transform for adding knowledge sources to PHENIO."""
 
 import importlib
-
 from typing import List, Optional
 
-from pydantic import Field
 from koza.cli_utils import get_koza_app  # type: ignore
+from pydantic import Field
 
 from kg_phenio.transform_utils.sources import BAD_PREFIXES, NODE_SOURCES
 
@@ -84,6 +83,7 @@ while (row := koza_app.get_row()) is not None:
 
     # Extend the class with subsets attribute
     class NodeClass(base_class):
+        """Node class with additional attribute for subsets."""
         subsets: Optional[List[str]] = Field(
             default=None, description="""Subsets the node belongs to, defined by its source""")
 
