@@ -4,6 +4,8 @@ import importlib
 
 from koza.cli_utils import get_koza_app  # type: ignore
 
+from kg_phenio.transform_utils.phenio.phenio_maps import (REMAP_RELS_TO_ACLASS,
+                                                          REMAP_RELS_TO_PREDS)
 from kg_phenio.transform_utils.sources import BAD_PREFIXES, EDGE_SOURCES
 
 source_name = "phenio_edge_sources"
@@ -61,21 +63,6 @@ while (row := koza_app.get_row()) is not None:
 
     # The relation or predicate tells us which class to use.
     # We default to generic Association.
-    remap_rels_to_aclass = {
-        "biolink:has_phenotype": "DiseaseToPhenotypicFeatureAssociation",
-        "biolink:disease_has_location": "DiseaseOrPhenotypicFeatureToLocationAssociation",
-    }
-
-    # These relations have Biolink maps
-    remap_rels_to_preds = {
-        "RO:0004020": "biolink:has_participant",
-        "RO:0004021": "biolink:has_participant",
-        "RO:0004024": "biolink:disrupts",
-        "RO:0004026": "biolink:disease_has_location",
-        "RO:0004028": "biolink:caused_by",
-        "RO:0009501": "biolink:caused_by",
-        "OBO:mondo#disease_triggers": "biolink:causes",
-    }
 
     # Some namespace combinations require special handling
     if subj_curie_prefix == "MONDO" and obj_curie_prefix == "HP":
@@ -83,8 +70,8 @@ while (row := koza_app.get_row()) is not None:
         predicate = "biolink:has_phenotype"
     elif subj_curie_prefix == "MONDO" and obj_curie_prefix == "GO":
         relation = str(row["relation"])
-        if relation in remap_rels_to_preds:
-            predicate = remap_rels_to_preds[relation]
+        if relation in REMAP_RELS_TO_PREDS:
+            predicate = REMAP_RELS_TO_PREDS[relation]
         else:
             predicate = str(row["predicate"])
     elif subj_curie_prefix == "MONDO" and obj_curie_prefix == "UBERON":
@@ -95,10 +82,10 @@ while (row := koza_app.get_row()) is not None:
         predicate = str(row["predicate"])
 
     # Assign the correct Biolink association class
-    if relation in remap_rels_to_aclass:
-        category_name = remap_rels_to_aclass[relation]
-    elif predicate in remap_rels_to_aclass:
-        category_name = remap_rels_to_aclass[predicate]
+    if relation in REMAP_RELS_TO_ACLASS:
+        category_name = REMAP_RELS_TO_ACLASS[relation]
+    elif predicate in REMAP_RELS_TO_ACLASS:
+        category_name = REMAP_RELS_TO_ACLASS[predicate]
     else:
         category_name = "Association"
     AssocClass = getattr(
