@@ -84,6 +84,7 @@ while (row := koza_app.get_row()) is not None:
     # Extend the class with subsets attribute
     class NodeClass(base_class):
         """Node class with additional attribute for subsets."""
+
         subsets: Optional[List[str]] = Field(
             default=None, description="""Subsets the node belongs to, defined by its source""")
 
