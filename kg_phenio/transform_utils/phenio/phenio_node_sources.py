@@ -1,8 +1,10 @@
 """Koza transform for adding knowledge sources to PHENIO."""
 
 import importlib
+from typing import List, Optional
 
 from koza.cli_utils import get_koza_app  # type: ignore
+from pydantic import Field
 
 from kg_phenio.transform_utils.sources import BAD_PREFIXES, NODE_SOURCES
 
@@ -69,11 +71,24 @@ while (row := koza_app.get_row()) is not None:
     # Write the node
     # The category tells us which class to use.
     # Get the class from the model
-    NodeClass = getattr(
+
+    # As of biolink-model v4.2.6, nodes don't support having subsets,
+    # so we need to extend the class
+
+    # Get the base class from biolink model
+    base_class = getattr(
         importlib.import_module("biolink_model.datamodel.pydanticmodel_v2"),
         category_name,
     )
 
+    # Extend the class with subsets attribute
+    class NodeClass(base_class):
+        """Node class with additional attribute for subsets."""
+
+        subsets: Optional[List[str]] = Field(
+            default=None, description="""Subsets the node belongs to, defined by its source""")
+
+    # Start with the class
     node = NodeClass(
         id=identifier,
         category=["biolink:" + category_name],
@@ -95,6 +110,8 @@ while (row := koza_app.get_row()) is not None:
 
         if "deprecated" in subsets:
             node.deprecated = True
+
+        node.subsets = subsets
 
     if row["xref"]:
         xrefs = (row["xref"]).split("|")

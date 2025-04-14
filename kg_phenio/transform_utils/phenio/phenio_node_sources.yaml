@@ -21,6 +21,7 @@ columns:
   - 'iri'
   - 'same_as'
   - 'subsets'
+
 node_properties:
   - 'id'
   - 'category'
@@ -32,5 +33,6 @@ node_properties:
   - 'provided_by'
   - 'iri'
   - 'same_as'
+  - 'subsets'
 
 transform_mode: 'flat'
