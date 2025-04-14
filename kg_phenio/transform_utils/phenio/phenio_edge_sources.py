@@ -68,6 +68,15 @@ while (row := koza_app.get_row()) is not None:
 
     # These relations have Biolink maps
     remap_rels_to_preds = {
+        "BFO:0000050": "biolink:part_of",
+        "BFO:0000051": "biolink:has_part",
+        "BFO:0000062": "biolink:preceded_by",
+        "BFO:0000063": "biolink:precedes",
+        "BFO:0000066": "biolink:occurs_in",
+        "RO:0000056": "biolink:participates_in",
+        "RO:0000057": "biolink:has_participant",
+        "RO:0000086": "biolink:has_attribute",
+        "RO:0000087": "biolink:has_attribute",
         "RO:0004020": "biolink:has_participant",
         "RO:0004021": "biolink:has_participant",
         "RO:0004024": "biolink:disrupts",
