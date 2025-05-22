@@ -89,7 +89,7 @@ while (row := koza_app.get_row()) is not None:
     # * narrow_synonyms
     # * related_synonyms
     class NodeClass(base_class):
-        """Node class with additional attribute for subsets."""
+        """Node class with additional attributes for subsets and synonyms."""
 
         subsets: Optional[List[str]] = Field(
             default=None, description="""Subsets the node belongs to, defined by its source""")
@@ -140,8 +140,8 @@ while (row := koza_app.get_row()) is not None:
         node.xref = xrefs
 
     for synonym_type in ["broad", "exact", "narrow", "related"]:
-        if row[f"{synonym_type}_synonym"]:
-            these_synonyms = (row[f"{synonym_type}_synonym"]).split("|")
+        if row[f"{synonym_type}_synonyms"]:
+            these_synonyms = (row[f"{synonym_type}_synonyms"]).split("|")
             if synonym_type == "broad":
                 node.broad_synonyms = these_synonyms
             elif synonym_type == "exact":
