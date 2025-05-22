@@ -1540,14 +1540,14 @@ validators = ">=0.20.0,<0.21.0"
 
 [[package]]
 name = "koza"
-version = "0.6.1"
+version = "0.7.2"
 description = "Data transformation framework for LinkML data models"
 optional = false
 python-versions = "<4.0,>=3.9"
 groups = ["main"]
 files = [
-    {file = "koza-0.6.1-py3-none-any.whl", hash = "sha256:f76fd3d34d4dcf7219e4fbed964eed5ecb59f85addb041d87d68818412743e48"},
-    {file = "koza-0.6.1.tar.gz", hash = "sha256:9cb789c474caab953122a562525fc19b6fdc50402190e771651ac0122069fde5"},
+    {file = "koza-0.7.2-py3-none-any.whl", hash = "sha256:2fb1fd5c5457b4e725536f05c7bc342d026dbd2af4971c833dfd77e44ffd0e18"},
+    {file = "koza-0.7.2.tar.gz", hash = "sha256:1405e5a6ac97f9010167cfa45c9d832d67172fd317dc879c459ad2813392a1f9"},
 ]
 
 [package.dependencies]
@@ -4696,4 +4696,4 @@ type = ["pytest-mypy"]
 [metadata]
 lock-version = "2.1"
 python-versions = ">=3.9,<3.13"
-content-hash = "f167df46f133579674b3462cfe5cb238b64660070b03176aaea5868a57518517"
+content-hash = "383dcb7073932b28bbf1d72f9688444f5b877bc967510a0acde6614446f9e6e2"
