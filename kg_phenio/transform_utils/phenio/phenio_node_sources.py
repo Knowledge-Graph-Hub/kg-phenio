@@ -72,7 +72,8 @@ while (row := koza_app.get_row()) is not None:
     # The category tells us which class to use.
     # Get the class from the model
 
-    # As of biolink-model v4.2.6, nodes don't support having subsets,
+    # As of biolink-model v4.2.6, nodes don't support having subsets
+    # or synonym subypes
     # so we need to extend the class
 
     # Get the base class from biolink model
@@ -81,12 +82,33 @@ while (row := koza_app.get_row()) is not None:
         category_name,
     )
 
-    # Extend the class with subsets attribute
+    # Extend the class with additional attributes:
+    # * subsets
+    # * broad_synonyms
+    # * exact_synonyms
+    # * narrow_synonyms
+    # * related_synonyms
     class NodeClass(base_class):
         """Node class with additional attribute for subsets."""
 
         subsets: Optional[List[str]] = Field(
             default=None, description="""Subsets the node belongs to, defined by its source""")
+        broad_synonyms: Optional[List[str]] = Field(
+            default=None,
+            description="""Broad synonyms for the node, defined by its source""",
+        )
+        exact_synonyms: Optional[List[str]] = Field(
+            default=None,
+            description="""Exact synonyms for the node, defined by its source""",
+        )
+        narrow_synonyms: Optional[List[str]] = Field(
+            default=None,
+            description="""Narrow synonyms for the node, defined by its source""",
+        )
+        related_synonyms: Optional[List[str]] = Field(
+            default=None,
+            description="""Related synonyms for the node, defined by its source""",
+        )
 
     # Start with the class
     node = NodeClass(
@@ -116,5 +138,17 @@ while (row := koza_app.get_row()) is not None:
     if row["xref"]:
         xrefs = (row["xref"]).split("|")
         node.xref = xrefs
+
+    for synonym_type in ["broad", "exact", "narrow", "related"]:
+        if row[f"{synonym_type}_synonym"]:
+            these_synonyms = (row[f"{synonym_type}_synonym"]).split("|")
+            if synonym_type == "broad":
+                node.broad_synonyms = these_synonyms
+            elif synonym_type == "exact":
+                node.exact_synonyms = these_synonyms
+            elif synonym_type == "narrow":
+                node.narrow_synonyms = these_synonyms
+            elif synonym_type == "related":
+                node.related_synonyms = these_synonyms
 
     koza_app.write(node)
