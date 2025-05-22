@@ -17,9 +17,13 @@ columns:
   - 'xref'
   - 'provided_by'
   - 'synonym'
+  - 'broad_synonyms'
   - 'deprecated'
+  - 'exact_synonyms'
   - 'iri'
+  - 'narrow_synonyms'
   - 'same_as'
+  - 'related_synonyms'
   - 'subsets'
 
 node_properties:
@@ -34,5 +38,9 @@ node_properties:
   - 'iri'
   - 'same_as'
   - 'subsets'
+  - 'broad_synonyms'
+  - 'exact_synonyms'
+  - 'narrow_synonyms'
+  - 'related_synonyms'
 
 transform_mode: 'flat'
