@@ -539,7 +539,7 @@ version = "7.10.6"
 description = "Code coverage measurement for Python"
 optional = false
 python-versions = ">=3.9"
-groups = ["main", "dev"]
+groups = ["dev"]
 files = [
     {file = "coverage-7.10.6-cp310-cp310-macosx_10_9_x86_64.whl", hash = "sha256:70e7bfbd57126b5554aa482691145f798d7df77489a177a6bef80de78860a356"},
     {file = "coverage-7.10.6-cp310-cp310-macosx_11_0_arm64.whl", hash = "sha256:e41be6f0f19da64af13403e52f2dec38bbc2937af54df8ecef10850ff8d35301"},
@@ -630,7 +630,6 @@ files = [
     {file = "coverage-7.10.6-py3-none-any.whl", hash = "sha256:92c4ecf6bf11b2e85fd4d8204814dc26e6a19f0c9d938c207c5cb0eadfcabbe3"},
     {file = "coverage-7.10.6.tar.gz", hash = "sha256:f644a3ae5933a552a29dbb9aa2f90c677a875f80ebea028e5a52a4f429044b90"},
 ]
-markers = {main = "python_version >= \"3.10\""}
 
 [package.dependencies]
 tomli = {version = "*", optional = true, markers = "python_full_version <= \"3.11.0a6\" and extra == \"toml\""}
@@ -1579,7 +1578,6 @@ description = "Data transformation framework for LinkML data models"
 optional = false
 python-versions = "<4.0,>=3.9"
 groups = ["main"]
-markers = "python_version == \"3.9\""
 files = [
     {file = "koza-1.0.0-py3-none-any.whl", hash = "sha256:29697a4dc68ac0aedb0c8d1d20799fe9ae9a51e51d0286fc62aed63de82e79f1"},
     {file = "koza-1.0.0.tar.gz", hash = "sha256:9254a786ebb7959c342c8a72a1bfd903940303b7584dc42e9f325150321809b6"},
@@ -1594,32 +1592,6 @@ pydantic = ">=2.4,<3.0"
 pyyaml = ">=5.0.0"
 requests = ">=2.24.0,<3.0.0"
 sssom = ">=0.4"
-typer = ">=0.12.3"
-
-[[package]]
-name = "koza"
-version = "2.0.0"
-description = "Data transformation framework for LinkML data models"
-optional = false
-python-versions = ">=3.10"
-groups = ["main"]
-markers = "python_version >= \"3.10\""
-files = [
-    {file = "koza-2.0.0-py3-none-any.whl", hash = "sha256:131e88665c474440c5c4fda252f00c05ac154187f3e777d660a218d4f632e38c"},
-    {file = "koza-2.0.0.tar.gz", hash = "sha256:fdc088ecb65d234369604f5ebf40ee3376b159f4105cb44d209148639ddbad77"},
-]
-
-[package.dependencies]
-coverage = ">=7.6.10,<8.0.0"
-duckdb = "*"
-loguru = "*"
-mergedeep = "1.3.4"
-ordered-set = ">=4.1.0"
-pydantic = ">=2.4,<3.0"
-pyyaml = ">=5.0.0"
-requests = ">=2.24.0,<3.0.0"
-sssom = ">=0.4"
-tqdm = ">=4.67.1,<5.0.0"
 typer = ">=0.12.3"
 
 [[package]]
@@ -2027,19 +1999,6 @@ groups = ["main"]
 files = [
     {file = "mdurl-0.1.2-py3-none-any.whl", hash = "sha256:84008a41e51615a49fc9966191ff91509e3c40b939176e643fd50a5c2196b8f8"},
     {file = "mdurl-0.1.2.tar.gz", hash = "sha256:bb413d29f5eea38f31dd4754dd7377d4465116fb207585f97bf925588687c1ba"},
-]
-
-[[package]]
-name = "mergedeep"
-version = "1.3.4"
-description = "A deep merge function for 🐍."
-optional = false
-python-versions = ">=3.6"
-groups = ["main"]
-markers = "python_version >= \"3.10\""
-files = [
-    {file = "mergedeep-1.3.4-py3-none-any.whl", hash = "sha256:70775750742b25c0d8f36c55aed03d24c3384d17c951b3175d898bd778ef0307"},
-    {file = "mergedeep-1.3.4.tar.gz", hash = "sha256:0096d52e9dad9939c3d975a774666af186eda617e6ca84df4c94dec30004f2a8"},
 ]
 
 [[package]]
@@ -5013,4 +4972,4 @@ type = ["pytest-mypy"]
 [metadata]
 lock-version = "2.1"
 python-versions = ">=3.9,<3.13"
-content-hash = "383dcb7073932b28bbf1d72f9688444f5b877bc967510a0acde6614446f9e6e2"
+content-hash = "cdff2c470f9b1d30ebb6fe48593ae2b3126f7fe8670b1b19bd2873ad0a6f99b9"
