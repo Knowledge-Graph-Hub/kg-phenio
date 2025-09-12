@@ -84,28 +84,28 @@ while (row := koza_app.get_row()) is not None:
 
     # Extend the class with additional attributes:
     # * subsets
-    # * broad_synonyms
-    # * exact_synonyms
-    # * narrow_synonyms
-    # * related_synonyms
+    # * broad_synonym
+    # * exact_synonym
+    # * narrow_synonym
+    # * related_synonym
     class NodeClass(base_class):
         """Node class with additional attributes for subsets and synonyms."""
 
         subsets: Optional[List[str]] = Field(
             default=None, description="""Subsets the node belongs to, defined by its source""")
-        broad_synonyms: Optional[List[str]] = Field(
+        broad_synonym: Optional[List[str]] = Field(
             default=None,
             description="""Broad synonyms for the node, defined by its source""",
         )
-        exact_synonyms: Optional[List[str]] = Field(
+        exact_synonym: Optional[List[str]] = Field(
             default=None,
             description="""Exact synonyms for the node, defined by its source""",
         )
-        narrow_synonyms: Optional[List[str]] = Field(
+        narrow_synonym: Optional[List[str]] = Field(
             default=None,
             description="""Narrow synonyms for the node, defined by its source""",
         )
-        related_synonyms: Optional[List[str]] = Field(
+        related_synonym: Optional[List[str]] = Field(
             default=None,
             description="""Related synonyms for the node, defined by its source""",
         )
@@ -140,15 +140,15 @@ while (row := koza_app.get_row()) is not None:
         node.xref = xrefs
 
     for synonym_type in ["broad", "exact", "narrow", "related"]:
-        if row[f"{synonym_type}_synonyms"]:
-            these_synonyms = (row[f"{synonym_type}_synonyms"]).split("|")
+        if row[f"{synonym_type}_synonym"]:
+            these_synonyms = (row[f"{synonym_type}_synonym"]).split("|")
             if synonym_type == "broad":
-                node.broad_synonyms = these_synonyms
+                node.broad_synonym = these_synonyms
             elif synonym_type == "exact":
-                node.exact_synonyms = these_synonyms
+                node.exact_synonym = these_synonyms
             elif synonym_type == "narrow":
-                node.narrow_synonyms = these_synonyms
+                node.narrow_synonym = these_synonyms
             elif synonym_type == "related":
-                node.related_synonyms = these_synonyms
+                node.related_synonym = these_synonyms
 
     koza_app.write(node)
