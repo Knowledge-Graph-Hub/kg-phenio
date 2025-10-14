@@ -84,6 +84,7 @@ EDGE_SOURCES = {
     "NBO": "nbo",
     "NCBITaxon": "ncbitaxon",
     "NCIT": "ncit",
+    "MGPO": "mgpo",
     "OBA": "oba",
     "OBAN": "oban",
     "OBI": "obi",
