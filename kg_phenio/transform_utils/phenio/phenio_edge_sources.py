@@ -48,7 +48,10 @@ while (row := koza_app.get_row()) is not None:
         elif obj_curie_prefix == "UPHENO":
             infores = "upheno"
         else:
-            infores = infores_sources[subj_curie_prefix]
+            try:
+                infores = infores_sources[subj_curie_prefix]
+            except KeyError:
+                infores = "unknown"
 
         object_curie = str(row["object"])
 
