@@ -96,6 +96,7 @@ EDGE_SOURCES = {
     "Orphanet": "orphanet",
     "PATO": "pato",
     "PCO": "pco",
+    "PHIPO": "phipo",
     "PO": "po",
     "PR": "pr",
     "PW": "pw",
