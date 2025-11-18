@@ -1,5 +1,5 @@
 pipeline {
-    agent {
+    agent {we
         label 'monarch-agent-medium'
     }
     triggers{
@@ -41,8 +41,8 @@ pipeline {
                 // print some info
                 dir('./gitrepo') {
                     sh 'env > env.txt'
-                    sh 'echo $BRANCH_NAME > branch.txt'
-                    sh 'echo "$BRANCH_NAME"'
+                    sh 'echo $GIT_BRANCH > branch.txt'
+                    sh 'echo "$GIT_BRANCH"'
                     sh 'cat env.txt'
                     sh 'cat branch.txt'
                     sh "echo $BUILDSTARTDATE > dow.txt"
@@ -64,7 +64,7 @@ pipeline {
                 dir('./gitrepo') {
                     git(
                             url: 'https://github.com/Knowledge-Graph-Hub/kg-phenio',
-                            branch: env.BRANCH_NAME
+                            branch: env.GIT_BRANCH ?: 'monarch-ci-jenkins-script'
                     )
                     sh 'poetry install'
                 }
@@ -86,8 +86,8 @@ pipeline {
                             script: 'poetry run python3 run.py download', returnStatus: true
                         )
                         if (run_py_dl == 0) {
-                            if (env.BRANCH_NAME != 'master') { // upload raw to s3 if we're on correct branch
-                                echo "Will not push if not on correct branch."
+                            if (env.GIT_BRANCH != 'origin/master' && env.GIT_BRANCH != 'master') { // upload raw to s3 if we're on correct branch
+                                echo "Will not push if not on master branch."
                             } else {
                                 sh 'gsutil -q -m cp -r -a public-read data/raw s3://kg-hub-public-data/$S3PROJECTDIR/'
                             }
@@ -140,8 +140,8 @@ pipeline {
                             echo "remote directory $S3PROJECTDIR/$BUILDSTARTDATE is empty, proceeding"
                         }
 
-                        if (env.BRANCH_NAME != 'master') {
-                            echo "Will not push if not on correct branch."
+                        if (env.GIT_BRANCH != 'origin/master' && env.GIT_BRANCH != 'master') {
+                            echo "Will not push if not on master branch."
                         } else {
                             //
                             // make $BUILDSTARTDATE/ directory and sync to s3 bucket
@@ -195,7 +195,7 @@ pipeline {
         always {
             echo 'In always'
             echo 'Cleaning workspace...'
-            cleanWs()
+            deleteDir()
         }
         success {
             echo 'I succeeded!'
