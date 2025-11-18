@@ -1,7 +1,7 @@
 pipeline {
     agent {
-        label 'monarch-agent-medium'
         docker {
+            label 'monarch-agent-medium'
             reuseNode false
             image 'caufieldjh/kg-hub-3_10:4'
         }
