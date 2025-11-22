@@ -8,18 +8,9 @@ pipeline {
     environment {
         HOME = "${env.WORKSPACE}"
         BUILDSTARTDATE = sh(script: "echo `date +%Y%m%d`", returnStdout: true).trim()
-        S3PROJECTDIR = 'kg-phenio' // no trailing slash
-
-        // Distribution ID for the AWS CloudFront for this bucket
-        // used solely for invalidations
-        AWS_CLOUDFRONT_DISTRIBUTION_ID = 'EUVSWXZQBXCFP'
 
         MERGEDKGNAME_BASE = "kg-phenio"
         MERGEDKGNAME_GENERIC = "merged-kg"
-
-        // AWS credentials for gsutil S3 access
-        AWS_ACCESS_KEY_ID = credentials('AWS_ACCESS_KEY_ID')
-        AWS_SECRET_ACCESS_KEY = credentials('AWS_SECRET_ACCESS_KEY')
 
         PATH = "/opt/poetry/bin:${env.PATH}"
     }
@@ -50,7 +41,7 @@ pipeline {
                 sh "echo $MERGEDKGNAME_GENERIC"
                 sh "python3 --version"
                 sh "poetry --version"
-                sh "gsutil --version"
+                sh "gh --version"
                 sh "id"
                 sh "whoami"
             }
@@ -65,27 +56,12 @@ pipeline {
         stage('Download') {
             steps {
                 script {
-
-                    // Verify that the project directory is defined, or it will make a mess
-                    // when it uploads everything to the wrong directory
-                    if (S3PROJECTDIR.replaceAll("\\s","") == '') {
-                        error("Project name contains only whitespace. Will not continue.")
-                    }
-
                     def run_py_dl = sh(
                         script: 'poetry run python3 run.py download', returnStatus: true
                     )
-                    if (run_py_dl == 0) {
-                        if (env.GIT_BRANCH != 'origin/master' && env.GIT_BRANCH != 'master' && env.GIT_BRANCH != 'origin/monarch-ci-jenkins-script') { // upload raw to s3 if we're on correct branch
-                            echo "Will not push if not on master or test branch."
-                        } else {
-                            sh 'gsutil -q -m cp -r -a public-read data/raw s3://kg-hub-public-data/$S3PROJECTDIR/'
-                        }
-                    }  else { // 'run.py download' failed - let's try to download last good copy of raw/ from s3 to data/
+                    if (run_py_dl != 0) {
                         currentBuild.result = "UNSTABLE"
-                        sh 'rm -fr data/raw || true;'
-                        sh 'mkdir -p data/raw || true'
-                        sh 'gsutil -q -m cp -r s3://kg-hub-public-data/$S3PROJECTDIR/raw/ data/raw/'
+                        error("Download failed")
                     }
                 }
             }
@@ -111,63 +87,36 @@ pipeline {
         stage('Publish') {
             steps {
                 script {
-
-                    // make sure we aren't going to clobber existing data
-                    REMOTE_BUILD_DIR_CONTENTS = sh (
-                        script: 'gsutil ls s3://kg-hub-public-data/$S3PROJECTDIR/$BUILDSTARTDATE/ || true',
-                        returnStdout: true
-                    ).trim()
-                    echo "REMOTE_BUILD_DIR_CONTENTS (THIS SHOULD BE EMPTY): '${REMOTE_BUILD_DIR_CONTENTS}'"
-                    if("${REMOTE_BUILD_DIR_CONTENTS}" != ''){
-                        echo "Will not overwrite existing remote S3 directory: $S3PROJECTDIR/$BUILDSTARTDATE"
-                        sh 'exit 1'
-                    } else {
-                        echo "remote directory $S3PROJECTDIR/$BUILDSTARTDATE is empty, proceeding"
-                    }
-
                     if (env.GIT_BRANCH != 'origin/master' && env.GIT_BRANCH != 'master' && env.GIT_BRANCH != 'origin/monarch-ci-jenkins-script') {
-                        echo "Will not push if not on master or test branch."
+                        echo "Will not publish release if not on master or test branch."
                     } else {
-                        //
-                        // make $BUILDSTARTDATE/ directory and sync to s3 bucket
-                        //
-                        sh 'mkdir $BUILDSTARTDATE/'
-                        // sh 'cp -p data/merged/${MERGEDKGNAME_BASE}.nt.gz $BUILDSTARTDATE/${MERGEDKGNAME_BASE}.nt.gz'
-                        sh 'cp -p merged-kg.tar.gz $BUILDSTARTDATE/${MERGEDKGNAME_BASE}.tar.gz'
+                        // Check if release already exists
+                        def releaseExists = sh(
+                            script: "gh release view ${BUILDSTARTDATE} --repo monarch-initiative/kg-phenio",
+                            returnStatus: true
+                        )
 
-                        // transformed data
-                        sh 'rm -fr data/transformed/.gitkeep'
-                        sh 'cp -pr data/transformed $BUILDSTARTDATE/'
-                        sh 'cp -pr data/raw $BUILDSTARTDATE/'
-                        sh 'cp Jenkinsfile $BUILDSTARTDATE/'
+                        if (releaseExists == 0) {
+                            echo "Release ${BUILDSTARTDATE} already exists. Skipping publish."
+                            error("Release already exists")
+                        }
 
-                        // copy that NEAT config, too
-                        // but update its buildname internally first
-                        sh """ sed -i '/      - path:/ s/BUILDNAME/$BUILDSTARTDATE/' neat.yaml """
-                        sh """ sed -i '/  s3_bucket_dir:/ s/kg-phenio/$S3PROJECTDIR\\/$BUILDSTARTDATE\\/graph_ml/' neat.yaml """
-                        sh 'cp neat.yaml $BUILDSTARTDATE/'
+                        // Prepare release assets
+                        sh 'mkdir -p release_assets/'
+                        sh 'cp -p merged-kg.tar.gz release_assets/${MERGEDKGNAME_BASE}.tar.gz'
+                        sh 'cp -p merged_graph_stats_$BUILDSTARTDATE.yaml release_assets/'
+                        sh 'cp -p *_stats.yaml release_assets/ || true'
 
-                        // stats dir
-                        sh 'mkdir $BUILDSTARTDATE/stats/'
-                        sh 'cp -p *_stats.yaml $BUILDSTARTDATE/stats/'
+                        // Create GitHub release
+                        sh """
+                            gh release create ${BUILDSTARTDATE} \
+                                --repo monarch-initiative/kg-phenio \
+                                --title "KG-Phenio Release ${BUILDSTARTDATE}" \
+                                --notes "Automated release of KG-Phenio knowledge graph built on ${BUILDSTARTDATE}" \
+                                release_assets/*
+                        """
 
-                        // build the index, then upload to remote
-                        sh 'poetry run multi_indexer -v --directory $BUILDSTARTDATE --prefix https://kg-hub.berkeleybop.io/$S3PROJECTDIR/$BUILDSTARTDATE -x -u'
-
-                        sh 'gsutil -q -m cp -r -a public-read $BUILDSTARTDATE s3://kg-hub-public-data/$S3PROJECTDIR/'
-                        sh 'gsutil -q -m rm -r s3://kg-hub-public-data/$S3PROJECTDIR/current/ || true'
-                        sh 'gsutil -q -m cp -r -a public-read $BUILDSTARTDATE/* s3://kg-hub-public-data/$S3PROJECTDIR/current/'
-
-                        // make index for project dir
-                        sh 'poetry run multi_indexer -v --prefix https://kg-hub.berkeleybop.io/$S3PROJECTDIR/ -b kg-hub-public-data -r $S3PROJECTDIR -x'
-                        sh 'gsutil -q -m cp -a public-read ./index.html s3://kg-hub-public-data/$S3PROJECTDIR/'
-
-                        // Invalidate the CDN now that the new files are up.
-                        sh 'echo "[preview]" > ./awscli_config.txt && echo "cloudfront=true" >> ./awscli_config.txt'
-                        sh 'poetry run aws cloudfront create-invalidation --distribution-id $AWS_CLOUDFRONT_DISTRIBUTION_ID --paths "/*"'
-
-                        // Should now appear at:
-                        // https://kg-hub.berkeleybop.io/kg-phenio/
+                        echo "Release published at: https://github.com/monarch-initiative/kg-phenio/releases/tag/${BUILDSTARTDATE}"
                     }
                 }
             }
