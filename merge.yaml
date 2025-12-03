@@ -13,6 +13,13 @@ merged_graph:
         filename:
           - data/transformed/phenio/phenio_node_sources_nodes.tsv
           - data/transformed/phenio/phenio_edge_sources_edges.tsv
+    upheno-mappings:
+      name: "UPHENO_MAPPINGS"
+      input:
+        format: tsv
+        filename:
+          - data/transformed/upheno_mapping/upheno_mapping_all_nodes.tsv
+          - data/transformed/upheno_mapping/upheno_mapping_all_edges.tsv
   operations:
     - name: kgx.graph_operations.summarize_graph.generate_graph_stats
       args:
