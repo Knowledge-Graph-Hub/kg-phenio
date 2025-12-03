@@ -17,13 +17,13 @@ columns:
   - 'xref'
   - 'provided_by'
   - 'synonym'
-  - 'broad_synonym'
-  - 'deprecated'
   - 'exact_synonym'
-  - 'iri'
+  - 'broad_synonym'
   - 'narrow_synonym'
-  - 'same_as'
   - 'related_synonym'
+  - 'deprecated'
+  - 'iri'
+  - 'same_as'
   - 'subsets'
 
 node_properties:

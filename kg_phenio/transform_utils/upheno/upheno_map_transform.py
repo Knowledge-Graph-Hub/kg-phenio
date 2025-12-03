@@ -8,11 +8,13 @@ from koza.cli_utils import transform_source  # type: ignore
 from kg_phenio.transform_utils.transform import Transform
 
 UPHENO_SOURCES = {
-    "UPHENO_ALL": "upheno_mapping_all.csv",
+    "UPHENO_CROSS_SPECIES": "upheno-cross-species.sssom.tsv",
+    "UPHENO_SPECIES_INDEPENDENT": "upheno-species-independent.sssom.tsv",
 }
 
 UPHENO_CONFIGS = {
-    "UPHENO_ALL": "upheno_mapping_all.yaml",
+    "UPHENO_CROSS_SPECIES": "upheno_mapping_all.yaml",
+    "UPHENO_SPECIES_INDEPENDENT": "upheno_mapping_all.yaml",
 }
 
 TRANSLATION_TABLE = "./kg_phenio/transform_utils/translation_table.yaml"
