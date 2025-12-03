@@ -1,20 +1,29 @@
 name: 'upheno_mapping_all'
 
-delimiter: ','
+delimiter: '\t'
+
+comment_char: '#'
 
 files:
-  - './data/raw/upheno_mapping_all.csv'
+  - './data/raw/upheno-cross-species.sssom.tsv'
+  - './data/raw/upheno-species-independent.sssom.tsv'
 
 metadata: './kg_phenio/transform_utils/upheno/metadata.yaml'
 
 header: 'infer'
 
+# Note: The two SSSOM files have different additional columns:
+# - upheno-cross-species.sssom.tsv has: subject_source, object_source
+# - upheno-species-independent.sssom.tsv has: license
+# These columns are not used by the transform, so we don't include them here.
+# Koza will warn about extra columns, which is expected and safe to ignore.
 columns:
-  - 'p1'
-  - 'p2'
-  - 'label_x'
-  - 'label_y'
-  - 'cat'
+  - 'subject_id'
+  - 'subject_label'
+  - 'predicate_id'
+  - 'object_id'
+  - 'object_label'
+  - 'mapping_justification'
 
 node_properties:
   - 'id'

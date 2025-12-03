@@ -27,10 +27,13 @@
   local_name: phenio-test.owl
 
 #
-# Current Upheno mappings.
+# Current Upheno mappings (SSSOM format).
 # These are for use as gold standards for mouse vs. human phenotype predictions.
 # They are transformed for processing but are not included in the merged graph.
 #
 -
-  url: https://bbop-ontologies.s3.amazonaws.com/upheno/current/upheno-release/all/upheno_mapping_all.csv
-  local_name: upheno_mapping_all.csv
+  url: https://data.monarchinitiative.org/mappings/latest/upheno-cross-species.sssom.tsv
+  local_name: upheno-cross-species.sssom.tsv
+-
+  url: https://data.monarchinitiative.org/mappings/latest/upheno-species-independent.sssom.tsv
+  local_name: upheno-species-independent.sssom.tsv
