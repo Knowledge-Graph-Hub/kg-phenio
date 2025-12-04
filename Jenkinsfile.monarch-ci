@@ -13,6 +13,8 @@ pipeline {
         MERGEDKGNAME_GENERIC = "merged-kg"
 
         PATH = "/opt/poetry/bin:${env.PATH}"
+	GH_RELEASE_TOKEN = credentials('GITHUB_WORKFLOW_PHENIO')
+        GH_TOKEN = credentials('GITHUB_WORKFLOW_PHENIO')
     }
     options {
         disableConcurrentBuilds()
