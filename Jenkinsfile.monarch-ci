@@ -13,8 +13,8 @@ pipeline {
         MERGEDKGNAME_GENERIC = "merged-kg"
 
         PATH = "/opt/poetry/bin:${env.PATH}"
-	GH_RELEASE_TOKEN = credentials('GITHUB_WORKFLOW_PHENIO')
-        GH_TOKEN = credentials('GITHUB_WORKFLOW_PHENIO')
+	GH_RELEASE_TOKEN = credentials('GITHUB_WORKFLOW_KG_PHENIO')
+        GH_TOKEN = credentials('GITHUB_WORKFLOW_KG_PHENIO')
     }
     options {
         disableConcurrentBuilds()
@@ -94,7 +94,7 @@ pipeline {
                     } else {
                         // Check if release already exists
                         def releaseExists = sh(
-                            script: "gh release view ${BUILDSTARTDATE} --repo monarch-initiative/kg-phenio",
+                            script: "gh release view ${BUILDSTARTDATE} --repo Knowledge-Graph-Hub/kg-phenio",
                             returnStatus: true
                         )
 
@@ -112,13 +112,13 @@ pipeline {
                         // Create GitHub release
                         sh """
                             gh release create ${BUILDSTARTDATE} \
-                                --repo monarch-initiative/kg-phenio \
+                                --repo Knowledge-Graph-Hub/kg-phenio \
                                 --title "KG-Phenio Release ${BUILDSTARTDATE}" \
                                 --notes "Automated release of KG-Phenio knowledge graph built on ${BUILDSTARTDATE}" \
                                 release_assets/*
                         """
 
-                        echo "Release published at: https://github.com/monarch-initiative/kg-phenio/releases/tag/${BUILDSTARTDATE}"
+                        echo "Release published at: https://github.com/Knowledge-Graph-Hub/kg-phenio/releases/tag/${BUILDSTARTDATE}"
                     }
                 }
             }
