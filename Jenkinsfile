@@ -133,6 +133,14 @@ pipeline {
             }
         }
 
+        stage('Metadata') {
+            steps {
+                dir('./gitrepo') {
+                    sh 'uv run python scripts/write_metadata.py'
+                }
+            }
+        }
+
         stage('Publish') {
             steps {
                 dir('./gitrepo') {
@@ -168,6 +176,7 @@ pipeline {
                                 sh 'mkdir $BUILDSTARTDATE/'
                                 // sh 'cp -p data/merged/${MERGEDKGNAME_BASE}.nt.gz $BUILDSTARTDATE/${MERGEDKGNAME_BASE}.nt.gz'
                                 sh 'cp -p merged-kg.tar.gz $BUILDSTARTDATE/${MERGEDKGNAME_BASE}.tar.gz'
+                                sh 'cp -p output/release-metadata.yaml $BUILDSTARTDATE/release-metadata.yaml'
 
                                 // transformed data
                                 sh 'rm -fr data/transformed/.gitkeep'

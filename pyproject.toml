@@ -26,6 +26,7 @@ dependencies = [
     # pkg_resources. (Poetry used to bundle setuptools implicitly; uv
     # doesn't, so declare it explicitly.)
     "setuptools<80",
+    "kozahub-metadata-schema",
 ]
 
 [dependency-groups]
@@ -36,6 +37,9 @@ dev = [
     "parameterized>=0.8.1",
     "ruff>=0.7",
 ]
+
+[tool.uv.sources]
+kozahub-metadata-schema = { git = "https://github.com/monarch-initiative/kozahub-metadata-schema.git", branch = "main" }
 
 [tool.ruff]
 line-length = 100
