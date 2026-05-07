@@ -47,7 +47,7 @@ def multi_page_table_to_list(multi_page_table: Any) -> List[Dict]:
                 logging.warning("Unexpected number of rows in {}".format(row))
 
             items = [d["text"] for d in row]
-            this_dict = dict(zip(header_items, items))
+            this_dict = dict(zip(header_items, items, strict=False))
             table_data.append(this_dict)
 
     return table_data
@@ -112,7 +112,7 @@ def data_to_dict(these_keys, these_values) -> dict:
     :param these_values: values for new dict
     :return: dictionary
     """
-    return dict(zip(these_keys, these_values))
+    return dict(zip(these_keys, these_values, strict=False))
 
 
 def uniprot_make_name_to_id_mapping(dat_gz_file: str) -> dict:

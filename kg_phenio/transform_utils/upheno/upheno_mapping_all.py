@@ -2,8 +2,7 @@
 
 import uuid
 
-from biolink_model.datamodel.pydanticmodel_v2 import (Association,
-                                                      PhenotypicFeature)
+from biolink_model.datamodel.pydanticmodel_v2 import Association, PhenotypicFeature
 from koza.cli_utils import get_koza_app
 
 source_name = "upheno_mapping_all"
