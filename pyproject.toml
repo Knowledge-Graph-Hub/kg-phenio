@@ -1,32 +1,44 @@
-[tool.poetry]
+[project]
 name = "kg-phenio"
 version = "0.1.1"
 description = "A graph for accessing and comparing knowledge concerning phenotypes across species and genetic backgrounds."
-authors = ["caufieldjh <j.harry.caufield@gmail.com>"]
-license = "BSD-3"
+license = "BSD-3-Clause"
+authors = [
+    { name = "caufieldjh", email = "j.harry.caufield@gmail.com" },
+]
+requires-python = ">=3.9,<3.13"
+dependencies = [
+    "Sphinx>=5.2.3",
+    "biolink-model>=4.2.0",
+    "click>=8.1.3",
+    "kgx>=2.3.0",
+    "koza==1.0.0",
+    "multi-indexer>=0.0.5",
+    "pyyaml>=6.0.1",
+    "sh>=1.14.3",
+    "tqdm>=4.64.1",
+    "universalizer>=0.0.11",
+    "wget>=3.2",
+    "numpy<2",
+    "kghub-downloader>=0.4.2",
+    # eutils (transitive via oaklib) does `import pkg_resources`, which
+    # lives in setuptools. Pin <80 because setuptools 80+ removed
+    # pkg_resources. (Poetry used to bundle setuptools implicitly; uv
+    # doesn't, so declare it explicitly.)
+    "setuptools<80",
+]
 
-[tool.poetry.dependencies]
-python = ">=3.9,<3.13"
-Sphinx = "^5.2.3"
-biolink-model = ">=4.2.0-rc.1"
-click = "^8.1.3"
-kgx = ">=2.3.0"
-koza = "1.0.0"
-multi-indexer = "^0.0.5"
-pyyaml = ">=6.0.1"
-sh = "^1.14.3"
-tqdm = "^4.64.1"
-universalizer = ">=0.0.11"
-wget = "^3.2"
-numpy = "<2"
-kghub-downloader = "^0.4.2"
-
-[tool.poetry.group.dev.dependencies]
-pytest = ">=8.1.1,<9.0.0"
-pytest-cov = "^4.0.0"
-codacy-coverage = "^1.3.11"
-parameterized = "^0.8.1"
+[dependency-groups]
+dev = [
+    "pytest>=8.1.1,<9.0.0",
+    "pytest-cov>=4.0.0",
+    "codacy-coverage>=1.3.11",
+    "parameterized>=0.8.1",
+]
 
 [build-system]
-requires = ["poetry-core>=1.0.0"]
-build-backend = "poetry.core.masonry.api"
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["kg_phenio"]

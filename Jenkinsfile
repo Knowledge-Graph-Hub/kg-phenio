@@ -66,10 +66,14 @@ pipeline {
                             url: 'https://github.com/Knowledge-Graph-Hub/kg-phenio',
                             branch: env.BRANCH_NAME
                     )
-                    sh '/usr/bin/python3.10 -m venv venv'
-                    sh '. venv/bin/activate'
-                    sh './venv/bin/pip install .'
-                    sh './venv/bin/pip install awscli boto3 s3cmd'
+                    // Install uv (project manager replacing Poetry) and use
+                    // it to provision the project's venv at .venv/.
+                    sh 'python3.10 -m pip install --quiet uv'
+                    sh 'uv sync'
+                    // awscli / boto3 / s3cmd are build-time tools used in
+                    // Publish but aren't project deps; layer them into the
+                    // same venv.
+                    sh 'uv pip install awscli boto3 s3cmd'
                 }
             }
         }
@@ -86,14 +90,14 @@ pipeline {
                         }
 
                         def run_py_dl = sh(
-                            script: '. venv/bin/activate && python3.10 run.py download', returnStatus: true
+                            script: 'uv run python run.py download', returnStatus: true
                         )
                         if (run_py_dl == 0) {
                             if (env.BRANCH_NAME != 'master') { // upload raw to s3 if we're on correct branch
                                 echo "Will not push if not on correct branch."
                             } else {
                                 withCredentials([file(credentialsId: 's3cmd_kg_hub_push_configuration', variable: 'S3CMD_CFG')]) {
-                                    sh '. venv/bin/activate && s3cmd -c $S3CMD_CFG --acl-public --mime-type=plain/text --cf-invalidate put -r data/raw s3://kg-hub-public-data/$S3PROJECTDIR/'
+                                    sh 'uv run s3cmd -c $S3CMD_CFG --acl-public --mime-type=plain/text --cf-invalidate put -r data/raw s3://kg-hub-public-data/$S3PROJECTDIR/'
                                 }
                             }
                         }  else { // 'run.py download' failed - let's try to download last good copy of raw/ from s3 to data/
@@ -101,7 +105,7 @@ pipeline {
                             withCredentials([file(credentialsId: 's3cmd_kg_hub_push_configuration', variable: 'S3CMD_CFG')]) {
                                 sh 'rm -fr data/raw || true;'
                                 sh 'mkdir -p data/raw || true'
-                                sh '. venv/bin/activate && s3cmd -c $S3CMD_CFG --acl-public --mime-type=plain/text get -r s3://kg-hub-public-data/$S3PROJECTDIR/raw/ data/raw/'
+                                sh 'uv run s3cmd -c $S3CMD_CFG --acl-public --mime-type=plain/text get -r s3://kg-hub-public-data/$S3PROJECTDIR/raw/ data/raw/'
                             }
                         }
                     }
@@ -112,7 +116,7 @@ pipeline {
         stage('Transform') {
             steps {
                 dir('./gitrepo') {
-		            sh '. venv/bin/activate && env && python3.10 run.py transform'
+		            sh 'uv run python run.py transform'
                 }
             }
         }
@@ -120,7 +124,7 @@ pipeline {
         stage('Merge') {
             steps {
                 dir('./gitrepo') {
-                    sh '. venv/bin/activate && python3.10 run.py merge -y merge.yaml'
+                    sh 'uv run python run.py merge -y merge.yaml'
 		            sh 'cp merged_graph_stats.yaml merged_graph_stats_$BUILDSTARTDATE.yaml'
                     sh 'mv data/merged/merged-kg_nodes.tsv .'
                     sh 'mv data/merged/merged-kg_edges.tsv .'
@@ -137,7 +141,7 @@ pipeline {
                         // make sure we aren't going to clobber existing data
                         withCredentials([file(credentialsId: 's3cmd_kg_hub_push_configuration', variable: 'S3CMD_CFG')]) {
                             REMOTE_BUILD_DIR_CONTENTS = sh (
-                                script: '. venv/bin/activate && s3cmd -c $S3CMD_CFG ls s3://kg-hub-public-data/$S3PROJECTDIR/$BUILDSTARTDATE/',
+                                script: 'uv run s3cmd -c $S3CMD_CFG ls s3://kg-hub-public-data/$S3PROJECTDIR/$BUILDSTARTDATE/',
                                 returnStdout: true
                             ).trim()
                             echo "REMOTE_BUILD_DIR_CONTENTS (THIS SHOULD BE EMPTY): '${REMOTE_BUILD_DIR_CONTENTS}'"
@@ -182,19 +186,19 @@ pipeline {
                                 sh 'cp -p *_stats.yaml $BUILDSTARTDATE/stats/'
 				
                                 // build the index, then upload to remote
-                                sh '. venv/bin/activate && multi_indexer -v --directory $BUILDSTARTDATE --prefix https://kg-hub.berkeleybop.io/$S3PROJECTDIR/$BUILDSTARTDATE -x -u'
+                                sh 'uv run multi_indexer -v --directory $BUILDSTARTDATE --prefix https://kg-hub.berkeleybop.io/$S3PROJECTDIR/$BUILDSTARTDATE -x -u'
 
-                                sh '. venv/bin/activate && s3cmd -c $S3CMD_CFG put -pr --acl-public --cf-invalidate $BUILDSTARTDATE s3://kg-hub-public-data/$S3PROJECTDIR/'
-                                sh '. venv/bin/activate && s3cmd -c $S3CMD_CFG rm -r s3://kg-hub-public-data/$S3PROJECTDIR/current/'
-                                sh '. venv/bin/activate && s3cmd -c $S3CMD_CFG put -pr --acl-public --cf-invalidate $BUILDSTARTDATE/* s3://kg-hub-public-data/$S3PROJECTDIR/current/'
+                                sh 'uv run s3cmd -c $S3CMD_CFG put -pr --acl-public --cf-invalidate $BUILDSTARTDATE s3://kg-hub-public-data/$S3PROJECTDIR/'
+                                sh 'uv run s3cmd -c $S3CMD_CFG rm -r s3://kg-hub-public-data/$S3PROJECTDIR/current/'
+                                sh 'uv run s3cmd -c $S3CMD_CFG put -pr --acl-public --cf-invalidate $BUILDSTARTDATE/* s3://kg-hub-public-data/$S3PROJECTDIR/current/'
 
                                 // make index for project dir
-                                sh '. venv/bin/activate && multi_indexer -v --prefix https://kg-hub.berkeleybop.io/$S3PROJECTDIR/ -b kg-hub-public-data -r $S3PROJECTDIR -x'
-                                sh '. venv/bin/activate && s3cmd -c $S3CMD_CFG put -pr --acl-public --cf-invalidate ./index.html s3://kg-hub-public-data/$S3PROJECTDIR/'
+                                sh 'uv run multi_indexer -v --prefix https://kg-hub.berkeleybop.io/$S3PROJECTDIR/ -b kg-hub-public-data -r $S3PROJECTDIR -x'
+                                sh 'uv run s3cmd -c $S3CMD_CFG put -pr --acl-public --cf-invalidate ./index.html s3://kg-hub-public-data/$S3PROJECTDIR/'
 
                                 // Invalidate the CDN now that the new files are up.
                                 sh 'echo "[preview]" > ./awscli_config.txt && echo "cloudfront=true" >> ./awscli_config.txt'
-                                sh '. venv/bin/activate && AWS_CONFIG_FILE=./awscli_config.txt python3.10 ./venv/bin/aws cloudfront create-invalidation --distribution-id $AWS_CLOUDFRONT_DISTRIBUTION_ID --paths "/*"'
+                                sh 'AWS_CONFIG_FILE=./awscli_config.txt uv run aws cloudfront create-invalidation --distribution-id $AWS_CLOUDFRONT_DISTRIBUTION_ID --paths "/*"'
 
                                 // Should now appear at:
                                 // https://kg-hub.berkeleybop.io/kg-phenio/
