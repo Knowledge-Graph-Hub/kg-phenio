@@ -18,17 +18,22 @@ jobs:
         os: [ ubuntu-latest ]
 
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v4
     - name: Set up Python ${{ matrix.python-version }}
-      uses: actions/setup-python@v3
+      uses: actions/setup-python@v5
       with:
         python-version: ${{ matrix.python-version }}
 
     #----------------------------------------------
     #          install & configure poetry
     #----------------------------------------------
+    # @v1.3 broke around 2026-02 against Poetry 2.x's installer
+    # ("Installing Poetry (2.4.0): An error occurred. Removing partial
+    # environment."). Bumping the action alone first; if Poetry 2.x still
+    # mismatches kg-phenio's Poetry-1.x-style pyproject, follow up with
+    # either a [project]-table conversion or a migration to uv.
     - name: Install Poetry
-      uses: snok/install-poetry@v1.3
+      uses: snok/install-poetry@v1.4.1
     
 
     #----------------------------------------------
