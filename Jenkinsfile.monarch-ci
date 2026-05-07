@@ -12,8 +12,10 @@ pipeline {
         MERGEDKGNAME_BASE = "kg-phenio"
         MERGEDKGNAME_GENERIC = "merged-kg"
 
-        PATH = "/opt/poetry/bin:${env.PATH}"
-	GH_RELEASE_TOKEN = credentials('GITHUB_WORKFLOW_KG_PHENIO')
+        // uv is `pip install --user`'d in the Build stage; ~/.local/bin
+        // (HOME = WORKSPACE) is on PATH so subsequent stages can call it.
+        PATH = "${env.WORKSPACE}/.local/bin:${env.PATH}"
+        GH_RELEASE_TOKEN = credentials('GITHUB_WORKFLOW_KG_PHENIO')
         GH_TOKEN = credentials('GITHUB_WORKFLOW_KG_PHENIO')
     }
     options {
@@ -42,7 +44,6 @@ pipeline {
                 sh "echo $MERGEDKGNAME_BASE"
                 sh "echo $MERGEDKGNAME_GENERIC"
                 sh "python3 --version"
-                sh "poetry --version"
                 sh "gh --version"
                 sh "id"
                 sh "whoami"
@@ -51,7 +52,11 @@ pipeline {
 
         stage('Build kg_phenio') {
             steps {
-                sh 'poetry install'
+                // Install uv for the workspace user; subsequent stages call
+                // `uv` directly (it's on PATH via the env block above).
+                sh 'python3 -m pip install --user --quiet uv'
+                sh 'uv --version'
+                sh 'uv sync'
             }
         }
 
@@ -59,7 +64,7 @@ pipeline {
             steps {
                 script {
                     def run_py_dl = sh(
-                        script: 'poetry run python3 run.py download', returnStatus: true
+                        script: 'uv run python run.py download', returnStatus: true
                     )
                     if (run_py_dl != 0) {
                         currentBuild.result = "UNSTABLE"
@@ -71,13 +76,13 @@ pipeline {
 
         stage('Transform') {
             steps {
-                sh 'poetry run python3 run.py transform'
+                sh 'uv run python run.py transform'
             }
         }
 
         stage('Merge') {
             steps {
-                sh 'poetry run python3 run.py merge -y merge.yaml'
+                sh 'uv run python run.py merge -y merge.yaml'
                 sh 'cp merged_graph_stats.yaml merged_graph_stats_$BUILDSTARTDATE.yaml'
                 sh 'mv data/merged/merged-kg_nodes.tsv .'
                 sh 'mv data/merged/merged-kg_edges.tsv .'
@@ -85,6 +90,11 @@ pipeline {
             }
         }
 
+        stage('Metadata') {
+            steps {
+                sh 'uv run python scripts/write_metadata.py'
+            }
+        }
 
         stage('Publish') {
             steps {
@@ -108,6 +118,7 @@ pipeline {
                         sh 'cp -p merged-kg.tar.gz release_assets/${MERGEDKGNAME_BASE}.tar.gz'
                         sh 'cp -p merged_graph_stats_$BUILDSTARTDATE.yaml release_assets/'
                         sh 'cp -p *_stats.yaml release_assets/ || true'
+                        sh 'cp -p output/release-metadata.yaml release_assets/release-metadata.yaml'
 
                         // Create GitHub release
                         sh """
