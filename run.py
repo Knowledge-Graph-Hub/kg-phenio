@@ -1,5 +1,9 @@
 """Run script."""
 
+import subprocess
+import sys
+from pathlib import Path
+
 import click
 
 from kg_phenio import download as kg_download
@@ -94,6 +98,18 @@ def merge(yaml: str, processes: int) -> None:
 
     load_and_merge(yaml, processes)
     normalize()
+
+
+@cli.command()
+def metadata() -> None:
+    """Emit output/release-metadata.yaml describing this kg-phenio build.
+
+    Wraps `scripts/write_metadata.py` so the kozahub-metadata-schema receipt
+    is produced as part of a local `python run.py` workflow, not just under
+    Jenkins. Reads versions.py for the upstream source list.
+    """
+    script = Path(__file__).resolve().parent / "scripts" / "write_metadata.py"
+    subprocess.run([sys.executable, str(script)], check=True)
 
 
 if __name__ == "__main__":
