@@ -4,8 +4,7 @@ import importlib
 
 from koza.cli_utils import get_koza_app  # type: ignore
 
-from kg_phenio.transform_utils.phenio.phenio_maps import (REMAP_RELS_TO_ACLASS,
-                                                          REMAP_RELS_TO_PREDS)
+from kg_phenio.transform_utils.phenio.phenio_maps import REMAP_RELS_TO_ACLASS, REMAP_RELS_TO_PREDS
 from kg_phenio.transform_utils.sources import BAD_PREFIXES, EDGE_SOURCES
 
 source_name = "phenio_edge_sources"

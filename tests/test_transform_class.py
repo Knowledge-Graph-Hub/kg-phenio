@@ -48,7 +48,6 @@ class TestTransform(TestCase):
     )
     def test_attributes(self, attr, default):
         """Test attributes of transformation instance."""
-        self.transform_instance
         self.assertTrue(hasattr(self.transform_instance, attr))
         self.assertEqual(getattr(self.transform_instance, attr), default)
 
