@@ -1,15 +1,80 @@
 """Transform for PHENIO."""
 
+import csv
 import os
 import sys
 import tarfile
 from typing import Optional
+
+import pandas
 
 from kgx.cli.cli_utils import transform  # type: ignore
 from koza.cli_utils import transform_source
 
 from kg_phenio.transform_utils.transform import Transform
 from kg_phenio.utils.robot_utils import initialize_robot, robot_convert
+
+# Phenio expresses gene→taxon as an OWL existential restriction
+# (?gene rdfs:subClassOf [owl:onProperty RO:0002162 ; owl:someValuesFrom ?taxon]),
+# which KGX serializes as a separate edge with relation "RO:0002162".
+# We want taxon as a node property, so we fold those edges into the gene rows
+# before the Koza enrichment runs.
+TAXON_RELATION = "RO:0002162"
+GENE_URI_PREFIXES = (
+    "http://identifiers.org/hgnc/",
+    "http://identifiers.org/ncbigene/",
+)
+
+
+def materialize_gene_taxon(output_dir: str, basename: str = "PhenioTransform") -> None:
+    """Fold gene→taxon edges into in_taxon/in_taxon_label node properties.
+
+    Reads ``{basename}_nodes.tsv`` and ``{basename}_edges.tsv`` in ``output_dir``,
+    rewrites both. Idempotent: if the columns already exist, repopulates from
+    current edge data.
+    """
+    nodes_path = os.path.join(output_dir, f"{basename}_nodes.tsv")
+    edges_path = os.path.join(output_dir, f"{basename}_edges.tsv")
+    if not (os.path.exists(nodes_path) and os.path.exists(edges_path)):
+        print(f"materialize_gene_taxon: skipping; missing {nodes_path} or {edges_path}")
+        return
+
+    edges = pandas.read_csv(
+        edges_path, sep="\t", dtype="string", quoting=csv.QUOTE_NONE, lineterminator="\n"
+    )
+    is_taxon_edge = edges["relation"].eq(TAXON_RELATION) & edges["subject"].str.startswith(
+        GENE_URI_PREFIXES, na=False
+    )
+    taxon_edges = edges.loc[is_taxon_edge, ["subject", "object"]].drop_duplicates(subset=["subject"])
+    print(f"materialize_gene_taxon: found {len(taxon_edges)} gene→taxon edges to fold in")
+
+    if taxon_edges.empty:
+        return
+
+    taxon_by_gene = dict(zip(taxon_edges["subject"], taxon_edges["object"]))
+
+    nodes = pandas.read_csv(
+        nodes_path, sep="\t", dtype="string", quoting=csv.QUOTE_NONE, lineterminator="\n"
+    )
+    label_by_taxon = dict(
+        zip(
+            nodes.loc[nodes["id"].str.startswith("NCBITaxon:", na=False), "id"],
+            nodes.loc[nodes["id"].str.startswith("NCBITaxon:", na=False), "name"],
+        )
+    )
+
+    nodes["in_taxon"] = nodes["id"].map(taxon_by_gene)
+    nodes["in_taxon_label"] = nodes["in_taxon"].map(label_by_taxon)
+
+    populated = int(nodes["in_taxon"].notna().sum())
+    labeled = int(nodes["in_taxon_label"].notna().sum())
+    print(
+        f"materialize_gene_taxon: populated in_taxon on {populated} nodes "
+        f"({labeled} with in_taxon_label)"
+    )
+
+    nodes.to_csv(nodes_path, sep="\t", index=False)
+    edges.loc[~is_taxon_edge].to_csv(edges_path, sep="\t", index=False)
 
 ONTO_FILES = {
     "PhenioTransform": "phenio.owl",
@@ -181,6 +246,12 @@ class PhenioTransform(Transform):
         if name == "PhenioTransformTest":
             print("Completed transform of test file.")
         else:
+            # Fold <gene> RO:0002162 <taxon> edges into in_taxon/in_taxon_label
+            # columns on the gene rows so the Koza enrichment sees taxon as a
+            # node property rather than as a separate edge.
+            print("Materializing gene→taxon edges as node properties...")
+            materialize_gene_taxon(self.output_dir, basename=name)
+
             # Final step in translation:
             # Use Koza to apply additional properties,
             # based on each source.

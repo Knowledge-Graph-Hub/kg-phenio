@@ -151,4 +151,16 @@ while (row := koza_app.get_row()) is not None:
             elif synonym_type == "related":
                 node.related_synonym = these_synonyms
 
+    # in_taxon / in_taxon_label come from the materialize_gene_taxon step
+    # (folding of <gene> RO:0002162 <taxon> edges into node properties).
+    # The biolink Gene class declares these via the ThingWithTaxon mixin.
+    if "in_taxon" in row.keys() and row["in_taxon"] and "in_taxon" in all_slots:
+        node.in_taxon = [row["in_taxon"]]
+    if (
+        "in_taxon_label" in row.keys()
+        and row["in_taxon_label"]
+        and "in_taxon_label" in all_slots
+    ):
+        node.in_taxon_label = row["in_taxon_label"]
+
     koza_app.write(node)
