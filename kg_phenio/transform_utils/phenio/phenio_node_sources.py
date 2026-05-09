@@ -61,11 +61,16 @@ while (row := koza_app.get_row()) is not None:
                 node_curie_prefix = "XPO"
             elif node_curie_value.startswith("HsapDv"):
                 node_curie_prefix = "HsapDv"
-        if category_sources[node_curie_prefix]:
-            category_name = category_sources[node_curie_prefix]
+        # Defensive: prefixes that aren't in our NODE_SOURCES map keep
+        # whatever category kgx assigned. Previously these would have arrived
+        # as URIs and been filtered out via BAD_PREFIXES; with the kgx
+        # prefix-map fix (biolink/kgx#548) more prefixes contract to CURIEs
+        # and reach this code path, so unknown ones must not crash.
+        mapped_category = category_sources.get(node_curie_prefix, "")
+        if mapped_category:
+            category_name = mapped_category
 
-    # TODO: make this more specific
-    infores = infores_sources[node_curie_prefix]
+    infores = infores_sources.get(node_curie_prefix, node_curie_prefix.lower())
     primary_knowledge_source = f"infores:{infores}"
 
     # Write the node

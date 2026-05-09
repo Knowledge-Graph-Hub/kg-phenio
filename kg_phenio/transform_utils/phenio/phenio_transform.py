@@ -20,7 +20,11 @@ from kg_phenio.utils.robot_utils import initialize_robot, robot_convert
 # We want taxon as a node property, so we fold those edges into the gene rows
 # before the Koza enrichment runs.
 TAXON_RELATION = "RO:0002162"
-GENE_URI_PREFIXES = (
+# Match gene subjects in either CURIE form (after KGX prefix-map contraction)
+# or URI form (older KGX or unrecognized prefix).
+GENE_ID_PREFIXES = (
+    "HGNC:",
+    "NCBIGene:",
     "http://identifiers.org/hgnc/",
     "http://identifiers.org/ncbigene/",
 )
@@ -30,8 +34,9 @@ def materialize_gene_taxon(output_dir: str, basename: str = "PhenioTransform") -
     """Fold gene→taxon edges into in_taxon/in_taxon_label node properties.
 
     Reads ``{basename}_nodes.tsv`` and ``{basename}_edges.tsv`` in ``output_dir``,
-    rewrites both. Idempotent: if the columns already exist, repopulates from
-    current edge data.
+    rewrites both. The ``in_taxon`` and ``in_taxon_label`` columns are added to
+    the nodes file unconditionally (downstream Koza configs declare them, so
+    they need to be present in the header even when no gene rows have a value).
     """
     nodes_path = os.path.join(output_dir, f"{basename}_nodes.tsv")
     edges_path = os.path.join(output_dir, f"{basename}_edges.tsv")
@@ -43,14 +48,9 @@ def materialize_gene_taxon(output_dir: str, basename: str = "PhenioTransform") -
         edges_path, sep="\t", dtype="string", quoting=csv.QUOTE_NONE, lineterminator="\n"
     )
     is_taxon_edge = edges["relation"].eq(TAXON_RELATION) & edges["subject"].str.startswith(
-        GENE_URI_PREFIXES, na=False
+        GENE_ID_PREFIXES, na=False
     )
     taxon_edges = edges.loc[is_taxon_edge, ["subject", "object"]].drop_duplicates(subset=["subject"])
-    print(f"materialize_gene_taxon: found {len(taxon_edges)} gene→taxon edges to fold in")
-
-    if taxon_edges.empty:
-        return
-
     taxon_by_gene = dict(zip(taxon_edges["subject"], taxon_edges["object"]))
 
     nodes = pandas.read_csv(
@@ -63,14 +63,16 @@ def materialize_gene_taxon(output_dir: str, basename: str = "PhenioTransform") -
         )
     )
 
+    # Always create the columns (Koza yaml expects them); .map yields NaN for
+    # nodes that aren't gene rows or have no taxon edge, which serializes as empty.
     nodes["in_taxon"] = nodes["id"].map(taxon_by_gene)
     nodes["in_taxon_label"] = nodes["in_taxon"].map(label_by_taxon)
 
     populated = int(nodes["in_taxon"].notna().sum())
     labeled = int(nodes["in_taxon_label"].notna().sum())
     print(
-        f"materialize_gene_taxon: populated in_taxon on {populated} nodes "
-        f"({labeled} with in_taxon_label)"
+        f"materialize_gene_taxon: found {len(taxon_edges)} gene→taxon edges; "
+        f"populated in_taxon on {populated} nodes ({labeled} with in_taxon_label)"
     )
 
     nodes.to_csv(nodes_path, sep="\t", index=False)
