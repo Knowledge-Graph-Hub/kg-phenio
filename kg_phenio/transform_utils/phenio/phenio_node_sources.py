@@ -28,8 +28,12 @@ primary_knowledge_source = "infores:unknown"
 while (row := koza_app.get_row()) is not None:
 
     try:
-        node_curie_prefix, node_curie_value = str(row["id"]).split(":")
-    except ValueError as e:  # Catch any malformed CURIEs
+        # Use maxsplit=1: a few obscure obo annotation IRIs contract to
+        # compound CURIEs whose local part itself contains ":" (e.g.
+        # "OIO:http://purl.org/dc/terms/contributor"). Without the limit,
+        # the unpack would raise "too many values to unpack".
+        node_curie_prefix, node_curie_value = str(row["id"]).split(":", 1)
+    except ValueError as e:  # Catch any malformed CURIEs (no ":" at all)
         print(f"Error: {e}")
         print(f"Row: {row}")
         continue
