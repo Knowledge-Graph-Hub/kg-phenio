@@ -7,7 +7,6 @@ import tarfile
 from typing import Optional
 
 import pandas
-
 from kgx.cli.cli_utils import transform  # type: ignore
 from koza.cli_utils import transform_source
 
@@ -50,16 +49,22 @@ def materialize_gene_taxon(output_dir: str, basename: str = "PhenioTransform") -
     is_taxon_edge = edges["relation"].eq(TAXON_RELATION) & edges["subject"].str.startswith(
         GENE_ID_PREFIXES, na=False
     )
-    taxon_edges = edges.loc[is_taxon_edge, ["subject", "object"]].drop_duplicates(subset=["subject"])
-    taxon_by_gene = dict(zip(taxon_edges["subject"], taxon_edges["object"]))
+    taxon_edges = edges.loc[is_taxon_edge, ["subject", "object"]].drop_duplicates(
+        subset=["subject"]
+    )
+    taxon_by_gene = dict(
+        zip(taxon_edges["subject"], taxon_edges["object"], strict=False)
+    )
 
     nodes = pandas.read_csv(
         nodes_path, sep="\t", dtype="string", quoting=csv.QUOTE_NONE, lineterminator="\n"
     )
+    is_taxon_node = nodes["id"].str.startswith("NCBITaxon:", na=False)
     label_by_taxon = dict(
         zip(
-            nodes.loc[nodes["id"].str.startswith("NCBITaxon:", na=False), "id"],
-            nodes.loc[nodes["id"].str.startswith("NCBITaxon:", na=False), "name"],
+            nodes.loc[is_taxon_node, "id"],
+            nodes.loc[is_taxon_node, "name"],
+            strict=False,
         )
     )
 
