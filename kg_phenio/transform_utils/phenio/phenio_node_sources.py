@@ -1,7 +1,9 @@
 """Koza transform for adding knowledge sources to PHENIO."""
 
+import csv
 import importlib
-from typing import List, Optional
+import os
+from typing import Dict, List, Optional, Tuple
 
 from koza.cli_utils import get_koza_app  # type: ignore
 from pydantic import Field
@@ -18,18 +20,53 @@ koza_app = get_koza_app(source_name)
 # This transform is for enriching PHENIO-derived nodes with:
 # * Biolink-compliant knowledge sources, in the provided_by slot.
 # * Biolink categories, in the category slot.
+# * in_taxon / in_taxon_label, for gene nodes, from the sidecar built by
+#   PhenioTransform.parse() (see phenio_transform.build_gene_taxon_lookup).
 
 # This maps CURIE prefixes to infores: names and categories.
 infores_sources = {key: value[0] for key, value in NODE_SOURCES.items()}
 category_sources = {key: value[1] for key, value in NODE_SOURCES.items()}
+
+
+def _load_gene_taxon_lookup() -> Dict[str, Tuple[str, str]]:
+    """Load the {gene_id -> (taxon_id, taxon_label)} sidecar if present.
+
+    The file is written by PhenioTransform.parse() into the same output
+    directory as the kgx TSVs that Koza reads. Absent file is fine —
+    enrichment just doesn't set in_taxon on any node.
+    """
+    # The Koza source YAML lives alongside the TSVs; resolve relative to it.
+    here = os.path.dirname(os.path.abspath(__file__))
+    # Walk up to find the kg-phenio output dir; the sidecar sits next to the
+    # PhenioTransform_*.tsv files. Default layout: data/transformed/phenio/.
+    candidates = [
+        os.path.join(os.getcwd(), "data", "transformed", "phenio", "gene_taxon.tsv"),
+        os.path.join(here, "..", "..", "..", "data", "transformed", "phenio", "gene_taxon.tsv"),
+    ]
+    for path in candidates:
+        if os.path.exists(path):
+            with open(path, newline="") as fh:
+                reader = csv.DictReader(fh, delimiter="\t", quoting=csv.QUOTE_NONE)
+                return {
+                    row["gene_id"]: (row["taxon_id"], row["taxon_label"])
+                    for row in reader
+                }
+    return {}
+
+
+gene_taxon_lookup = _load_gene_taxon_lookup()
 
 primary_knowledge_source = "infores:unknown"
 
 while (row := koza_app.get_row()) is not None:
 
     try:
-        node_curie_prefix, node_curie_value = str(row["id"]).split(":")
-    except ValueError as e:  # Catch any malformed CURIEs
+        # Use maxsplit=1: a few obscure obo annotation IRIs contract to
+        # compound CURIEs whose local part itself contains ":" (e.g.
+        # "OIO:http://purl.org/dc/terms/contributor"). Without the limit,
+        # the unpack would raise "too many values to unpack".
+        node_curie_prefix, node_curie_value = str(row["id"]).split(":", 1)
+    except ValueError as e:  # Catch any malformed CURIEs (no ":" at all)
         print(f"Error: {e}")
         print(f"Row: {row}")
         continue
@@ -61,11 +98,16 @@ while (row := koza_app.get_row()) is not None:
                 node_curie_prefix = "XPO"
             elif node_curie_value.startswith("HsapDv"):
                 node_curie_prefix = "HsapDv"
-        if category_sources[node_curie_prefix]:
-            category_name = category_sources[node_curie_prefix]
+        # Defensive: prefixes that aren't in our NODE_SOURCES map keep
+        # whatever category kgx assigned. Previously these would have arrived
+        # as URIs and been filtered out via BAD_PREFIXES; with the kgx
+        # prefix-map fix (biolink/kgx#548) more prefixes contract to CURIEs
+        # and reach this code path, so unknown ones must not crash.
+        mapped_category = category_sources.get(node_curie_prefix, "")
+        if mapped_category:
+            category_name = mapped_category
 
-    # TODO: make this more specific
-    infores = infores_sources[node_curie_prefix]
+    infores = infores_sources.get(node_curie_prefix, node_curie_prefix.lower())
     primary_knowledge_source = f"infores:{infores}"
 
     # Write the node
@@ -150,5 +192,16 @@ while (row := koza_app.get_row()) is not None:
                 node.narrow_synonym = these_synonyms
             elif synonym_type == "related":
                 node.related_synonym = these_synonyms
+
+    # in_taxon / in_taxon_label come from the sidecar lookup built by
+    # PhenioTransform.parse() (gene→taxon edges extracted from the kgx output).
+    # The biolink Gene class declares these via the ThingWithTaxon mixin.
+    taxon_entry = gene_taxon_lookup.get(identifier)
+    if taxon_entry:
+        taxon_id, taxon_label = taxon_entry
+        if "in_taxon" in all_slots:
+            node.in_taxon = [taxon_id]
+        if taxon_label and "in_taxon_label" in all_slots:
+            node.in_taxon_label = taxon_label
 
     koza_app.write(node)

@@ -25,6 +25,8 @@ columns:
   - 'iri'
   - 'same_as'
   - 'subsets'
+# in_taxon / in_taxon_label are NOT in the source TSV; they're injected at
+# write-time by phenio_node_sources.py from the gene_taxon.tsv sidecar.
 
 node_properties:
   - 'id'
@@ -42,5 +44,7 @@ node_properties:
   - 'exact_synonym'
   - 'narrow_synonym'
   - 'related_synonym'
+  - 'in_taxon'
+  - 'in_taxon_label'
 
 transform_mode: 'flat'

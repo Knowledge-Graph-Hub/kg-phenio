@@ -1,5 +1,6 @@
 """Transform for PHENIO."""
 
+import csv
 import os
 import sys
 import tarfile
@@ -10,6 +11,76 @@ from koza.cli_utils import transform_source
 
 from kg_phenio.transform_utils.transform import Transform
 from kg_phenio.utils.robot_utils import initialize_robot, robot_convert
+
+# Phenio expresses gene→taxon as an OWL existential restriction
+# (?gene rdfs:subClassOf [owl:onProperty RO:0002162 ; owl:someValuesFrom ?taxon]),
+# which KGX serializes as a separate edge with relation "RO:0002162".
+# Rather than carry it as an edge in the merged graph, we want taxon as a node
+# property. The build step below extracts a small {gene -> (taxon, label)}
+# sidecar; phenio_node_sources.py reads it and populates in_taxon on each gene
+# row, and phenio_edge_sources.py drops the now-redundant RO:0002162 edges.
+TAXON_RELATION = "RO:0002162"
+# Match gene subjects in either CURIE form (after KGX prefix-map contraction)
+# or URI form (older KGX or unrecognized prefix).
+GENE_ID_PREFIXES = (
+    "HGNC:",
+    "NCBIGene:",
+    "http://identifiers.org/hgnc/",
+    "http://identifiers.org/ncbigene/",
+)
+# Sidecar filename, written next to PhenioTransform_{nodes,edges}.tsv.
+# Three columns: gene_id, taxon_id, taxon_label. Loaded once by
+# phenio_node_sources.py at module import.
+GENE_TAXON_SIDECAR = "gene_taxon.tsv"
+
+
+def build_gene_taxon_lookup(
+    output_dir: str, basename: str = "PhenioTransform"
+) -> None:
+    """Scan kgx TSVs, write a {gene -> (taxon, label)} sidecar.
+
+    Two stdlib-csv stream passes (no pandas): one over edges to collect
+    gene->taxon, one over nodes to collect taxon->label for the taxa we
+    saw. Writes ``gene_taxon.tsv`` into ``output_dir``.
+    """
+    nodes_path = os.path.join(output_dir, f"{basename}_nodes.tsv")
+    edges_path = os.path.join(output_dir, f"{basename}_edges.tsv")
+    sidecar_path = os.path.join(output_dir, GENE_TAXON_SIDECAR)
+    if not (os.path.exists(nodes_path) and os.path.exists(edges_path)):
+        print(f"build_gene_taxon_lookup: skipping; missing {nodes_path} or {edges_path}")
+        return
+
+    taxon_by_gene: dict[str, str] = {}
+    with open(edges_path, newline="") as fh:
+        reader = csv.DictReader(fh, delimiter="\t", quoting=csv.QUOTE_NONE)
+        for row in reader:
+            if (
+                row.get("relation") == TAXON_RELATION
+                and row.get("subject", "").startswith(GENE_ID_PREFIXES)
+                and row.get("subject") not in taxon_by_gene
+            ):
+                taxon_by_gene[row["subject"]] = row["object"]
+
+    wanted_taxa = set(taxon_by_gene.values())
+    label_by_taxon: dict[str, str] = {}
+    if wanted_taxa:
+        with open(nodes_path, newline="") as fh:
+            reader = csv.DictReader(fh, delimiter="\t", quoting=csv.QUOTE_NONE)
+            for row in reader:
+                node_id = row.get("id", "")
+                if node_id in wanted_taxa:
+                    label_by_taxon[node_id] = row.get("name", "")
+
+    with open(sidecar_path, "w", newline="") as fh:
+        writer = csv.writer(fh, delimiter="\t", quoting=csv.QUOTE_NONE)
+        writer.writerow(["gene_id", "taxon_id", "taxon_label"])
+        for gene_id, taxon_id in sorted(taxon_by_gene.items()):
+            writer.writerow([gene_id, taxon_id, label_by_taxon.get(taxon_id, "")])
+
+    print(
+        f"build_gene_taxon_lookup: {len(taxon_by_gene)} gene→taxon entries "
+        f"across {len(label_by_taxon)} distinct taxa -> {sidecar_path}"
+    )
 
 ONTO_FILES = {
     "PhenioTransform": "phenio.owl",
@@ -181,6 +252,12 @@ class PhenioTransform(Transform):
         if name == "PhenioTransformTest":
             print("Completed transform of test file.")
         else:
+            # Build a sidecar gene_taxon.tsv that the Koza node enrichment
+            # consumes to populate in_taxon/in_taxon_label; the matching
+            # RO:0002162 edges are filtered out at the edge-enrichment step.
+            print("Building gene→taxon lookup sidecar...")
+            build_gene_taxon_lookup(self.output_dir, basename=name)
+
             # Final step in translation:
             # Use Koza to apply additional properties,
             # based on each source.
