@@ -5,6 +5,10 @@ import importlib
 from koza.cli_utils import get_koza_app  # type: ignore
 
 from kg_phenio.transform_utils.phenio.phenio_maps import REMAP_RELS_TO_ACLASS, REMAP_RELS_TO_PREDS
+from kg_phenio.transform_utils.phenio.phenio_transform import (
+    GENE_ID_PREFIXES,
+    TAXON_RELATION,
+)
 from kg_phenio.transform_utils.sources import BAD_PREFIXES, EDGE_SOURCES
 
 source_name = "phenio_edge_sources"
@@ -30,6 +34,11 @@ while (row := koza_app.get_row()) is not None:
 
     # Ignore redundant category assignments
     if row["predicate"] in ["biolink:category", "biolink:inverseOf"]:
+        continue
+
+    # Drop gene→taxon edges; phenio_node_sources.py promotes them to in_taxon
+    # node properties via the gene_taxon.tsv sidecar.
+    if row["relation"] == TAXON_RELATION and str(row["subject"]).startswith(GENE_ID_PREFIXES):
         continue
 
     subj_curie_prefix = (str(row["subject"]).split(":"))[0]
