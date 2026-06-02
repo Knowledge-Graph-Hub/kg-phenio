@@ -36,6 +36,9 @@ dev = [
     "codacy-coverage>=1.3.11",
     "parameterized>=0.8.1",
     "ruff>=0.7",
+    # CI runs `uv run tox -e mypy`. Previously available transitively via
+    # kgx 2.6.0; kgx 2.7.0 dropped it, so declare it explicitly.
+    "tox>=4",
 ]
 
 [tool.uv.sources]
