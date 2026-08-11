@@ -9,6 +9,7 @@ from koza.cli_utils import get_koza_app  # type: ignore
 from pydantic import Field
 
 from kg_phenio.transform_utils.sources import BAD_PREFIXES, NODE_SOURCES
+from kg_phenio.utils.transform_utils import split_generic_obo_curie
 
 source_name = "phenio_node_sources"
 
@@ -93,11 +94,13 @@ while (row := koza_app.get_row()) is not None:
         if node_curie_prefix == "FlyBase":  # Look at ID to get the category
             if node_curie_value.startswith("FBgn"):
                 node_curie_prefix = "FBgn"
-        if node_curie_prefix == "OBO":  # Look at ID to get the category
-            if node_curie_value.startswith("XPO"):
-                node_curie_prefix = "XPO"
-            elif node_curie_value.startswith("HsapDv"):
-                node_curie_prefix = "HsapDv"
+        # Ontologies with no explicit entry in kgx's prefix map arrive collapsed
+        # onto the generic OBO prefix (OBO:DDPHENO_0000001), which has no category
+        # of its own. Recover the idspace so the lookup below finds one. The node ID
+        # itself is left as-is; universalizer rewrites it during normalization, and
+        # it has to stay in step with the edge endpoints written by
+        # phenio_edge_sources.py.
+        node_curie_prefix, _ = split_generic_obo_curie(node_curie_prefix, node_curie_value)
         # Defensive: prefixes that aren't in our NODE_SOURCES map keep
         # whatever category kgx assigned. Previously these would have arrived
         # as URIs and been filtered out via BAD_PREFIXES; with the kgx

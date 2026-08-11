@@ -5,7 +5,7 @@ import os
 import re
 import shutil
 import zipfile
-from typing import Any, Dict, List, Union
+from typing import Any, Dict, List, Tuple, Union
 
 from tqdm import tqdm  # type: ignore
 
@@ -212,6 +212,37 @@ def guess_bl_category(identifier: str) -> str:
     else:
         category = "biolink:NamedThing"
     return category
+
+
+# A local part of the form <idspace>_<localid>, e.g. DDPHENO_0000001. The idspace
+# must be a bare alphanumeric OBO idspace, so relation IRIs (fbbt#has_function_in),
+# sub-namespaces (go/extensions/ro_0002092) and multi-underscore IDs
+# (FBbt_root_00000000) do not match.
+GENERIC_OBO_LOCAL_ID = re.compile(r"^([A-Za-z][A-Za-z0-9]*)_([^_#]+)$")
+
+
+def split_generic_obo_curie(prefix: str, local_id: str) -> Tuple[str, str]:
+    """Recover the real idspace from a CURIE collapsed onto the generic OBO prefix.
+
+    kgx's default prefix map carries a generic OBO -> http://purl.obolibrary.org/obo/
+    entry, so any OBO ontology without its own entry in that map contracts to
+    OBO:DDPHENO_0000001 rather than DDPHENO:0000001. Prefix-keyed lookups then see
+    "OBO" instead of the ontology. Splitting the local part restores the idspace,
+    preserving its case, so FBbt stays FBbt.
+
+    Only well-formed <idspace>_<localid> local parts are split -- a subset of what
+    universalizer's obo_handle() rewrites during normalization. Anything declined
+    here keeps the generic OBO prefix, which is the behaviour it already had.
+
+    :param prefix: the CURIE prefix
+    :param local_id: everything after the first colon
+    :return: (prefix, local_id), unchanged unless prefix is OBO and splittable
+    """
+    if prefix == "OBO":
+        match = GENERIC_OBO_LOCAL_ID.match(local_id)
+        if match:
+            return match.group(1), match.group(2)
+    return prefix, local_id
 
 
 def collapse_uniprot_curie(uniprot_curie: str) -> str:
