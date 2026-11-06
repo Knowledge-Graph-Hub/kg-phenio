@@ -2,6 +2,11 @@
 configuration:
   output_directory: data/transformed/phenio
   checkpoint: false
+  # Classes minted by uphenotizer (DPO-ext / APO-ext) have no entry in kgx's
+  # default prefix map. Without this their IRIs stay uncontracted, and the koza
+  # steps drop them because "https" is in BAD_PREFIXES.
+  prefix_map:
+    PHENOTYPE: "https://w3id.org/monarch-initiative/entity/PHENOTYPE_"
 transform:
   source:
     phenio-transform:

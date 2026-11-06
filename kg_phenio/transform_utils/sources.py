@@ -97,6 +97,7 @@ EDGE_SOURCES = {
     "Orphanet": "orphanet",
     "PATO": "pato",
     "PCO": "pco",
+    "PHENOTYPE": "monarchinitiative",  # DPO-ext / APO-ext, minted by uphenotizer
     "PHIPO": "phipo",
     "PO": "po",
     "PR": "pr",
@@ -197,6 +198,7 @@ NODE_SOURCES = {
     "Orphanet": ("orphanet", ""),
     "PATO": ("pato", ""),
     "PCO": ("pco", ""),
+    "PHENOTYPE": ("monarchinitiative", "PhenotypicFeature"),  # DPO-ext / APO-ext
     "PO": ("po", ""),
     "PR": ("pr", "Protein"),
     "PW": ("pw", ""),
