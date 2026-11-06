@@ -1,9 +1,12 @@
 """Test the category and CURIE parser utils."""
 import unittest
+from pathlib import Path
 
+import yaml
+from kgx.prefix_manager import PrefixManager
 from parameterized import parameterized
 
-from kg_phenio.transform_utils.sources import NODE_SOURCES
+from kg_phenio.transform_utils.sources import EDGE_SOURCES, NODE_SOURCES
 from kg_phenio.utils.transform_utils import (
     collapse_uniprot_curie,
     guess_bl_category,
@@ -88,3 +91,21 @@ class TestGenericOboCurie(unittest.TestCase):
         prefix, local_id = curie.split(":", 1)
         prefix, _ = split_generic_obo_curie(prefix, local_id)
         self.assertEqual(category, NODE_SOURCES[prefix][1])
+
+
+class TestUphenotizerPhenotypes(unittest.TestCase):
+    """DPO-ext / APO-ext classes must survive as PHENOTYPE: CURIEs."""
+
+    TRANSFORM_YAML = Path(__file__).parent.parent / "transform.yaml"
+    IRI = "https://w3id.org/monarch-initiative/entity/PHENOTYPE_1001742"
+
+    def test_iri_contracts_with_configured_prefix_map(self):
+        """An uncontracted IRI gets the prefix "https" and is dropped by BAD_PREFIXES."""
+        config = yaml.safe_load(self.TRANSFORM_YAML.read_text())
+        manager = PrefixManager()
+        manager.update_prefix_map(config["configuration"]["prefix_map"])
+        self.assertEqual(manager.contract(self.IRI), "PHENOTYPE:1001742")
+
+    def test_prefix_has_category_and_sources(self):
+        self.assertEqual(NODE_SOURCES["PHENOTYPE"], ("monarchinitiative", "PhenotypicFeature"))
+        self.assertEqual(EDGE_SOURCES["PHENOTYPE"], "monarchinitiative")
